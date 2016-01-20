@@ -1,4 +1,4 @@
 MobTotems
 =========
 
-A Minecraft 1.7.10 Forge Mod to learn how to mod. 
+A Minecraft 1.8.9 Forge Mod to learn how to mod. 
