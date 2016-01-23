@@ -1,4 +1,4 @@
-package com.corwinjv.mobtotems.handler;
+package com.corwinjv.mobtotems.config;
 
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

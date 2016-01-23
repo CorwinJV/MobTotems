@@ -1,5 +1,7 @@
 .gradle/
 out/
+build/
+run/
 eclipse/
 javadoc/
 gradle/

@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "normal": [
+            { "model": "mobtotems:creeper_totem" }
+        ]
+    }
+}

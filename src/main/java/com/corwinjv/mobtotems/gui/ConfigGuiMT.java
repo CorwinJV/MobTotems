@@ -1,7 +1,7 @@
 package com.corwinjv.mobtotems.gui;
 
 import com.corwinjv.mobtotems.Reference;
-import com.corwinjv.mobtotems.handler.ConfigurationHandler;
+import com.corwinjv.mobtotems.config.ConfigurationHandler;
 import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraftforge.common.config.ConfigElement;
