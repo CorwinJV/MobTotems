@@ -1,6 +1,6 @@
 package com.corwinjv.mobtotems;
 
-import cpw.mods.fml.common.FMLLog;
+import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 import net.minecraft.entity.EntityList;
 

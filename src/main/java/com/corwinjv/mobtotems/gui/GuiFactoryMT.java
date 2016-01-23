@@ -1,7 +1,7 @@
 package com.corwinjv.mobtotems.gui;
 
-import cpw.mods.fml.client.FMLConfigGuiFactory;
-import cpw.mods.fml.client.IModGuiFactory;
+import net.minecraftforge.fml.client.FMLConfigGuiFactory;
+import net.minecraftforge.fml.client.IModGuiFactory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 
@@ -74,8 +74,8 @@ public class GuiFactoryMT implements IModGuiFactory
     }
 
     /**
-     * Return an instance of a {@link cpw.mods.fml.client.IModGuiFactory.RuntimeOptionGuiHandler} that handles painting the
-     * right hand side option screen for the specified {@link cpw.mods.fml.client.IModGuiFactory.RuntimeOptionCategoryElement}.
+     * Return an instance of a {@link net.minecraftforge.fml.client.IModGuiFactory.RuntimeOptionGuiHandler} that handles painting the
+     * right hand side option screen for the specified {@link net.minecraftforge.fml.client.IModGuiFactory.RuntimeOptionCategoryElement}.
      *
      * @param element The element we wish to paint for
      * @return The Handler for painting it

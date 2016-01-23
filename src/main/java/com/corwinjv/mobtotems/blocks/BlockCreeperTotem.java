@@ -1,11 +1,13 @@
 package com.corwinjv.mobtotems.blocks;
 
 import com.corwinjv.mobtotems.Reference;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent;
-import cpw.mods.fml.common.registry.EntityRegistry;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockPos;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -27,22 +29,28 @@ public class BlockCreeperTotem extends BlockMT
     public BlockCreeperTotem()
     {
         super();
-        setBlockName("creeperTotem");
+        //setBlockName("creeperTotem");
         setTickRandomly(true);
 
         //World clientSideWorld = Minecraft.getMinecraft().theWorld;
     }
 
     @Override
-    public void updateTick(World world, int x, int y, int z, Random rand)
+    public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
-        super.updateTick(world, x, y, z, rand);
+        super.updateTick(worldIn, pos, state, rand);
         //FMLLog.log(Reference.MOD_NAME, Level.INFO, String.format("updateTick on block at %d, %d, %d", x, y, z));
 
         // Find all mobs within bounding box that match the type creeper...
         // Set those mobs on fire.
         Class creeperClass = (Class) EntityList.stringToClassMapping.get("Creeper");
-        List entitiesWithinAABB = world.getEntitiesWithinAABB(creeperClass, AxisAlignedBB.getBoundingBox(x - 16, y - 16, z - 16, x + 16, y + 16, z + 16));
+        List entitiesWithinAABB = worldIn.getEntitiesWithinAABB(creeperClass,
+                AxisAlignedBB.fromBounds(pos.getX() - 16,
+                                            pos.getY() - 16,
+                                            pos.getZ() - 16,
+                                            pos.getX() + 16,
+                                            pos.getY() + 16,
+                                            pos.getZ() + 16));
 
         //FMLLog.log(Reference.MOD_NAME, Level.INFO, String.format("Entities found: %d", entitiesWithinAABB.size()));
 
@@ -52,7 +60,7 @@ public class BlockCreeperTotem extends BlockMT
             creeperToBurn.setFire(3);
         }
 
-        world.scheduleBlockUpdate(x, y, z, this, tickRate(world));
+        worldIn.scheduleBlockUpdate(pos, this, tickRate(worldIn), 0);
     }
 
     @Override

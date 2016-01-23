@@ -1,7 +1,7 @@
 package com.corwinjv.mobtotems.blocks;
 
 import com.corwinjv.mobtotems.Reference;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
  * Created by vanhc011 on 9/1/14.
