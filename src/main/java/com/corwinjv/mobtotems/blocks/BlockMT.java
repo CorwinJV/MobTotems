@@ -26,17 +26,8 @@ public class BlockMT extends Block
         return String.format("tile.%s%s", Reference.RESOURCE_PREFIX, getUnwrappedUnlocalizedName(super.getUnlocalizedName()));
     }
 
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public void registerBlockIcons(IIconRegister iconRegister)
-//    {
-//        // Gets the getUnlocalizedName defined in this class, returns the proper format.
-//        blockIcon = iconRegister.registerIcon(String.format("%s", getUnwrappedUnlocalizedName(this.getUnlocalizedName())));
-//    }
-
     protected String getUnwrappedUnlocalizedName(String unlocalizedName)
     {
-
         return unlocalizedName.substring(unlocalizedName.indexOf(".") + 1);
     }
 

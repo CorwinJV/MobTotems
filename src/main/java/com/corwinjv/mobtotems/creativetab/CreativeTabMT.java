@@ -1,7 +1,6 @@
 package com.corwinjv.mobtotems.creativetab;
 
 import com.corwinjv.mobtotems.Reference;
-import com.corwinjv.mobtotems.blocks.ModBlocks;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;

@@ -21,8 +21,8 @@ plugins {
 }
 */
 version = "1.0"
-group= "com.yourname.modid" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "modid"
+group= "com.corwinjv.mobtotems" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "mobtotems"
 
 minecraft {
     version = "1.8.9-11.15.0.1710"
