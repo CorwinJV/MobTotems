@@ -8,13 +8,13 @@ import net.minecraft.block.material.Material;
 /**
  * Created by vanhc011 on 9/1/14.
  */
-public class BlockMT extends Block
+public class BaseBlock extends Block
 {
-    public BlockMT(Material aMaterial) {
+    public BaseBlock(Material aMaterial) {
         super(aMaterial);
     }
 
-    public BlockMT()
+    public BaseBlock()
     {
         super(Material.rock);
         this.setCreativeTab(CreativeTabMT.MT_TAB);

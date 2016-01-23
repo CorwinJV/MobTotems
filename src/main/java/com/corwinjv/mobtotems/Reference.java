@@ -12,7 +12,7 @@ import java.util.Iterator;
 public class Reference {
     public static final String MOD_ID = "mobtotems";
     public static final String MOD_NAME = "Mob Totems";
-    public static final String MOD_VERSION = "1.7.2-1.0";
+    public static final String MOD_VERSION = "1.8.9-1.0";
 
     public static final String RESOURCE_PREFIX = MOD_ID + ":";
 

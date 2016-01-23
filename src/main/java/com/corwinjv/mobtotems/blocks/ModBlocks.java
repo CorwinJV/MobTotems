@@ -1,6 +1,5 @@
 package com.corwinjv.mobtotems.blocks;
 
-import com.corwinjv.mobtotems.Reference;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 /**
@@ -11,9 +10,8 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 //@GameRegistry.ObjectHolder(Reference.MOD_ID)
 public class ModBlocks
 {
-    public static final BlockMT creeperTotem = new BlockCreeperTotem();
+    public static final BaseBlock creeperTotem = new CreeperTotem();
     public static final String CREEPER_TOTEM = "creeperTotem";
-
 
     public static void init()
     {

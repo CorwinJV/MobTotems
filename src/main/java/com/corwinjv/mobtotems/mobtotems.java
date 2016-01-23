@@ -24,7 +24,6 @@ public class mobtotems
         ConfigurationHandler.Init(event.getSuggestedConfigurationFile());
         MinecraftForge.EVENT_BUS.register(new ConfigurationHandler());
 
-        //ModItems.init();
         ModBlocks.init();
     }
 
