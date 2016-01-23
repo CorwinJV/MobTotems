@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
@@ -19,10 +20,17 @@ import java.util.Random;
  */
 public class CreeperTotem extends BaseBlock
 {
+    public static final int TMP_BOUNDS = 16;
+
     public CreeperTotem()
     {
         super();
-        setTickRandomly(true);
+    }
+
+    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    {
+        worldIn.scheduleBlockUpdate(pos, this, tickRate(worldIn), 0);
+        return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
     }
 
     public boolean isOpaqueCube()
@@ -40,7 +48,6 @@ public class CreeperTotem extends BaseBlock
         return false;
     }
 
-
     @Override
     public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
     {
@@ -49,14 +56,15 @@ public class CreeperTotem extends BaseBlock
 
         // Find all mobs within bounding box that match the type creeper...
         // Set those mobs on fire.
+        int currentRadius = TMP_BOUNDS;
         Class creeperClass = (Class) EntityList.stringToClassMapping.get("Creeper");
         List entitiesWithinAABB = worldIn.getEntitiesWithinAABB(creeperClass,
-                AxisAlignedBB.fromBounds(pos.getX() - 16,
-                                            pos.getY() - 16,
-                                            pos.getZ() - 16,
-                                            pos.getX() + 16,
-                                            pos.getY() + 16,
-                                            pos.getZ() + 16));
+                AxisAlignedBB.fromBounds(pos.getX() - currentRadius,
+                                            pos.getY() - currentRadius,
+                                            pos.getZ() - currentRadius,
+                                            pos.getX() + currentRadius,
+                                            pos.getY() + currentRadius,
+                                            pos.getZ() + currentRadius));
 
         //FMLLog.log(Reference.MOD_NAME, Level.INFO, String.format("Entities found: %d", entitiesWithinAABB.size()));
 
@@ -70,7 +78,6 @@ public class CreeperTotem extends BaseBlock
         }
 
         worldIn.scheduleBlockUpdate(pos, this, tickRate(worldIn), 0);
-        setTickRandomly(false);
     }
 
     @Override
