@@ -12,11 +12,17 @@ public class BaseBlock extends Block
 {
     public BaseBlock(Material aMaterial) {
         super(aMaterial);
+        this.init();
     }
 
     public BaseBlock()
     {
         super(Material.wood);
+        this.init();
+    }
+
+    public void init()
+    {
         this.setCreativeTab(CreativeTabMT.MT_TAB);
     }
 

@@ -1,5 +1,6 @@
 package com.corwinjv.mobtotems.blocks;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityList;
@@ -24,7 +25,7 @@ public class CreeperTotem extends BaseBlock
 
     public CreeperTotem()
     {
-        super();
+        super(Material.wood);
     }
 
     public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
