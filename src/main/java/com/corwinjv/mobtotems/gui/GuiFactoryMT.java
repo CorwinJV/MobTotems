@@ -8,7 +8,7 @@ import net.minecraft.client.gui.GuiScreen;
 import java.util.Set;
 
 /**
- * Created by vanhc011 on 9/1/14.
+ * Created by CorwinJV on 9/1/14.
  */
 public class GuiFactoryMT implements IModGuiFactory
 {

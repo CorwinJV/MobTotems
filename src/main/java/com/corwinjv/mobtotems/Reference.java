@@ -7,7 +7,7 @@ import net.minecraft.entity.EntityList;
 import java.util.Iterator;
 
 /**
- * Created by vanhc011 on 8/31/14.
+ * Created by CorwinJV on 8/31/14.
  */
 public class Reference {
     public static final String MOD_ID = "mobtotems";

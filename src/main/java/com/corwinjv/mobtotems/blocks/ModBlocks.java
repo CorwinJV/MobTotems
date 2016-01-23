@@ -11,15 +11,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by vanhc011 on 9/1/14.
+ * Created by CorwinJV on 9/1/14.
  */
 
 public class ModBlocks
 {
     public static final String CREEPER_TOTEM = "creeper_totem";
 
-    public static Map<String,BaseBlock> mBlocks = Collections.emptyMap();
-
+    private static Map<String,BaseBlock> mBlocks = Collections.emptyMap();
 
     public static void init()
     {
@@ -61,6 +60,5 @@ public class ModBlocks
                 .register(item,
                         0,
                         new ModelResourceLocation(Reference.RESOURCE_PREFIX + key, "inventory"));
-
     }
 }

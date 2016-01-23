@@ -6,7 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 
 /**
- * Created by vanhc011 on 9/1/14.
+ * Created by CorwinJV on 9/1/14.
  */
 public class BaseBlock extends Block
 {
@@ -16,7 +16,7 @@ public class BaseBlock extends Block
 
     public BaseBlock()
     {
-        super(Material.rock);
+        super(Material.wood);
         this.setCreativeTab(CreativeTabMT.MT_TAB);
     }
 
@@ -30,5 +30,4 @@ public class BaseBlock extends Block
     {
         return unlocalizedName.substring(unlocalizedName.indexOf(".") + 1);
     }
-
 }

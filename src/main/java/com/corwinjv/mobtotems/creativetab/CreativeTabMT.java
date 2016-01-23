@@ -6,7 +6,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 
 /**
- * Created by vanhc011 on 9/1/14.
+ * Created by CorwinJV on 9/1/14.
  */
 public class CreativeTabMT
 {

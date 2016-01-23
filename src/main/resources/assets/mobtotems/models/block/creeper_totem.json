@@ -1,6 +1,6 @@
 {
-  "parent": "block/cube_all",
+  "parent": "block/fence_post",
   "textures": {
-    "all": "mobtotems:blocks/creeper_totem"
+    "texture": "blocks/planks_oak"
   }
 }

@@ -8,7 +8,7 @@ import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
 
 /**
- * Created by vanhc011 on 9/1/14.
+ * Created by CorwinJV on 9/1/14.
  */
 public class ConfigGuiMT extends GuiConfig
 {

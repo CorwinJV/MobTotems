@@ -8,7 +8,7 @@ import java.io.File;
 import com.corwinjv.mobtotems.Reference;
 
 /**
- * Created by vanhc011 on 8/31/14.
+ * Created by CorwinJV on 8/31/14.
  */
 public class ConfigurationHandler
 {
