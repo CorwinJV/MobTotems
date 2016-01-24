@@ -28,10 +28,11 @@ public class CreeperTotem extends BaseBlock
         super(Material.wood);
     }
 
-    public IBlockState onBlockPlaced(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer)
+    @Override
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
+        super.onBlockAdded(worldIn, pos, state);
         worldIn.scheduleBlockUpdate(pos, this, tickRate(worldIn), 0);
-        return super.onBlockPlaced(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer);
     }
 
     public boolean isOpaqueCube()
