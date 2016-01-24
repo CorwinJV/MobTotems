@@ -21,7 +21,7 @@ import java.util.Random;
  */
 public class CreeperTotem extends BaseBlock
 {
-    public static final int TMP_BOUNDS = 16;
+    public static final int TMP_BOUNDS = 8;
 
     public CreeperTotem()
     {
@@ -69,6 +69,7 @@ public class CreeperTotem extends BaseBlock
                                             pos.getZ() + currentRadius));
 
         //FMLLog.log(Reference.MOD_NAME, Level.INFO, String.format("Entities found: %d", entitiesWithinAABB.size()));
+
 
         for(int i = 0; i < entitiesWithinAABB.size(); i++)
         {
