@@ -3,12 +3,16 @@ package com.corwinjv.mobtotems.blocks;
 import com.corwinjv.mobtotems.Reference;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by CorwinJV on 9/1/14.
@@ -60,5 +64,22 @@ public class ModBlocks
                 .register(item,
                         0,
                         new ModelResourceLocation(Reference.RESOURCE_PREFIX + key, "inventory"));
+    }
+
+    public static void registerRecipes()
+    {
+        for (String key : mBlocks.keySet())
+        {
+            if(CREEPER_TOTEM.equals(key))
+            {
+                Item item = Item.getItemFromBlock(mBlocks.get(key));
+                GameRegistry.addRecipe(new ItemStack(item),
+                                "GFG",
+                                " F ",
+                                " F ",
+                                'G', Items.gunpowder,
+                                'F', Blocks.oak_fence);
+            }
+        }
     }
 }

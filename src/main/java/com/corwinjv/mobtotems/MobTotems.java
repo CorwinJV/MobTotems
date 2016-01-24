@@ -35,6 +35,7 @@ public class MobTotems
 
         ModBlocks.init();
         ModBlocks.registerBlocks();
+        ModBlocks.registerRecipes();
     }
 
     @Mod.EventHandler
