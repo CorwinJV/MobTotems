@@ -29,10 +29,10 @@ public class GuiFactoryMT implements IModGuiFactory
      * Minecraft GUIs. The expected behaviour is that this screen will replace the
      * "mod list" screen completely, and will return to the mod list screen through
      * the parent link, once the appropriate action is taken from the config screen.
-     * <p/>
+     *
      * A null from this method indicates that the mod does not provide a "config"
      * button GUI screen, and the config button will be hidden/disabled.
-     * <p/>
+     *
      * This config GUI is anticipated to provide configuration to the mod in a friendly
      * visual way. It should not be abused to set internals such as IDs (they're gonna
      * keep disappearing anyway), but rather, interesting behaviours. This config GUI
@@ -51,14 +51,14 @@ public class GuiFactoryMT implements IModGuiFactory
     /**
      * Return a list of the "runtime" categories this mod wishes to populate with
      * GUI elements.
-     * <p/>
+     *
      * Runtime categories are created on demand and organized in a 'lite' tree format.
      * The parent represents the parent node in the tree. There is one special parent
      * 'Help' that will always list first, and is generally meant to provide Help type
      * content for mods. The remaining parents will sort alphabetically, though
      * this may change if there is a lot of alphabetic abuse. "AAA" is probably never a valid
      * category parent.
-     * <p/>
+     *
      * Runtime configuration itself falls into two flavours: in-game help, which is
      * generally non interactive except for the text it wishes to show, and client-only
      * affecting behaviours. This would include things like toggling minimaps, or cheat modes
