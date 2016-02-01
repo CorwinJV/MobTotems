@@ -4,6 +4,7 @@ package com.corwinjv.mobtotems;
  */
 
 import com.corwinjv.mobtotems.blocks.ModBlocks;
+import com.corwinjv.mobtotems.items.ModItems;
 import com.corwinjv.mobtotems.proxy.CommonProxy;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -36,6 +37,10 @@ public class MobTotems
         ModBlocks.init();
         ModBlocks.registerBlocks();
         ModBlocks.registerRecipes();
+
+        ModItems.init();
+        ModItems.registerBlocks();
+        ModItems.registerRecipes();
     }
 
     @Mod.EventHandler
