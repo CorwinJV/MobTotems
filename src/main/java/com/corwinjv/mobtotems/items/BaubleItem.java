@@ -3,11 +3,15 @@ package com.corwinjv.mobtotems.items;
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.FMLLog;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
-import org.apache.logging.log4j.Level;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 /**
  * Created by CorwinJV on 1/31/2016.
@@ -15,40 +19,73 @@ import org.apache.logging.log4j.Level;
 @Optional.Interface(modid = "Baubles", iface = "baubles.api.IBauble")
 public class BaubleItem extends BaseItem implements IBauble
 {
+    protected static final String CHARGE_LEVEL = "CHARGE_LEVEL";
+    protected static final int MAX_CHARGE_LEVEL = 16;
+
     public BaubleItem()
     {
         super();
     }
 
     @Override
-    public BaubleType getBaubleType(ItemStack itemstack) {
+    public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn)
+    {
+        initNbtData(stack);
+    }
+
+    protected void initNbtData(ItemStack stack)
+    {
+        NBTTagCompound nbtTagCompound = stack.getTagCompound();
+        if(nbtTagCompound == null)
+        {
+            nbtTagCompound = new NBTTagCompound();
+        }
+        nbtTagCompound.setInteger(CHARGE_LEVEL, MAX_CHARGE_LEVEL);
+
+        stack.setTagCompound(nbtTagCompound);
+    }
+
+    // Baubles
+    @Override
+    public BaubleType getBaubleType(ItemStack stack) {
         return null;
     }
 
     @Override
-    public void onWornTick(ItemStack itemstack, EntityLivingBase player) {
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
+    {
+        if(stack.getTagCompound() == null)
+        {
+            initNbtData(stack);
+        }
+
+        // TODO: Use locale strings
+        int chargeLevel = stack.getTagCompound().getInteger(CHARGE_LEVEL);
+        tooltip.add("Charge Level: " + chargeLevel + "/" + MAX_CHARGE_LEVEL);
+    }
+
+    @Override
+    public void onWornTick(ItemStack stack, EntityLivingBase player) {
 
     }
 
     @Override
-    public void onEquipped(ItemStack itemstack, EntityLivingBase player) {
-
+    public void onEquipped(ItemStack stack, EntityLivingBase player) {
     }
 
     @Override
-    public void onUnequipped(ItemStack itemstack, EntityLivingBase player) {
+    public void onUnequipped(ItemStack stack, EntityLivingBase player) {
 
     }
 
     @Override
     public boolean canEquip(ItemStack itemstack, EntityLivingBase player) {
-//        FMLLog.log(Level.INFO, "canEquip() - itemStack: " + itemstack.getItem() + "player: " + player);
         return true;
     }
 
     @Override
     public boolean canUnequip(ItemStack itemstack, EntityLivingBase player) {
-//        FMLLog.log(Level.INFO, "canUnequip() - itemStack: " + itemstack.getItem() + "player: " + player);
         return true;
     }
 }

@@ -41,6 +41,8 @@ public class MobTotems
         ModItems.init();
         ModItems.registerBlocks();
         ModItems.registerRecipes();
+
+        proxy.registerKeys();
     }
 
     @Mod.EventHandler

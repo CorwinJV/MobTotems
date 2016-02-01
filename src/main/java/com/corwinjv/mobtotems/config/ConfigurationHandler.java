@@ -29,7 +29,7 @@ public class ConfigurationHandler
     @SubscribeEvent
     public void onConfigurationChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event)
     {
-        if(event.modID.equalsIgnoreCase(Reference.MOD_ID))
+        if(Reference.MOD_ID.equalsIgnoreCase(event.modID))
         {
             loadConfiguration();
         }
@@ -37,7 +37,7 @@ public class ConfigurationHandler
 
     private static void loadConfiguration()
     {
-        isHardMode = configuration.getBoolean("HardModeOn", Configuration.CATEGORY_GENERAL, false, "Do you want to play in hard mdoe?");
+        isHardMode = configuration.getBoolean("HardModeOn", Configuration.CATEGORY_GENERAL, false, "Do you want to play in hard mode?");
 
         if(configuration.hasChanged())
         {

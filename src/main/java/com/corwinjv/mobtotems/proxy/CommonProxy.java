@@ -9,4 +9,9 @@ public class CommonProxy
     {
 
     }
+
+    public void registerKeys()
+    {
+
+    }
 }
