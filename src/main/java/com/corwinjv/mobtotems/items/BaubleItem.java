@@ -7,9 +7,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.logging.log4j.Level;
 
 import java.util.List;
 
@@ -43,6 +45,10 @@ public class BaubleItem extends BaseItem implements IBauble
         nbtTagCompound.setInteger(CHARGE_LEVEL, MAX_CHARGE_LEVEL);
 
         stack.setTagCompound(nbtTagCompound);
+    }
+
+    public void onBaubleActivated(ItemStack stack, EntityPlayer player)
+    {
     }
 
     // Baubles

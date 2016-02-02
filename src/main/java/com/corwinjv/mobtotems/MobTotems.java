@@ -5,6 +5,7 @@ package com.corwinjv.mobtotems;
 
 import com.corwinjv.mobtotems.blocks.ModBlocks;
 import com.corwinjv.mobtotems.items.ModItems;
+import com.corwinjv.mobtotems.network.Network;
 import com.corwinjv.mobtotems.proxy.CommonProxy;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -23,17 +24,20 @@ public class MobTotems
     @Mod.Instance
     public static MobTotems instance;
 
-    private static SimpleNetworkWrapper NETWORK = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID);
-
     @SidedProxy(clientSide = Reference.CLIENT_SIDE_PROXY_CLASS, serverSide = Reference.SERVER_SIDE_PROXY_CLASS)
     public static CommonProxy proxy;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        // Network & Messages
+        Network.init();
+
+        // Config
         ConfigurationHandler.Init(event.getSuggestedConfigurationFile());
         MinecraftForge.EVENT_BUS.register(new ConfigurationHandler());
 
+        // Blocks and Items
         ModBlocks.init();
         ModBlocks.registerBlocks();
         ModBlocks.registerRecipes();
@@ -42,6 +46,7 @@ public class MobTotems
         ModItems.registerBlocks();
         ModItems.registerRecipes();
 
+        // Keybinds
         proxy.registerKeys();
     }
 

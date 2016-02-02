@@ -25,6 +25,6 @@ public class ClientProxy extends CommonProxy
     @Override
     public void registerKeys()
     {
-        KeyBindings.init();
+        MinecraftForge.EVENT_BUS.register(new KeyBindings());
     }
 }

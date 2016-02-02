@@ -55,42 +55,46 @@ public class WolfTotemBauble extends BaubleItem {
     }
 
     @Override
-    public void onWornTick(ItemStack stack, EntityLivingBase entity)
+    public void onBaubleActivated(ItemStack stack, EntityPlayer player)
     {
-        NBTTagCompound nbtTagCompound = stack.getTagCompound();
-        if(nbtTagCompound == null)
+        if(!player.worldObj.isRemote)
         {
-            return;
-        }
-
-        if(entity instanceof EntityPlayer)
-        {
-            if(KeyBindings.keys[KeyBindings.ACTIVATE_BAUBLE_KEY].isPressed())
+            NBTTagCompound tagCompound = stack.getTagCompound();
+            if(tagCompound == null)
             {
-                EntityPlayer player = (EntityPlayer) entity;
-                if(!nbtTagCompound.getBoolean(WOLF_SUMMONED)
-                        && nbtTagCompound.getInteger(CHARGE_LEVEL) > 0)
-                {
-                    Vec3i facingVec = player.getHorizontalFacing().getDirectionVec();
-                    double posX = player.posX + (facingVec.getX() * SPAWN_DISTANCE);
-                    double posY = player.posY + (facingVec.getY() * SPAWN_DISTANCE);
-                    double posZ = player.posZ + (facingVec.getZ() * SPAWN_DISTANCE);
+                FMLLog.log(Level.WARN, "WolfTotemBauble onBaubleActivated() no tagCompound");
+                return;
+            }
 
-                    mSpiritWolf = (EntityWolf)ItemMonsterPlacer.spawnCreature(player.worldObj, "Wolf", posX, posY, posZ);
-                    // tameSpiritWolf(player);
-                    nbtTagCompound.setBoolean(WOLF_SUMMONED, true);
-                }
-                else if(nbtTagCompound.getBoolean(WOLF_SUMMONED))
+            if(!tagCompound.getBoolean(WOLF_SUMMONED)
+                    && tagCompound.getInteger(CHARGE_LEVEL) > 0)
+            {
+                Vec3i facingVec = player.getHorizontalFacing().getDirectionVec();
+                double posX = player.posX + (facingVec.getX() * SPAWN_DISTANCE);
+                double posY = player.posY + (facingVec.getY() * SPAWN_DISTANCE);
+                double posZ = player.posZ + (facingVec.getZ() * SPAWN_DISTANCE);
+
+                mSpiritWolf = (EntityWolf)ItemMonsterPlacer.spawnCreature(player.worldObj, "Wolf", posX, posY, posZ);
+                tameSpiritWolf(player);
+                tagCompound.setBoolean(WOLF_SUMMONED, true);
+            }
+            else if(tagCompound.getBoolean(WOLF_SUMMONED))
+            {
+                if(mSpiritWolf != null)
                 {
-                    if(mSpiritWolf != null)
-                    {
-                        mSpiritWolf.setDead();
-                        mSpiritWolf = null;
-                    }
-                    nbtTagCompound.setBoolean(WOLF_SUMMONED, false);
+                    mSpiritWolf.setDead();
+                    mSpiritWolf = null;
                 }
+                tagCompound.setBoolean(WOLF_SUMMONED, false);
             }
         }
+    }
+
+
+    @Override
+    public void onWornTick(ItemStack stack, EntityLivingBase entity)
+    {
+
     }
 
     // TODO: Move to custom SpiritWolf Entity when I get around to writing one
