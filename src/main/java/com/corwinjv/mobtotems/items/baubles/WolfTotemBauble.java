@@ -1,11 +1,8 @@
 package com.corwinjv.mobtotems.items.baubles;
 
 import baubles.api.BaubleType;
-import com.corwinjv.mobtotems.KeyBindings;
 import com.corwinjv.mobtotems.items.BaubleItem;
 import com.google.common.base.Predicate;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.*;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMonsterPlacer;
@@ -13,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
@@ -45,13 +41,12 @@ public class WolfTotemBauble extends BaubleItem {
     public void onCreated(ItemStack stack, World world, EntityPlayer player)
     {
         super.onCreated(stack, world, player);
-        //FMLLog.log(Level.WARN, "WolfTotemBauble onCreated()");
-        initNbtData(stack);
     }
 
     @Override
     protected void initNbtData(ItemStack stack)
     {
+        //FMLLog.log(Level.DEBUG, "WolfTotemBauble - initNbtData()");
         super.initNbtData(stack);
         NBTTagCompound tagCompound = stack.getTagCompound();
 
@@ -64,6 +59,23 @@ public class WolfTotemBauble extends BaubleItem {
         }
 
         stack.setTagCompound(tagCompound);
+    }
+
+    private boolean hasValidNbt(ItemStack stack)
+    {
+        NBTTagCompound tagCompound = stack.getTagCompound();
+        if(tagCompound == null)
+        {
+            FMLLog.log(Level.WARN, "WolfTotemBauble onBaubleActivated() no tagCompound");
+            return false;
+        }
+        NBTTagCompound wolfTotemCompound = tagCompound.getCompoundTag(WOLF_TOTEM_COMPOUND);
+        if(wolfTotemCompound == null)
+        {
+            FMLLog.log(Level.WARN, "WolfTotemBauble onBaubleActivated() no wolfTotemCompound");
+            return false;
+        }
+        return true;
     }
 
     private EntityWolf getWolf(ItemStack stack, World world)
@@ -98,24 +110,18 @@ public class WolfTotemBauble extends BaubleItem {
         return null;
     }
 
-
     @Override
     public void onBaubleActivated(ItemStack stack, EntityPlayer player)
     {
         if(!player.worldObj.isRemote)
         {
+            if(!hasValidNbt(stack))
+            {
+                return;
+            }
+
             NBTTagCompound tagCompound = stack.getTagCompound();
-            if(tagCompound == null)
-            {
-                FMLLog.log(Level.WARN, "WolfTotemBauble onBaubleActivated() no tagCompound");
-                return;
-            }
             NBTTagCompound wolfTotemCompound = tagCompound.getCompoundTag(WOLF_TOTEM_COMPOUND);
-            if(wolfTotemCompound == null)
-            {
-                FMLLog.log(Level.WARN, "WolfTotemBauble onBaubleActivated() no wolfTotemCompound");
-                return;
-            }
 
             EntityWolf spiritWolf = getWolf(stack, player.worldObj);
             if(spiritWolf == null
@@ -141,12 +147,6 @@ public class WolfTotemBauble extends BaubleItem {
             }
             tagCompound.setTag(WOLF_TOTEM_COMPOUND, wolfTotemCompound);
         }
-    }
-
-
-    @Override
-    public void onWornTick(ItemStack stack, EntityLivingBase entity)
-    {
     }
 
     // TODO: Move to custom SpiritWolf Entity when I get around to writing one

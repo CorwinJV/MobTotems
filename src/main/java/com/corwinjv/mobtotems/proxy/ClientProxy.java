@@ -2,6 +2,7 @@ package com.corwinjv.mobtotems.proxy;
 
 import com.corwinjv.mobtotems.KeyBindings;
 import com.corwinjv.mobtotems.blocks.ModBlocks;
+import com.corwinjv.mobtotems.entities.ModEntities;
 import com.corwinjv.mobtotems.items.ModItems;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
@@ -20,6 +21,7 @@ public class ClientProxy extends CommonProxy
     {
         ModBlocks.registerRenders();
         ModItems.registerRenders();
+        ModEntities.registerRenders();
     }
 
     @Override

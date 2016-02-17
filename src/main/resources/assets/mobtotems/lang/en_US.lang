@@ -2,3 +2,4 @@ itemGroup.mobtotems=Mob Totems
 tile.mobtotems:creeper_totem.name=Creeper Totem
 item.wolf_totem_bauble.name=Personal Wolf Totem
 key.mobtotems.activateBaubleDescription=Activate Personal Totem
+entity.mobtotems.spirit_wolf.name=Spirit Wolf

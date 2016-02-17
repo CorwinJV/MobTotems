@@ -4,6 +4,7 @@ package com.corwinjv.mobtotems;
  */
 
 import com.corwinjv.mobtotems.blocks.ModBlocks;
+import com.corwinjv.mobtotems.entities.ModEntities;
 import com.corwinjv.mobtotems.items.ModItems;
 import com.corwinjv.mobtotems.network.Network;
 import com.corwinjv.mobtotems.proxy.CommonProxy;
@@ -45,6 +46,10 @@ public class MobTotems
         ModItems.init();
         ModItems.registerBlocks();
         ModItems.registerRecipes();
+
+        // Entities
+        ModEntities.init();
+        ModEntities.registerEntities(instance);
 
         // Keybinds
         proxy.registerKeys();
