@@ -1,7 +1,6 @@
 package com.corwinjv.mobtotems.items.baubles;
 
 import baubles.api.BaubleType;
-import com.corwinjv.mobtotems.items.BaubleItem;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;

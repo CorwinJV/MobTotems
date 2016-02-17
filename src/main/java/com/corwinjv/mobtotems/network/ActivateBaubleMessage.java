@@ -1,17 +1,11 @@
 package com.corwinjv.mobtotems.network;
 
 import baubles.api.BaublesApi;
-import com.corwinjv.mobtotems.items.BaubleItem;
-import com.corwinjv.mobtotems.items.ModItems;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.EntityPlayer;
+import com.corwinjv.mobtotems.items.baubles.BaubleItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.FMLLog;
-import org.apache.logging.log4j.Level;
 
 /**
  * Created by CorwinJV on 2/1/2016.

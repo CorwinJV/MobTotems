@@ -1,7 +1,8 @@
-package com.corwinjv.mobtotems.items;
+package com.corwinjv.mobtotems.items.baubles;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
+import com.corwinjv.mobtotems.items.BaseItem;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

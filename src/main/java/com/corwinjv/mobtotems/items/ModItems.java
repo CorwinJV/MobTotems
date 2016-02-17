@@ -26,6 +26,7 @@ import java.util.Map;
 public class ModItems
 {
     public static final String WOLF_TOTEM_BAUBLE = "wolf_totem_bauble";
+    public static final String TOTEMIC_FOCUS = "totemic_focus";
 
     private static Map<String,BaseItem> mItems = Collections.emptyMap();
 
@@ -36,6 +37,10 @@ public class ModItems
         BaseItem wolf_totem_bauble = new WolfTotemBauble();
         wolf_totem_bauble.setUnlocalizedName(WOLF_TOTEM_BAUBLE);
         mItems.put(WOLF_TOTEM_BAUBLE, wolf_totem_bauble);
+
+        BaseItem totemic_focus = new TotemicFocus();
+        totemic_focus.setUnlocalizedName(TOTEMIC_FOCUS);
+        mItems.put(TOTEMIC_FOCUS, totemic_focus);
     }
 
     public static void registerBlocks()
@@ -79,6 +84,15 @@ public class ModItems
                 " F ",
                 'G', Items.gunpowder,
                 'F', Blocks.oak_fence);
+
+        item = mItems.get(TOTEMIC_FOCUS);
+        GameRegistry.addRecipe(new ItemStack(item),
+                "GXF",
+                " X ",
+                " X ",
+                'X', Items.stick,
+                'G', Items.gunpowder,
+                'F', Items.feather);
 
         FMLLog.log(Level.DEBUG, "CJV OreDict says: " + OreDictionary.getOreID("plankWood"));
     }
