@@ -1,6 +1,16 @@
+#keybinds
+key.mobtotems.activateBaubleDescription=Activate Personal Totem
+
+#gui
 itemGroup.mobtotems=Mob Totems
+
+#entities
+entity.mobtotems.spirit_wolf.name=Spirit Wolf
+
+#blocks
 tile.mobtotems:creeper_totem.name=Creeper Totem
+tile.mobtotems:totem_wood.name=Totem Wood
+
+#items
 item.wolf_totem_bauble.name=Personal Wolf Totem
 item.totemic_focus.name=Totemic Focus
-key.mobtotems.activateBaubleDescription=Activate Personal Totem
-entity.mobtotems.spirit_wolf.name=Spirit Wolf

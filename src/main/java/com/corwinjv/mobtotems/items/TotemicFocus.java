@@ -1,5 +1,7 @@
 package com.corwinjv.mobtotems.items;
 
+import com.corwinjv.mobtotems.blocks.BaseBlock;
+import com.corwinjv.mobtotems.blocks.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,9 +25,12 @@ public class TotemicFocus extends BaseItem
             if (targetBlock != null
                     && targetBlock instanceof BlockLog)
             {
-                // TODO: Spawn TotemWood instead of glass
                 world.destroyBlock(pos, false);
-                world.setBlockState(pos, Blocks.glass.getDefaultState());
+                BaseBlock blockToPlace = ModBlocks.getBlock(ModBlocks.TOTEM_WOOD);
+                if(blockToPlace != null)
+                {
+                    world.setBlockState(pos, blockToPlace.getDefaultState());
+                }
             }
         }
         return super.onItemUse(stack, player, world, pos, side, hitX, hitY, hitZ);

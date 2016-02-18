@@ -1,4 +1,4 @@
-package com.corwinjv.mobtotems.blocks;
+package com.corwinjv.mobtotems.blocks.totems;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -6,11 +6,8 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLLog;
-import org.apache.logging.log4j.Level;
 
 import java.util.List;
 import java.util.Random;
@@ -18,7 +15,7 @@ import java.util.Random;
 /**
  * Created by CorwinJV on 9/1/14.
  */
-public class CreeperTotem extends BaseBlock
+public class CreeperTotem extends TotemBlock
 {
     public static final int TMP_BOUNDS = 8;
 
