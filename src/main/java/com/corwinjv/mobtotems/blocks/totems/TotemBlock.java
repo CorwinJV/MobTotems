@@ -18,5 +18,4 @@ public class TotemBlock extends BaseBlock
         super(Material.wood);
         this.init();
     }
-
 }

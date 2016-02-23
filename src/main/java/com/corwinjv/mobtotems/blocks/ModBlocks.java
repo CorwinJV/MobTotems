@@ -2,16 +2,11 @@ package com.corwinjv.mobtotems.blocks;
 
 import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.blocks.totems.CreeperTotem;
-import com.corwinjv.mobtotems.blocks.totems.TotemWood;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.FMLLog;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import org.apache.logging.log4j.Level;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,10 +24,12 @@ public class ModBlocks
     public static final String TOTEM_WOOD = "totem_wood";
 
     private static Map<String,BaseBlock> mBlocks = Collections.emptyMap();
+    private static Map<String,Class<? extends TileEntity>> mTileEntityClasses = Collections.emptyMap();
 
     public static void init()
     {
         mBlocks = new HashMap<String,BaseBlock>();
+        mTileEntityClasses = new HashMap<String, Class<? extends TileEntity>>();
 
         BaseBlock creeper_totem = new CreeperTotem();
         creeper_totem.setUnlocalizedName(CREEPER_TOTEM);
@@ -41,6 +38,7 @@ public class ModBlocks
         BaseBlock totem_wood = new TotemWood();
         totem_wood.setUnlocalizedName(TOTEM_WOOD);
         mBlocks.put(TOTEM_WOOD, totem_wood);
+        mTileEntityClasses.put(TOTEM_WOOD, TotemTileEntity.class);
     }
 
     public static BaseBlock getBlock(String key)
@@ -60,6 +58,11 @@ public class ModBlocks
             if(block != null)
             {
                 GameRegistry.registerBlock(block, key);
+                Class<? extends TileEntity> tileEntityClass = mTileEntityClasses.get(key);
+                if(tileEntityClass != null)
+                {
+                    GameRegistry.registerTileEntity(tileEntityClass, key);
+                }
             }
         }
     }
@@ -89,16 +92,6 @@ public class ModBlocks
     {
         for (String key : mBlocks.keySet())
         {
-//            if(CREEPER_TOTEM.equals(key))
-//            {
-//                Item item = Item.getItemFromBlock(mBlocks.get(key));
-//                GameRegistry.addRecipe(new ItemStack(item),
-//                                "GFG",
-//                                " F ",
-//                                " F ",
-//                                'G', Items.gunpowder,
-//                                'F', Blocks.oak_fence);
-//            }
         }
     }
 }
