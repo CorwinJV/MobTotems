@@ -8,9 +8,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
-import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
+
+import java.util.ArrayList;
 
 /**
  * Created by CorwinJV on 2/18/2016.
@@ -141,7 +142,7 @@ public class TotemTileEntity extends TileEntity implements ITickable
     {
         NBTTagCompound nbtTagCompound = new NBTTagCompound();
         writeToNBT(nbtTagCompound);
-        FMLLog.log(Level.WARN, "getDescriptionPacket() - nbtTagCompound: " + nbtTagCompound);
+//        FMLLog.log(Level.WARN, "getDescriptionPacket() - nbtTagCompound: " + nbtTagCompound);
         return new S35PacketUpdateTileEntity(this.pos, 0, nbtTagCompound);
     }
 
@@ -159,7 +160,7 @@ public class TotemTileEntity extends TileEntity implements ITickable
             if(totemTileEntity != null
                     && totemTileEntity instanceof TotemTileEntity)
             {
-                if(((TotemTileEntity) totemTileEntity).checkIsMaster())
+                if(((TotemTileEntity) totemTileEntity).canBeMaster())
                 {
                     // TODO: I kinda don't like the way I wrote this. Make this stuff more generalized.
                     TotemTileEntity masterEntity = (TotemTileEntity)totemTileEntity;
@@ -186,7 +187,7 @@ public class TotemTileEntity extends TileEntity implements ITickable
         }
     }
 
-    public boolean checkIsMaster()
+    public boolean canBeMaster()
     {
         for(int y = pos.getY(); y <= pos.getY() + SLAVE_COUNT; y++)
         {
@@ -208,11 +209,28 @@ public class TotemTileEntity extends TileEntity implements ITickable
         {
             if(mMasterPos != null)
             {
-                // TODO: Figure out how to get particle effects to work right :P
-                BlockPos spawnPos = pos.add(0.5D, 0.0D, 0.5D);
-                worldObj.spawnParticle(EnumParticleTypes.PORTAL, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 1.0, 0.0, 1.0, new int[0]);
-                worldObj.spawnParticle(EnumParticleTypes.PORTAL, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 1.0, 0.0, 0.0, new int[0]);
-                worldObj.spawnParticle(EnumParticleTypes.PORTAL, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), 0.0, 0.0, 1.0, new int[0]);
+                ArrayList<BlockPos> spawnPoints = new ArrayList<BlockPos>();
+                spawnPoints.add(pos.add(0.0, 0.0, 0.0));
+                spawnPoints.add(pos.add(1.0, 0.0, 0.0));
+                spawnPoints.add(pos.add(0.0, 0.0, 1.0));
+                spawnPoints.add(pos.add(1.0, 0.0, 1.0));
+
+                for(int i = 0; i < spawnPoints.size(); i++)
+                {
+                    BlockPos spawnPos = spawnPoints.get(i);
+                    double offsetAmount = 0.05f;
+                    double offX = offsetAmount;
+                    double offZ = offsetAmount;
+                    if(i % 2 == 0)
+                    {
+                        offX = -offsetAmount;
+                    }
+                    if(i == 0 || i == 1)
+                    {
+                       offZ = -offsetAmount;
+                    }
+                    worldObj.spawnParticle(EnumParticleTypes.PORTAL, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), offX, 0.0, offZ);
+                }
             }
         }
     }
