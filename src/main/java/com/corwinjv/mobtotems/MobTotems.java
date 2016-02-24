@@ -16,8 +16,6 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import com.corwinjv.mobtotems.config.ConfigurationHandler;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 @Mod(modid=Reference.MOD_ID, name=Reference.MOD_NAME, version=Reference.MOD_VERSION, guiFactory = Reference.GUI_FACTORY_CLASS)
 public class MobTotems
@@ -44,7 +42,7 @@ public class MobTotems
         ModBlocks.registerRecipes();
 
         ModItems.init();
-        ModItems.registerBlocks();
+        ModItems.registerItems();
         ModItems.registerRecipes();
 
         // Entities
