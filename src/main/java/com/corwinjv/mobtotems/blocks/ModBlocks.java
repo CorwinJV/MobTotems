@@ -1,7 +1,6 @@
 package com.corwinjv.mobtotems.blocks;
 
 import com.corwinjv.mobtotems.Reference;
-import com.corwinjv.mobtotems.blocks.totems.CreeperTotem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -30,10 +29,6 @@ public class ModBlocks
     {
         mBlocks = new HashMap<String,BaseBlock>();
         mTileEntityClasses = new HashMap<String, Class<? extends TileEntity>>();
-
-        BaseBlock creeper_totem = new CreeperTotem();
-        creeper_totem.setUnlocalizedName(CREEPER_TOTEM);
-        mBlocks.put(CREEPER_TOTEM, creeper_totem);
 
         BaseBlock totem_wood = new TotemWood();
         totem_wood.setUnlocalizedName(TOTEM_WOOD);
