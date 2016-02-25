@@ -1,5 +1,6 @@
 package com.corwinjv.mobtotems.blocks;
 
+import com.corwinjv.mobtotems.items.TotemStencil;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -25,11 +26,13 @@ public class TotemTileEntity extends TileEntity implements ITickable
     private static String MASTER_POS_TAG = "master_pos";
     private static String SLAVE_ONE_TAG = "slave_one";
     private static String SLAVE_TWO_TAG = "slave_two";
+    private static String TOTEM_TYPE_TAG = "totem_type_tag";
 
     private boolean mIsMaster = false;
     private BlockPos mMasterPos = null;
     private BlockPos mSlaveOnePos = null;
     private BlockPos mSlaveTwoPos = null;
+    private int mTotemType = TotemStencil.NULL_STENCIL_META;
 
     public TotemTileEntity()
     {
@@ -79,6 +82,17 @@ public class TotemTileEntity extends TileEntity implements ITickable
         markForUpdate();
     }
 
+    public int getTotemType()
+    {
+        return mTotemType;
+    }
+
+    public void setTotemType(int totemType)
+    {
+        mTotemType = totemType;
+        markForUpdate();
+    }
+
     public void markForUpdate()
     {
         worldObj.markBlockForUpdate(pos);
@@ -102,6 +116,7 @@ public class TotemTileEntity extends TileEntity implements ITickable
         saveBlockPos(nbtTagCompound, MASTER_POS_TAG, mMasterPos);
         saveBlockPos(nbtTagCompound, SLAVE_ONE_TAG, mSlaveOnePos);
         saveBlockPos(nbtTagCompound, SLAVE_TWO_TAG, mSlaveTwoPos);
+        nbtTagCompound.setInteger(TOTEM_TYPE_TAG, mTotemType);
     }
 
     private void saveBlockPos(NBTTagCompound nbtTagCompound, String key, BlockPos pos)
@@ -124,6 +139,7 @@ public class TotemTileEntity extends TileEntity implements ITickable
         mMasterPos = readBlockPos(nbtTagCompound, MASTER_POS_TAG);
         mSlaveOnePos = readBlockPos(nbtTagCompound, SLAVE_ONE_TAG);
         mSlaveTwoPos = readBlockPos(nbtTagCompound, SLAVE_TWO_TAG);
+        mTotemType = nbtTagCompound.getInteger(TOTEM_TYPE_TAG);
     }
 
     private BlockPos readBlockPos(NBTTagCompound nbtTagCompound, String key)
@@ -193,7 +209,8 @@ public class TotemTileEntity extends TileEntity implements ITickable
         {
             TileEntity tileEntity = worldObj.getTileEntity(new BlockPos(pos.getX(), y, pos.getZ()));
             if(tileEntity == null
-                    || !(tileEntity instanceof TotemTileEntity))
+                    || !(tileEntity instanceof TotemTileEntity)
+                    || ((TotemTileEntity) tileEntity).getMasterPos() != null)
             {
                 return false;
             }
@@ -209,6 +226,9 @@ public class TotemTileEntity extends TileEntity implements ITickable
         {
             if(mMasterPos != null)
             {
+                // This stuff is so totally temp it's not even funny.
+                // I just wanted to procastinate on doing a special entity renderer w/ custom model that I used
+                // minecraft's particles in a few weird ways.
                 ArrayList<BlockPos> spawnPoints = new ArrayList<BlockPos>();
                 spawnPoints.add(pos.add(0.0, 0.0, 0.0));
                 spawnPoints.add(pos.add(1.0, 0.0, 0.0));
@@ -229,7 +249,38 @@ public class TotemTileEntity extends TileEntity implements ITickable
                     {
                        offZ = -offsetAmount;
                     }
-                    worldObj.spawnParticle(EnumParticleTypes.PORTAL, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), offX, 0.0, offZ);
+
+                    switch(mTotemType) {
+                        case TotemStencil.CREEPER_STENCIL_META: {
+                            worldObj.spawnParticle(EnumParticleTypes.ENCHANTMENT_TABLE, spawnPos.getX(), spawnPos.getY() + 1, spawnPos.getZ(), offX, 0.0, offZ);
+                            break;
+                        }
+                        case TotemStencil.RABBIT_STENCIL_META: {
+                            worldObj.spawnParticle(EnumParticleTypes.REDSTONE, spawnPos.getX(), spawnPos.getY() + 1, spawnPos.getZ(), offX, 0.5, offZ);
+                            worldObj.spawnParticle(EnumParticleTypes.REDSTONE, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), offX, 0.5, offZ);
+                            break;
+                        }
+                        case TotemStencil.SLIME_STENCIL_META: {
+                            if(worldObj.getWorldTime() % 10 == 0
+                                    && worldObj.rand.nextInt(10) < 5)
+                            {
+                                worldObj.spawnParticle(EnumParticleTypes.SLIME, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), offX, 0.0, offZ);
+                            }
+                            break;
+                        }
+                        case TotemStencil.WOLF_STENCIL_META: {
+                            if(worldObj.getWorldTime() % 20 == 0
+                                    && worldObj.rand.nextInt(10) < 3)
+                            {
+                                worldObj.spawnParticle(EnumParticleTypes.HEART, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), offX, 0.0, offZ);
+                            }
+                            break;
+                        }
+                        default: {
+                            worldObj.spawnParticle(EnumParticleTypes.PORTAL, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(), offX, 0.0, offZ);
+                            break;
+                        }
+                    }
                 }
             }
         }

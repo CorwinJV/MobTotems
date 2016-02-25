@@ -115,6 +115,37 @@ public class ModItems
                 'G', Items.gunpowder,
                 'F', Items.feather);
 
-        // TODO: Add crafting recipes for TotemStencil variants
+        item = mItems.get(TOTEM_STENCIL);
+        GameRegistry.addRecipe(new ItemStack(item, 1, TotemStencil.CREEPER_STENCIL_META),
+                "SSS",
+                "IGI",
+                "SSS",
+                'S',Items.stick,
+                'I', Items.iron_ingot,
+                'G', Items.gunpowder);
+
+        GameRegistry.addRecipe(new ItemStack(item, 1, TotemStencil.RABBIT_STENCIL_META),
+                "SSS",
+                "IDI",
+                "SSS",
+                'S',Items.stick,
+                'I', Items.iron_ingot,
+                'D', Items.wheat_seeds);
+
+        GameRegistry.addRecipe(new ItemStack(item, 1, TotemStencil.SLIME_STENCIL_META),
+                "SSS",
+                "IMI",
+                "SSS",
+                'S',Items.stick,
+                'I', Items.iron_ingot,
+                'M', Items.slime_ball);
+
+        GameRegistry.addRecipe(new ItemStack(item, 1, TotemStencil.WOLF_STENCIL_META),
+                "SSS",
+                "IMI",
+                "SSS",
+                'S',Items.stick,
+                'I', Items.iron_ingot,
+                'M', Items.bone);
     }
 }

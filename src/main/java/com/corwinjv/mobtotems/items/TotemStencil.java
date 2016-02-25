@@ -1,5 +1,6 @@
 package com.corwinjv.mobtotems.items;
 
+import com.corwinjv.mobtotems.blocks.TotemTileEntity;
 import com.corwinjv.mobtotems.blocks.TotemWood;
 import com.corwinjv.mobtotems.utils.BlockUtils;
 import net.minecraft.block.Block;
@@ -7,6 +8,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
@@ -89,11 +91,12 @@ public class TotemStencil extends BaseItem
     public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (!world.isRemote)
         {
-            Block targetBlock = BlockUtils.getBlock(world, pos);
-            if (targetBlock != null
-                    && targetBlock instanceof TotemWood)
+            TileEntity targetEntity = world.getTileEntity(pos);
+            if (targetEntity != null
+                    && targetEntity instanceof TotemTileEntity)
             {
-                // TODO: Do something with TotemWood or TotemWoodTileEntity
+                ((TotemTileEntity)targetEntity).setTotemType(stack.getMetadata());
+                player.destroyCurrentEquippedItem();
             }
         }
         return super.onItemUse(stack, player, world, pos, side, hitX, hitY, hitZ);
