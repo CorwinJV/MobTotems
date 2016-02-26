@@ -1,6 +1,7 @@
 package com.corwinjv.mobtotems.blocks;
 
-import com.corwinjv.mobtotems.Reference;
+import com.corwinjv.mobtotems.datamodel.INBTAuthor;
+import com.corwinjv.mobtotems.datamodel.TotemTileEntityData;
 import com.corwinjv.mobtotems.items.TotemStencil;
 import com.corwinjv.mobtotems.utils.TotemConsts;
 import net.minecraft.entity.EntityList;
@@ -14,8 +15,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
-import net.minecraftforge.fml.common.FMLLog;
-import org.apache.logging.log4j.Level;
+import net.minecraft.world.World;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,149 +23,55 @@ import java.util.List;
 /**
  * Created by CorwinJV on 2/18/2016.
  */
-public class TotemTileEntity extends TileEntity implements ITickable
+public class TotemTileEntity extends TileEntity implements ITickable, INBTAuthor
 {
     private static int SLAVE_COUNT = 2;
 
-    // TODO: Move these to an NBTHelper Class?
-    private static String IS_MASTER_TAG = "is_master";
-    private static String MASTER_POS_TAG = "master_pos";
-    private static String SLAVE_ONE_TAG = "slave_one";
-    private static String SLAVE_TWO_TAG = "slave_two";
-    private static String TOTEM_TYPE_TAG = "totem_type_tag";
+    private TotemTileEntityData mData = new TotemTileEntityData(this);
 
-    private boolean mIsMaster = false;
-    private BlockPos mMasterPos = null;
-    private BlockPos mSlaveOnePos = null;
-    private BlockPos mSlaveTwoPos = null;
-    private int mTotemType = TotemStencil.NULL_STENCIL_META;
+    public TotemTileEntity() {}
 
-    public TotemTileEntity()
+    public static TotemTileEntity getTotemTileEntity(World world, BlockPos pos)
     {
+        TileEntity entity = world.getTileEntity(pos);
+        if(entity == null
+                || !(entity instanceof TotemTileEntity))
+        {
+            return null;
+        }
+        return (TotemTileEntity)entity;
     }
 
-    public boolean getIsMaster()
+    public TotemTileEntityData getData()
     {
-        return mIsMaster;
+        return mData;
     }
 
-    public void setIsMaster(boolean isMaster)
-    {
-        mIsMaster = isMaster;
-        markForUpdate();
-    }
-
-    public BlockPos getMasterPos()
-    {
-        return mMasterPos;
-    }
-
-    public void setMasterPos(BlockPos masterPos)
-    {
-        mMasterPos = masterPos;
-        markForUpdate();
-    }
-
-    public BlockPos getSlaveOne()
-    {
-        return mSlaveOnePos;
-    }
-
-    public void setSlaveOne(BlockPos slaveOnePos)
-    {
-        mSlaveOnePos = slaveOnePos;
-        markForUpdate();
-    }
-
-    public BlockPos getSlaveTwo()
-    {
-        return mSlaveOnePos;
-    }
-
-    public void setSlaveTwo(BlockPos slaveTwoPos)
-    {
-        mSlaveTwoPos = slaveTwoPos;
-        markForUpdate();
-    }
-
-    public int getTotemType()
-    {
-        return mTotemType;
-    }
-
-    public void setTotemType(int totemType)
-    {
-        mTotemType = totemType;
-        markForUpdate();
-    }
-
+    // INBTAuthor
     public void markForUpdate()
     {
         worldObj.markBlockForUpdate(pos);
         markDirty();
     }
 
-    public void clearData()
-    {
-        mIsMaster = false;
-        mMasterPos = null;
-        mSlaveOnePos = null;
-        mSlaveTwoPos = null;
-        mTotemType = TotemStencil.NULL_STENCIL_META;
-        markForUpdate();
-    }
-
-    @Override
     public void writeToNBT(NBTTagCompound nbtTagCompound)
     {
         super.writeToNBT(nbtTagCompound);
-        nbtTagCompound.setBoolean(IS_MASTER_TAG, mIsMaster);
-        saveBlockPos(nbtTagCompound, MASTER_POS_TAG, mMasterPos);
-        saveBlockPos(nbtTagCompound, SLAVE_ONE_TAG, mSlaveOnePos);
-        saveBlockPos(nbtTagCompound, SLAVE_TWO_TAG, mSlaveTwoPos);
-        nbtTagCompound.setInteger(TOTEM_TYPE_TAG, mTotemType);
+        mData.writeToNBT(nbtTagCompound);
     }
 
-    private void saveBlockPos(NBTTagCompound nbtTagCompound, String key, BlockPos pos)
-    {
-        if(pos != null)
-        {
-            nbtTagCompound.setLong(key, pos.toLong());
-        }
-        else
-        {
-            nbtTagCompound.setLong(key, 0);
-        }
-    }
-
-    @Override
     public void readFromNBT(NBTTagCompound nbtTagCompound)
     {
         super.readFromNBT(nbtTagCompound);
-        mIsMaster = nbtTagCompound.getBoolean(IS_MASTER_TAG);
-        mMasterPos = readBlockPos(nbtTagCompound, MASTER_POS_TAG);
-        mSlaveOnePos = readBlockPos(nbtTagCompound, SLAVE_ONE_TAG);
-        mSlaveTwoPos = readBlockPos(nbtTagCompound, SLAVE_TWO_TAG);
-        mTotemType = nbtTagCompound.getInteger(TOTEM_TYPE_TAG);
+        mData.readFromNBT(nbtTagCompound);
     }
 
-    private BlockPos readBlockPos(NBTTagCompound nbtTagCompound, String key)
-    {
-        BlockPos retBlockPos = null;
-        long serializedBlockPos = nbtTagCompound.getLong(key);
-        if(serializedBlockPos != 0)
-        {
-            retBlockPos = BlockPos.fromLong(serializedBlockPos);
-        }
-        return retBlockPos;
-    }
-
-    @Override
+        @Override
     public Packet getDescriptionPacket()
     {
         NBTTagCompound nbtTagCompound = new NBTTagCompound();
         writeToNBT(nbtTagCompound);
-//        FMLLog.log(Level.WARN, "getDescriptionPacket() - nbtTagCompound: " + nbtTagCompound);
+        // FMLLog.log(Level.WARN, "getDescriptionPacket() - nbtTagCompound: " + nbtTagCompound);
         return new S35PacketUpdateTileEntity(this.pos, 0, nbtTagCompound);
     }
 
@@ -190,20 +96,23 @@ public class TotemTileEntity extends TileEntity implements ITickable
                     TotemTileEntity slaveOneEntity = (TotemTileEntity)worldObj.getTileEntity(totemTileEntity.getPos().add(0, 1, 0));
                     TotemTileEntity slaveTwoEntity = (TotemTileEntity)worldObj.getTileEntity(totemTileEntity.getPos().add(0, 2, 0));
 
-                    masterEntity.setIsMaster(true);
-                    masterEntity.setMasterPos(masterEntity.pos);
-                    masterEntity.setSlaveOne(slaveOneEntity.getPos());
-                    masterEntity.setSlaveTwo(slaveTwoEntity.getPos());
+                    TotemTileEntityData data = masterEntity.getData();
+                    data.setIsMaster(true);
+                    data.setMasterPos(masterEntity.pos);
+                    data.setSlaveOne(slaveOneEntity.getPos());
+                    data.setSlaveTwo(slaveTwoEntity.getPos());
 
-                    slaveOneEntity.setIsMaster(false);
-                    slaveOneEntity.setMasterPos(masterEntity.pos);
-                    slaveOneEntity.setSlaveOne(slaveOneEntity.getPos());
-                    slaveOneEntity.setSlaveTwo(slaveTwoEntity.getPos());
+                    data = slaveOneEntity.getData();
+                    data.setIsMaster(false);
+                    data.setMasterPos(masterEntity.pos);
+                    data.setSlaveOne(slaveOneEntity.getPos());
+                    data.setSlaveTwo(slaveTwoEntity.getPos());
 
-                    slaveTwoEntity.setIsMaster(false);
-                    slaveTwoEntity.setMasterPos(masterEntity.pos);
-                    slaveTwoEntity.setSlaveOne(slaveOneEntity.getPos());
-                    slaveTwoEntity.setSlaveTwo(slaveTwoEntity.getPos());
+                    data = slaveTwoEntity.getData();
+                    data.setIsMaster(false);
+                    data.setMasterPos(masterEntity.pos);
+                    data.setSlaveOne(slaveOneEntity.getPos());
+                    data.setSlaveTwo(slaveTwoEntity.getPos());
                     return;
                 }
             }
@@ -217,7 +126,7 @@ public class TotemTileEntity extends TileEntity implements ITickable
             TileEntity tileEntity = worldObj.getTileEntity(new BlockPos(pos.getX(), y, pos.getZ()));
             if(tileEntity == null
                     || !(tileEntity instanceof TotemTileEntity)
-                    || ((TotemTileEntity) tileEntity).getMasterPos() != null)
+                    || ((TotemTileEntity) tileEntity).getData().getMasterPos() != null)
             {
                 return false;
             }
@@ -228,13 +137,14 @@ public class TotemTileEntity extends TileEntity implements ITickable
     @Override
     public void update()
     {
-        // Client side only particle effects
-        if(mMasterPos != null)
+        if(mData.getMasterPos()!= null)
         {
+            // Client
             if(worldObj.isRemote)
             {
                 spawnParticleEffects();
             }
+            // Server
             else
             {
                 performTotemEffect();
@@ -246,40 +156,32 @@ public class TotemTileEntity extends TileEntity implements ITickable
     {
         if(worldObj != null)
         {
-            TileEntity masterEntity = null;
-            if(mMasterPos != null)
+            TotemTileEntity entity = null;
+            if(mData.getMasterPos() != null)
             {
-                masterEntity = worldObj.getTileEntity(mMasterPos);
+                entity = getTotemTileEntity(worldObj, mData.getMasterPos());
+                if(entity != null)
+                {
+                    entity.getData().clearData();
+                }
             }
 
-            TileEntity slaveOneEntity = null;
-            if(mSlaveOnePos != null)
+            if(mData.getSlaveOne() != null)
             {
-                slaveOneEntity = worldObj.getTileEntity(mSlaveOnePos);
+                entity = getTotemTileEntity(worldObj, mData.getSlaveOne());
+                if(entity != null)
+                {
+                    entity.getData().clearData();
+                }
             }
 
-            TileEntity slaveTwoEntity = null;
-            if(mSlaveTwoPos != null)
+            if(mData.getSlaveTwo() != null)
             {
-                slaveTwoEntity = worldObj.getTileEntity(mSlaveTwoPos);
-            }
-
-            if(masterEntity != null
-                    && masterEntity instanceof TotemTileEntity)
-            {
-                ((TotemTileEntity)masterEntity).clearData();
-            }
-
-            if(slaveOneEntity != null
-                    && slaveOneEntity instanceof TotemTileEntity)
-            {
-                ((TotemTileEntity)slaveOneEntity).clearData();
-            }
-
-            if(slaveTwoEntity != null
-                    && slaveTwoEntity instanceof TotemTileEntity)
-            {
-                ((TotemTileEntity)slaveTwoEntity).clearData();
+                entity = getTotemTileEntity(worldObj, mData.getSlaveTwo());
+                if(entity != null)
+                {
+                    entity.getData().clearData();
+                }
             }
         }
     }
@@ -291,25 +193,25 @@ public class TotemTileEntity extends TileEntity implements ITickable
         // Set up effect list
         ArrayList<Integer> effectList = new ArrayList<Integer>();
 
-        TileEntity totemTileEntity = worldObj.getTileEntity(mMasterPos);
+        TileEntity totemTileEntity = worldObj.getTileEntity(mData.getMasterPos());
         if(totemTileEntity != null
                 && totemTileEntity instanceof TotemTileEntity)
         {
-            effectList.add(((TotemTileEntity) totemTileEntity).getTotemType());
+            effectList.add(((TotemTileEntity) totemTileEntity).getData().getTotemType());
         }
 
-        totemTileEntity = worldObj.getTileEntity(mSlaveOnePos);
+        totemTileEntity = worldObj.getTileEntity(mData.getSlaveOne());
         if(totemTileEntity != null
                 && totemTileEntity instanceof TotemTileEntity)
         {
-            effectList.add(((TotemTileEntity) totemTileEntity).getTotemType());
+            effectList.add(((TotemTileEntity) totemTileEntity).getData().getTotemType());
         }
 
-        totemTileEntity = worldObj.getTileEntity(mSlaveTwoPos);
+        totemTileEntity = worldObj.getTileEntity(mData.getSlaveTwo());
         if(totemTileEntity != null
                 && totemTileEntity instanceof TotemTileEntity)
         {
-            effectList.add(((TotemTileEntity) totemTileEntity).getTotemType());
+            effectList.add(((TotemTileEntity) totemTileEntity).getData().getTotemType());
         }
 
         // Set how often we should perform the effect
@@ -392,7 +294,7 @@ public class TotemTileEntity extends TileEntity implements ITickable
                 offZ = -offsetAmount;
             }
 
-            switch(mTotemType)
+            switch(mData.getTotemType())
             {
                 case TotemStencil.CREEPER_STENCIL_META:
                 {

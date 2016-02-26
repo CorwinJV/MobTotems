@@ -95,7 +95,7 @@ public class TotemStencil extends BaseItem
             if (targetEntity != null
                     && targetEntity instanceof TotemTileEntity)
             {
-                ((TotemTileEntity)targetEntity).setTotemType(stack.getMetadata());
+                ((TotemTileEntity)targetEntity).getData().setTotemType(stack.getMetadata());
                 player.destroyCurrentEquippedItem();
             }
         }
