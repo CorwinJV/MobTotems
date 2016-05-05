@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 public class TotemicFocus extends BaseItem
 {
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand enumHand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (!world.isRemote)
         {
             Block targetBlock = BlockUtils.getBlock(world, pos);
@@ -34,6 +34,6 @@ public class TotemicFocus extends BaseItem
                 }
             }
         }
-        return super.onItemUse(stack, player, world, pos, hand, side, hitX, hitY, hitZ);
+        return super.onItemUse(stack, player, world, pos, enumHand, side, hitX, hitY, hitZ);
     }
 }

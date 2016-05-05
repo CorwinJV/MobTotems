@@ -3,6 +3,7 @@ package com.corwinjv.mobtotems.items;
 import com.corwinjv.mobtotems.blocks.TotemTileEntity;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -11,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
@@ -87,7 +89,7 @@ public class TotemStencil extends BaseItem
     }
 
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand enumHand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!world.isRemote)
         {
             TileEntity targetEntity = world.getTileEntity(pos);
@@ -95,10 +97,14 @@ public class TotemStencil extends BaseItem
                     && targetEntity instanceof TotemTileEntity)
             {
                 ((TotemTileEntity)targetEntity).setTotemType(stack.getMetadata());
-                // TODO: find way to do this in 1.9
-                // player.destroyCurrentEquippedItem();
+                ForgeEventFactory.onPlayerDestroyItem(player, player.getActiveItemStack(), player.getActiveHand());
+                if(enumHand == EnumHand.MAIN_HAND) {
+                    player.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, (ItemStack)null);
+                } else {
+                    player.setItemStackToSlot(EntityEquipmentSlot.OFFHAND, (ItemStack)null);
+                }
             }
         }
-        return super.onItemUse(stack, player, world, pos, hand, facing, hitX, hitY, hitZ);
+        return super.onItemUse(stack, player, world, pos, enumHand, facing, hitX, hitY, hitZ);
     }
 }
