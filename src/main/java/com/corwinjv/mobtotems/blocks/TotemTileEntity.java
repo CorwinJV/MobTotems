@@ -8,10 +8,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.FMLLog;
@@ -101,7 +101,8 @@ public class TotemTileEntity extends TileEntity implements ITickable
 
     public void markForUpdate()
     {
-        worldObj.markBlockForUpdate(pos);
+        // TODO: find way to do this in 1.9 ? Maybe not needed anymore?
+        // worldObj.markBlockForUpdate(pos);
         markDirty();
     }
 
@@ -166,11 +167,11 @@ public class TotemTileEntity extends TileEntity implements ITickable
         NBTTagCompound nbtTagCompound = new NBTTagCompound();
         writeToNBT(nbtTagCompound);
 //        FMLLog.log(Level.WARN, "getDescriptionPacket() - nbtTagCompound: " + nbtTagCompound);
-        return new S35PacketUpdateTileEntity(this.pos, 0, nbtTagCompound);
+        return new SPacketUpdateTileEntity(this.pos, 0, nbtTagCompound);
     }
 
     @Override
-    public void onDataPacket(NetworkManager networkManager, S35PacketUpdateTileEntity packet)
+    public void onDataPacket(NetworkManager networkManager, SPacketUpdateTileEntity packet)
     {
         readFromNBT(packet.getNbtCompound());
     }
@@ -334,7 +335,7 @@ public class TotemTileEntity extends TileEntity implements ITickable
             {
                 Class creeperClass = (Class) EntityList.stringToClassMapping.get("Creeper");
                 List entitiesWithinAABB = worldObj.getEntitiesWithinAABB(creeperClass,
-                        AxisAlignedBB.fromBounds(pos.getX() - range,
+                        new AxisAlignedBB(pos.getX() - range,
                                 pos.getY() - range,
                                 pos.getZ() - range,
                                 pos.getX() + range,

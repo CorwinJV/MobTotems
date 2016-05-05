@@ -29,7 +29,7 @@ public class ConfigurationHandler
     @SubscribeEvent
     public void onConfigurationChangedEvent(ConfigChangedEvent.OnConfigChangedEvent event)
     {
-        if(Reference.MOD_ID.equalsIgnoreCase(event.modID))
+        if(Reference.MOD_ID.equalsIgnoreCase(event.getModID()))
         {
             loadConfiguration();
         }

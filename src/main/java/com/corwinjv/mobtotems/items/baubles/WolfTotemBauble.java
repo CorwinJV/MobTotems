@@ -8,6 +8,7 @@ import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
@@ -156,7 +157,7 @@ public class WolfTotemBauble extends BaubleItem {
         spiritWolf.setAttackTarget(null);
         spiritWolf.getAISit().setSitting(true);
         spiritWolf.setHealth(20.0F);
-        spiritWolf.setOwnerId(ownerPlayer.getUniqueID().toString());
+        spiritWolf.setOwnerId(ownerPlayer.getUniqueID());
         spiritWolf.worldObj.setEntityState(spiritWolf, (byte)7);
     }
 }

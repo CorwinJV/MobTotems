@@ -1,16 +1,15 @@
 package com.corwinjv.mobtotems.items;
 
 import com.corwinjv.mobtotems.blocks.TotemTileEntity;
-import com.corwinjv.mobtotems.blocks.TotemWood;
-import com.corwinjv.mobtotems.utils.BlockUtils;
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
@@ -88,7 +87,7 @@ public class TotemStencil extends BaseItem
     }
 
     @Override
-    public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!world.isRemote)
         {
             TileEntity targetEntity = world.getTileEntity(pos);
@@ -96,9 +95,10 @@ public class TotemStencil extends BaseItem
                     && targetEntity instanceof TotemTileEntity)
             {
                 ((TotemTileEntity)targetEntity).setTotemType(stack.getMetadata());
-                player.destroyCurrentEquippedItem();
+                // TODO: find way to do this in 1.9
+                // player.destroyCurrentEquippedItem();
             }
         }
-        return super.onItemUse(stack, player, world, pos, side, hitX, hitY, hitZ);
+        return super.onItemUse(stack, player, world, pos, hand, facing, hitX, hitY, hitZ);
     }
 }
