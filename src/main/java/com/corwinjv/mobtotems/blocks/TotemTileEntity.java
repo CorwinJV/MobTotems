@@ -3,6 +3,7 @@ package com.corwinjv.mobtotems.blocks;
 import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.items.TotemStencil;
 import com.corwinjv.mobtotems.utils.TotemConsts;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,6 +15,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
@@ -95,6 +97,7 @@ public class TotemTileEntity extends TileEntity implements ITickable
 
     public void setTotemType(int totemType)
     {
+        FMLLog.log(Level.WARN, "setTotemType: " + totemType);
         mTotemType = totemType;
         markForUpdate();
     }
@@ -102,7 +105,8 @@ public class TotemTileEntity extends TileEntity implements ITickable
     public void markForUpdate()
     {
         // TODO: find way to do this in 1.9 ? Maybe not needed anymore?
-        // worldObj.markBlockForUpdate(pos);
+        // I can't figure out how to get the blocks to send their packets to the client
+        //worldObj.markBlockForUpdate(pos);
         markDirty();
     }
 
@@ -166,14 +170,21 @@ public class TotemTileEntity extends TileEntity implements ITickable
     {
         NBTTagCompound nbtTagCompound = new NBTTagCompound();
         writeToNBT(nbtTagCompound);
-//        FMLLog.log(Level.WARN, "getDescriptionPacket() - nbtTagCompound: " + nbtTagCompound);
+        FMLLog.log(Level.WARN, "getDescriptionPacket() - nbtTagCompound: " + nbtTagCompound);
         return new SPacketUpdateTileEntity(this.pos, 0, nbtTagCompound);
     }
 
     @Override
     public void onDataPacket(NetworkManager networkManager, SPacketUpdateTileEntity packet)
     {
+        FMLLog.log(Level.WARN, "onDataPacket() called... packet: " + packet.toString());
         readFromNBT(packet.getNbtCompound());
+    }
+
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
+    {
+        return (oldState.getBlock() != newState.getBlock());
     }
 
     public void setupMultiBlock()
