@@ -121,7 +121,7 @@ public class TotemTileEntity extends TileEntity implements ITickable
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbtTagCompound)
+    public NBTTagCompound writeToNBT(NBTTagCompound nbtTagCompound)
     {
         super.writeToNBT(nbtTagCompound);
         nbtTagCompound.setBoolean(IS_MASTER_TAG, mIsMaster);
@@ -129,6 +129,8 @@ public class TotemTileEntity extends TileEntity implements ITickable
         saveBlockPos(nbtTagCompound, SLAVE_ONE_TAG, mSlaveOnePos);
         saveBlockPos(nbtTagCompound, SLAVE_TWO_TAG, mSlaveTwoPos);
         nbtTagCompound.setInteger(TOTEM_TYPE_TAG, mTotemType);
+
+        return nbtTagCompound;
     }
 
     private void saveBlockPos(NBTTagCompound nbtTagCompound, String key, BlockPos pos)
@@ -165,14 +167,16 @@ public class TotemTileEntity extends TileEntity implements ITickable
         return retBlockPos;
     }
 
-    @Override
-    public Packet getDescriptionPacket()
-    {
-        NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        writeToNBT(nbtTagCompound);
-        FMLLog.log(Level.WARN, "getDescriptionPacket() - nbtTagCompound: " + nbtTagCompound);
-        return new SPacketUpdateTileEntity(this.pos, 0, nbtTagCompound);
-    }
+    // TODO: Reimplement TileEntity syncing?
+    // It looks like forge has changed a lot of this networking code. Commenting out to get it running.
+//    @Override
+//    public Packet getDescriptionPacket()
+//    {
+//        NBTTagCompound nbtTagCompound = new NBTTagCompound();
+//        writeToNBT(nbtTagCompound);
+//        FMLLog.log(Level.WARN, "getDescriptionPacket() - nbtTagCompound: " + nbtTagCompound);
+//        return new SPacketUpdateTileEntity(this.pos, 0, nbtTagCompound);
+//    }
 
     @Override
     public void onDataPacket(NetworkManager networkManager, SPacketUpdateTileEntity packet)
@@ -344,7 +348,7 @@ public class TotemTileEntity extends TileEntity implements ITickable
             // Active effect groups
             if(effectList.contains(TotemStencil.CREEPER_STENCIL_META))
             {
-                Class creeperClass = (Class) EntityList.stringToClassMapping.get("Creeper");
+                Class creeperClass = (Class) EntityList.getClassFromID(EntityList.getIDFromString("Creeper"));
                 List entitiesWithinAABB = worldObj.getEntitiesWithinAABB(creeperClass,
                         new AxisAlignedBB(pos.getX() - range,
                                 pos.getY() - range,
