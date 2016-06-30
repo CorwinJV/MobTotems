@@ -17,7 +17,7 @@ public class BaseBlock extends Block
 
     public BaseBlock()
     {
-        super(Material.wood);
+        super(Material.WOOD);
         this.init();
     }
 

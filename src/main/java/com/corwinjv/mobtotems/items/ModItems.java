@@ -103,49 +103,49 @@ public class ModItems
                 "GFG",
                 " G ",
                 " F ",
-                'G', Items.gunpowder,
-                'F', Blocks.oak_fence);
+                'G', Items.GUNPOWDER,
+                'F', Blocks.OAK_FENCE);
 
         item = mItems.get(TOTEMIC_FOCUS);
         GameRegistry.addRecipe(new ItemStack(item),
                 "GXF",
                 " X ",
                 " X ",
-                'X', Items.stick,
-                'G', Items.gunpowder,
-                'F', Items.feather);
+                'X', Items.STICK,
+                'G', Items.GUNPOWDER,
+                'F', Items.FEATHER);
 
         item = mItems.get(TOTEM_STENCIL);
         GameRegistry.addRecipe(new ItemStack(item, 1, TotemStencil.CREEPER_STENCIL_META),
                 "SSS",
                 "IGI",
                 "SSS",
-                'S',Items.stick,
-                'I', Items.iron_ingot,
-                'G', Items.gunpowder);
+                'S',Items.STICK,
+                'I', Items.IRON_INGOT,
+                'G', Items.GUNPOWDER);
 
         GameRegistry.addRecipe(new ItemStack(item, 1, TotemStencil.RABBIT_STENCIL_META),
                 "SSS",
                 "IDI",
                 "SSS",
-                'S',Items.stick,
-                'I', Items.iron_ingot,
-                'D', Items.wheat_seeds);
+                'S',Items.STICK,
+                'I', Items.IRON_INGOT,
+                'D', Items.WHEAT_SEEDS);
 
         GameRegistry.addRecipe(new ItemStack(item, 1, TotemStencil.SLIME_STENCIL_META),
                 "SSS",
                 "IMI",
                 "SSS",
-                'S',Items.stick,
-                'I', Items.iron_ingot,
-                'M', Items.slime_ball);
+                'S',Items.STICK,
+                'I', Items.IRON_INGOT,
+                'M', Items.SLIME_BALL);
 
         GameRegistry.addRecipe(new ItemStack(item, 1, TotemStencil.WOLF_STENCIL_META),
                 "SSS",
                 "IMI",
                 "SSS",
-                'S',Items.stick,
-                'I', Items.iron_ingot,
-                'M', Items.bone);
+                'S',Items.STICK,
+                'I', Items.IRON_INGOT,
+                'M', Items.BONE);
     }
 }

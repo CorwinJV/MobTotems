@@ -14,7 +14,7 @@ public class TotemWood extends BaseBlock implements ITileEntityProvider
 {
     public TotemWood()
     {
-        super(Material.wood);
+        super(Material.WOOD);
         this.isBlockContainer = true;
     }
 
