@@ -8,7 +8,7 @@ See: http://mcforge.readthedocs.org/en/latest/gettingstarted/#from-zero-to-moddi
 MIT License
 =========
 
-Copyright (c) 2016 Corwin VanHook
+Copyright (c) 2016 CorwinJV
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
