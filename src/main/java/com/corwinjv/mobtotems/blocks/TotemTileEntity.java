@@ -3,6 +3,8 @@ package com.corwinjv.mobtotems.blocks;
 import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.items.TotemStencil;
 import com.corwinjv.mobtotems.utils.TotemConsts;
+import jline.internal.Log;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,6 +21,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,7 +100,6 @@ public class TotemTileEntity extends TileEntity implements ITickable
 
     public void setTotemType(int totemType)
     {
-        FMLLog.log(Level.WARN, "setTotemType: " + totemType);
         mTotemType = totemType;
         markForUpdate();
     }
@@ -167,21 +169,24 @@ public class TotemTileEntity extends TileEntity implements ITickable
         return retBlockPos;
     }
 
-    // TODO: Reimplement TileEntity syncing?
-    // It looks like forge has changed a lot of this networking code. Commenting out to get it running.
-//    @Override
-//    public Packet getDescriptionPacket()
-//    {
-//        NBTTagCompound nbtTagCompound = new NBTTagCompound();
-//        writeToNBT(nbtTagCompound);
-//        FMLLog.log(Level.WARN, "getDescriptionPacket() - nbtTagCompound: " + nbtTagCompound);
-//        return new SPacketUpdateTileEntity(this.pos, 0, nbtTagCompound);
-//    }
+    @Nonnull
+    @Override
+    public final NBTTagCompound getUpdateTag() {
+        return writeToNBT(new NBTTagCompound());
+    }
+
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket()
+    {
+        NBTTagCompound nbtTagCompound = new NBTTagCompound();
+        writeToNBT(nbtTagCompound);
+        return new SPacketUpdateTileEntity(this.pos, 0, nbtTagCompound);
+    }
 
     @Override
     public void onDataPacket(NetworkManager networkManager, SPacketUpdateTileEntity packet)
     {
-        FMLLog.log(Level.WARN, "onDataPacket() called... packet: " + packet.toString());
+        super.onDataPacket(networkManager, packet);
         readFromNBT(packet.getNbtCompound());
     }
 

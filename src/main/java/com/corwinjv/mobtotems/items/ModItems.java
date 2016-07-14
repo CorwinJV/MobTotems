@@ -10,6 +10,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
@@ -29,7 +30,6 @@ public class ModItems
 {
     public static final String WOLF_TOTEM_BAUBLE = "wolf_totem_bauble";
     public static final String TOTEMIC_FOCUS = "totemic_focus";
-    public static final String TOTEM_STENCIL = "totem_stencil";
 
     private static Map<String,BaseItem> mItems = Collections.emptyMap();
 
@@ -44,16 +44,6 @@ public class ModItems
         BaseItem totemic_focus = new TotemicFocus();
         totemic_focus.setUnlocalizedName(TOTEMIC_FOCUS);
         mItems.put(TOTEMIC_FOCUS, totemic_focus);
-
-        BaseItem totem_stencil = new TotemStencil();
-        totem_stencil.setUnlocalizedName(TOTEM_STENCIL);
-        mItems.put(TOTEM_STENCIL, totem_stencil);
-        ModelBakery.registerItemVariants(totem_stencil,
-                new ResourceLocation(Reference.RESOURCE_PREFIX + TotemStencil.NULL_STENCIL),
-                new ResourceLocation(Reference.RESOURCE_PREFIX + TotemStencil.CREEPER_STENCIL),
-                new ResourceLocation(Reference.RESOURCE_PREFIX + TotemStencil.RABBIT_STENCIL),
-                new ResourceLocation(Reference.RESOURCE_PREFIX + TotemStencil.SLIME_STENCIL),
-                new ResourceLocation(Reference.RESOURCE_PREFIX + TotemStencil.WOLF_STENCIL));
     }
 
     public static void registerItems()
@@ -63,7 +53,7 @@ public class ModItems
             BaseItem item = mItems.get(key);
             if(item != null)
             {
-                GameRegistry.registerItem(item, key);
+                GameRegistry.register(mItems.get(key), new ResourceLocation(Reference.MOD_ID, key));
             }
         }
     }
@@ -76,13 +66,6 @@ public class ModItems
             if(item != null)
             {
                 registerRender(item, 0, key);
-                if(TOTEM_STENCIL.equals(key))
-                {
-                    registerRender(item, TotemStencil.CREEPER_STENCIL_META, TotemStencil.CREEPER_STENCIL);
-                    registerRender(item, TotemStencil.RABBIT_STENCIL_META, TotemStencil.RABBIT_STENCIL);
-                    registerRender(item, TotemStencil.SLIME_STENCIL_META, TotemStencil.SLIME_STENCIL);
-                    registerRender(item, TotemStencil.WOLF_STENCIL_META,TotemStencil.WOLF_STENCIL);
-                }
             }
         }
     }
@@ -93,7 +76,6 @@ public class ModItems
                 .register(item,
                         meta,
                         new ModelResourceLocation(Reference.RESOURCE_PREFIX + key, "inventory"));
-        //FMLLog.log(Level.WARN, "Registering render for key: " + Reference.RESOURCE_PREFIX + key + " with meta: ");
     }
 
     public static void registerRecipes()
@@ -114,38 +96,5 @@ public class ModItems
                 'X', Items.STICK,
                 'G', Items.GUNPOWDER,
                 'F', Items.FEATHER);
-
-        item = mItems.get(TOTEM_STENCIL);
-        GameRegistry.addRecipe(new ItemStack(item, 1, TotemStencil.CREEPER_STENCIL_META),
-                "SSS",
-                "IGI",
-                "SSS",
-                'S',Items.STICK,
-                'I', Items.IRON_INGOT,
-                'G', Items.GUNPOWDER);
-
-        GameRegistry.addRecipe(new ItemStack(item, 1, TotemStencil.RABBIT_STENCIL_META),
-                "SSS",
-                "IDI",
-                "SSS",
-                'S',Items.STICK,
-                'I', Items.IRON_INGOT,
-                'D', Items.WHEAT_SEEDS);
-
-        GameRegistry.addRecipe(new ItemStack(item, 1, TotemStencil.SLIME_STENCIL_META),
-                "SSS",
-                "IMI",
-                "SSS",
-                'S',Items.STICK,
-                'I', Items.IRON_INGOT,
-                'M', Items.SLIME_BALL);
-
-        GameRegistry.addRecipe(new ItemStack(item, 1, TotemStencil.WOLF_STENCIL_META),
-                "SSS",
-                "IMI",
-                "SSS",
-                'S',Items.STICK,
-                'I', Items.IRON_INGOT,
-                'M', Items.BONE);
     }
 }
