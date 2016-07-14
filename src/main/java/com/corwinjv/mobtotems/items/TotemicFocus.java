@@ -1,6 +1,6 @@
 package com.corwinjv.mobtotems.items;
 
-import com.corwinjv.mobtotems.blocks.BaseBlock;
+import com.corwinjv.mobtotems.blocks.ModBlock;
 import com.corwinjv.mobtotems.blocks.ModBlocks;
 import com.corwinjv.mobtotems.utils.BlockUtils;
 import net.minecraft.block.Block;
@@ -27,7 +27,7 @@ public class TotemicFocus extends BaseItem
                     && targetBlock instanceof BlockLog)
             {
                 world.destroyBlock(pos, false);
-                BaseBlock blockToPlace = ModBlocks.getBlock(ModBlocks.TOTEM_WOOD);
+                ModBlock blockToPlace = ModBlocks.getBlock(ModBlocks.TOTEM_WOOD);
                 if(blockToPlace != null)
                 {
                     world.setBlockState(pos, blockToPlace.getDefaultState());

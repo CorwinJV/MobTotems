@@ -1,34 +1,22 @@
-package com.corwinjv.mobtotems.blocks;
+package com.corwinjv.mobtotems.blocks.tiles;
 
-import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.items.TotemStencil;
 import com.corwinjv.mobtotems.utils.TotemConsts;
-import jline.internal.Log;
-import mcp.MethodsReturnNonnullByDefault;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ITickable;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLLog;
-import org.apache.logging.log4j.Level;
 
-import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by CorwinJV on 2/18/2016.
  */
-public class TotemTileEntity extends TileEntity implements ITickable
+public class TotemTileEntity extends ModTileEntity
 {
     private static int SLAVE_COUNT = 2;
 
@@ -104,14 +92,6 @@ public class TotemTileEntity extends TileEntity implements ITickable
         markForUpdate();
     }
 
-    public void markForUpdate()
-    {
-        // TODO: find way to do this in 1.9 ? Maybe not needed anymore?
-        // I can't figure out how to get the blocks to send their packets to the client
-        //worldObj.markBlockForUpdate(pos);
-        markDirty();
-    }
-
     public void clearData()
     {
         mIsMaster = false;
@@ -169,32 +149,6 @@ public class TotemTileEntity extends TileEntity implements ITickable
         return retBlockPos;
     }
 
-    @Nonnull
-    @Override
-    public final NBTTagCompound getUpdateTag() {
-        return writeToNBT(new NBTTagCompound());
-    }
-
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket()
-    {
-        NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        writeToNBT(nbtTagCompound);
-        return new SPacketUpdateTileEntity(this.pos, 0, nbtTagCompound);
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager networkManager, SPacketUpdateTileEntity packet)
-    {
-        super.onDataPacket(networkManager, packet);
-        readFromNBT(packet.getNbtCompound());
-    }
-
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
-    {
-        return (oldState.getBlock() != newState.getBlock());
-    }
 
     public void setupMultiBlock()
     {
@@ -375,7 +329,7 @@ public class TotemTileEntity extends TileEntity implements ITickable
             }
             if(effectList.contains(TotemStencil.WOLF_STENCIL_META))
             {
-                // TODO: Implement wolf totem block
+                // TODO: Implement wolf totem blocks
                 // If an enemy comes within range
                 // And the totem multiblock has enough mana
                 // And a wolf is not already summoned by this multiblock

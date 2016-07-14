@@ -1,5 +1,6 @@
 package com.corwinjv.mobtotems.blocks;
 
+import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -10,9 +11,9 @@ import net.minecraft.world.World;
 /**
  * Created by CorwinJV on 2/17/2016.
  */
-public class TotemWood extends BaseBlock implements ITileEntityProvider
+public class TotemWoodBlock extends ModBlock implements ITileEntityProvider
 {
-    public TotemWood()
+    public TotemWoodBlock()
     {
         super(Material.WOOD);
         this.isBlockContainer = true;

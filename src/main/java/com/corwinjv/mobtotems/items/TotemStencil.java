@@ -1,6 +1,6 @@
 package com.corwinjv.mobtotems.items;
 
-import com.corwinjv.mobtotems.blocks.TotemTileEntity;
+import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -13,8 +13,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.fml.common.FMLLog;
-import org.apache.logging.log4j.Level;
 
 import java.util.List;
 
