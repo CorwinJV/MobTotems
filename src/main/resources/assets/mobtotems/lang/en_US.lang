@@ -8,9 +8,8 @@ itemGroup.mobtotems=Mob Totems
 entity.mobtotems.spirit_wolf.name=Spirit Wolf
 
 #blocks
-tile.mobtotems:creeper_totem.name=Creeper Totem
-tile.mobtotems:totem_wood.name=Totem Wood
-tile.mobtotems:sacred_light.name=Sacred Light
+tiles.mobtotems:totem_wood.name=Totem Wood
+tiles.mobtotems:sacred_light.name=Sacred Light
 
 #items
 item.wolf_totem_bauble.name=Personal Wolf Totem

@@ -62,7 +62,7 @@ public class ModBlocks
             ModBlock block = mBlocks.get(key);
             if(block != null)
             {
-                GameRegistry.register(block, new ResourceLocation(Reference.MOD_ID, key));
+                GameRegistry.register(block.setRegistryName(new ResourceLocation(Reference.MOD_ID, key)));
                 GameRegistry.register(new ItemBlock(block), block.getRegistryName());
 
                 Class<? extends TileEntity> tileEntityClass = mTileEntityClasses.get(key);
