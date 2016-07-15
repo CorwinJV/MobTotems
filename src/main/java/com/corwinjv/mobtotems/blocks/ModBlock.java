@@ -8,16 +8,16 @@ import net.minecraft.block.material.Material;
 /**
  * Created by CorwinJV on 9/1/14.
  */
-public class BaseBlock extends Block
+public class ModBlock extends Block
 {
-    public BaseBlock(Material aMaterial) {
+    public ModBlock(Material aMaterial) {
         super(aMaterial);
         this.init();
     }
 
-    public BaseBlock()
+    public ModBlock()
     {
-        super(Material.wood);
+        super(Material.WOOD);
         this.init();
     }
 
@@ -29,7 +29,7 @@ public class BaseBlock extends Block
     @Override
     public String getUnlocalizedName()
     {
-        return String.format("tile.%s%s", Reference.RESOURCE_PREFIX, getUnwrappedUnlocalizedName(super.getUnlocalizedName()));
+        return String.format("tiles.%s%s", Reference.RESOURCE_PREFIX, getUnwrappedUnlocalizedName(super.getUnlocalizedName()));
     }
 
     protected String getUnwrappedUnlocalizedName(String unlocalizedName)

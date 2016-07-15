@@ -1,0 +1,36 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "particle":"blocks/log_oak",
+    "totem_wood":"blocks/log_oak",
+    "totem_wood_top": "blocks/log_oak_top"
+  },
+  "elements": [
+    {
+      "from": [ 4, 0, 4 ],
+      "to": [ 12, 16, 12 ],
+      "shade": false,
+      "faces": {
+        "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#totem_wood" },
+        "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#totem_wood" },
+        "east": { "uv": [ 0, 0, 16, 16 ], "texture": "#totem_wood" },
+        "west": { "uv": [ 0, 0, 16, 16 ], "texture": "#totem_wood" },
+        "down": { "uv": [ 0, 0, 16, 16 ], "texture": "#totem_wood_top" },
+        "up":   { "uv": [ 0, 0, 16, 16 ], "texture": "#totem_wood_top" }
+      }
+    },
+    {
+      "from": [0,0,0],
+      "to": [16,3,16],
+      "shade":true,
+      "faces": {
+        "north": { "uv": [0, 13, 16, 16], "texture": "#totem_wood" },
+        "south": { "uv": [0, 13, 16, 16], "texture": "#totem_wood" },
+        "east": { "uv": [0, 13, 16, 16], "texture": "#totem_wood" },
+        "west": { "uv": [0, 13, 16, 16], "texture": "#totem_wood" },
+        "up": { "uv": [0, 0, 16, 16], "texture": "#totem_wood_top" },
+        "down": { "uv": [0, 0, 16, 16], "texture": "#totem_wood_top" }
+      }
+    }
+  ]
+}

@@ -8,14 +8,9 @@ itemGroup.mobtotems=Mob Totems
 entity.mobtotems.spirit_wolf.name=Spirit Wolf
 
 #blocks
-tile.mobtotems:creeper_totem.name=Creeper Totem
-tile.mobtotems:totem_wood.name=Totem Wood
+tiles.mobtotems:totem_wood.name=Totem Wood
+tiles.mobtotems:sacred_light.name=Sacred Light
 
 #items
 item.wolf_totem_bauble.name=Personal Wolf Totem
 item.totemic_focus.name=Totemic Focus
-item.mobtotems:totem_stencil.totem_stencil.name=Totem Stencil (Creative Only)
-item.mobtotems:totem_stencil.totem_stencil_creeper.name=Creeper Totem Stencil
-item.mobtotems:totem_stencil.totem_stencil_rabbit.name=Rabbit Totem Stencil
-item.mobtotems:totem_stencil.totem_stencil_slime.name=Slime Totem Stencil
-item.mobtotems:totem_stencil.totem_stencil_wolf.name=Wolf Totem Stencil

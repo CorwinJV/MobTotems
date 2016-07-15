@@ -1,5 +1,5 @@
 {
-  "parent": "mobtotems:block/creeper_totem",
+  "parent": "mobtotems:block/sacred_light",
   "display": {
     "thirdperson": {
       "rotation": [ 10, -45, 170 ],
@@ -8,3 +8,4 @@
     }
   }
 }
+

@@ -21,7 +21,7 @@ public class Reference {
 
     public static void PrintEntityList()
     {
-        Iterator entityNameItr = EntityList.stringToClassMapping.keySet().iterator();
+        Iterator entityNameItr = EntityList.getEntityNameList().iterator();
         FMLLog.log(Reference.MOD_NAME, Level.INFO, "-Printing Registered Entity Classes-");
         while(entityNameItr.hasNext())
         {
