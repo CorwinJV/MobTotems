@@ -1,6 +1,7 @@
 package com.corwinjv.mobtotems.blocks;
 
 import com.corwinjv.mobtotems.Reference;
+import com.corwinjv.mobtotems.blocks.tiles.SacredLightTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -41,6 +42,7 @@ public class ModBlocks
 
         ModBlock sacred_light = new SacredLightBlock();
         sacred_light.setUnlocalizedName(SACRED_LIGHT);
+        mTileEntityClasses.put(SACRED_LIGHT, SacredLightTileEntity.class);
         mBlocks.put(SACRED_LIGHT, sacred_light);
     }
 

@@ -1,28 +1,68 @@
 package com.corwinjv.mobtotems.blocks;
 
+import com.corwinjv.mobtotems.blocks.tiles.SacredLightTileEntity;
 import net.minecraft.block.Block;
+import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLLog;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Created by CorwinJV on 7/13/2016.
  */
-public class SacredLightBlock extends ModBlock
+public class SacredLightBlock extends ModBlock implements ITileEntityProvider
 {
+    private static double TMP_SACRED_LIGHT_RANGE = 32.0;
+
+    // This block limits what entities can spawn near it, we subscribe to the EntityJoinWorldEvent in order to stop entity spawning
+    // based on proximity to TileEntities of our block's type
+    public class EntityJoinWorldHandler
+    {
+        @SubscribeEvent
+        public void onEntityJoinWorldEvent(EntityJoinWorldEvent e)
+        {
+            if(!e.getWorld().isRemote
+                    && e.getEntity() instanceof EntityMob)
+            {
+                for(TileEntity tileEntity : e.getWorld().loadedTileEntityList)
+                {
+                    double distance = e.getEntity().getPosition().getDistance(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ());
+                    if(tileEntity instanceof SacredLightTileEntity
+                            && distance < TMP_SACRED_LIGHT_RANGE)
+                    {
+                        e.setCanceled(true);
+                    }
+                }
+            }
+        }
+    }
+
     public SacredLightBlock()
     {
         super(Material.CIRCUITS);
+        MinecraftForge.EVENT_BUS.register(new EntityJoinWorldHandler());
+    }
+
+    // TileEntity Stuff
+    @Nonnull
+    @Override
+    public TileEntity createNewTileEntity(@Nullable World worldIn, int meta)
+    {
+        return new SacredLightTileEntity();
     }
 
     // Rendering stuff
@@ -69,7 +109,6 @@ public class SacredLightBlock extends ModBlock
         return this.canPlaceOn(worldIn, blockpos);
     }
 
-    // Will pop off if it is no longer on the top of a solid thing
     public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
     {
         this.checkForDrop(worldIn, pos, state);
@@ -86,7 +125,7 @@ public class SacredLightBlock extends ModBlock
     @Override
     public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {}
 
-    protected boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state)
+    private boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state)
     {
         if (this.canPlaceAt(worldIn, pos, EnumFacing.UP))
         {
