@@ -26,43 +26,10 @@ import javax.annotation.Nullable;
  */
 public class SacredLightBlock extends ModBlock implements ITileEntityProvider
 {
-    private static double TMP_SACRED_LIGHT_RANGE = 32.0;
-
-    // This block limits what entities can spawn near it, we subscribe to the EntityJoinWorldEvent in order to stop entity spawning
-    // based on proximity to TileEntities of our block's type
-    public class EntityJoinWorldHandler
-    {
-        @SubscribeEvent
-        public void onEntityJoinWorldEvent(EntityJoinWorldEvent e)
-        {
-            if(!e.getWorld().isRemote
-                    && e.getEntity() instanceof EntityMob)
-            {
-                for(TileEntity tileEntity : e.getWorld().loadedTileEntityList)
-                {
-                    double distance = e.getEntity().getPosition().getDistance(tileEntity.getPos().getX(), tileEntity.getPos().getY(), tileEntity.getPos().getZ());
-                    if(tileEntity instanceof SacredLightTileEntity
-                            && distance < TMP_SACRED_LIGHT_RANGE)
-                    {
-                        e.setCanceled(true);
-                    }
-                }
-            }
-        }
-    }
-
     public SacredLightBlock()
     {
         super(Material.CIRCUITS);
         MinecraftForge.EVENT_BUS.register(new EntityJoinWorldHandler());
-    }
-
-    // TileEntity Stuff
-    @Nonnull
-    @Override
-    public TileEntity createNewTileEntity(@Nullable World worldIn, int meta)
-    {
-        return new SacredLightTileEntity();
     }
 
     // Rendering stuff
@@ -123,7 +90,9 @@ public class SacredLightBlock extends ModBlock implements ITileEntityProvider
     }
 
     @Override
-    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {}
+    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
+        super.onNeighborChange(world, pos, neighbor);
+    }
 
     private boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state)
     {
@@ -141,5 +110,36 @@ public class SacredLightBlock extends ModBlock implements ITileEntityProvider
 
             return false;
         }
+    }
+
+    // This block limits what entities can spawn near it, we subscribe to the EntityJoinWorldEvent in order to stop entity spawning
+    // based on proximity to TileEntities of our block's type
+    public class EntityJoinWorldHandler
+    {
+        @SubscribeEvent
+        public void onEntityJoinWorldEvent(EntityJoinWorldEvent e)
+        {
+            if(!e.getWorld().isRemote)
+            {
+                for(TileEntity tileEntity : e.getWorld().loadedTileEntityList)
+                {
+                    if(tileEntity instanceof SacredLightTileEntity)
+                    {
+                        if(!((SacredLightTileEntity)tileEntity).canSpawnMobHere(e.getEntity()))
+                        {
+                            e.setCanceled(true);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @Nonnull
+    @Override
+    public TileEntity createNewTileEntity(@Nullable World worldIn, int meta)
+    {
+        return new SacredLightTileEntity();
     }
 }
