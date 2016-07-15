@@ -13,11 +13,14 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+
 /**
  * Created by CorwinJV on 2/17/2016.
  */
-public class TotemicFocus extends BaseItem
+public class TotemicFocus extends ModItem
 {
+    @Nonnull
     @Override
     public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand enumHand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (!world.isRemote)

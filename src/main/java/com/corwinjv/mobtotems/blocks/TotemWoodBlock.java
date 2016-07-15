@@ -8,47 +8,31 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * Created by CorwinJV on 2/17/2016.
  */
 public class TotemWoodBlock extends ModBlock implements ITileEntityProvider
 {
-    public TotemWoodBlock()
+    TotemWoodBlock()
     {
         super(Material.WOOD);
         this.isBlockContainer = true;
     }
 
+    @Nonnull
     @Override
-    public void onBlockAdded(World world, BlockPos pos, IBlockState state)
-    {
-        if(!world.isRemote)
-        {
-            TileEntity totemTileEntity = world.getTileEntity(pos);
-            if(totemTileEntity != null
-                    && totemTileEntity instanceof TotemTileEntity)
-            {
-                ((TotemTileEntity)totemTileEntity).setupMultiBlock();
-            }
-        }
-    }
-
-    @Override
-    public TileEntity createNewTileEntity(World worldIn, int meta)
+    public TileEntity createNewTileEntity(@Nullable World worldIn, int meta)
     {
         return new TotemTileEntity();
     }
 
 
     @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState blockState)
+    public void breakBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState blockState)
     {
-        TileEntity totemTileEntity = world.getTileEntity(pos);
-        if(totemTileEntity != null
-                && totemTileEntity instanceof TotemTileEntity)
-        {
-            ((TotemTileEntity)totemTileEntity).onBreakBlock();
-        }
     }
 
 }

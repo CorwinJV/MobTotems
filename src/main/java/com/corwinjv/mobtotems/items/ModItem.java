@@ -7,9 +7,9 @@ import net.minecraft.item.Item;
 /**
  * Created by CorwinJV on 1/31/2016.
  */
-public class BaseItem extends Item
+public class ModItem extends Item
 {
-    public BaseItem()
+    public ModItem()
     {
         super();
         this.init();

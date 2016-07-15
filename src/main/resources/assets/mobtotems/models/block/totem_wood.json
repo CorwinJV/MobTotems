@@ -1,0 +1,22 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "totem_wood":"blocks/log_oak",
+    "totem_wood_top": "blocks/log_oak_top"
+  },
+  "elements": [
+    {
+      "from": [ 0, 0, 0 ],
+      "to": [ 16, 16, 16 ],
+      "shade": false,
+      "faces": {
+        "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#totem_wood" },
+        "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#totem_wood" },
+        "east": { "uv": [ 0, 0, 16, 16 ], "texture": "#totem_wood" },
+        "west": { "uv": [ 0, 0, 16, 16 ], "texture": "#totem_wood" },
+        "down": { "uv": [ 0, 0, 16, 16 ], "texture": "#totem_wood_top" },
+        "up":   { "uv": [ 0, 0, 16, 16 ], "texture": "#totem_wood_top" }
+      }
+    }
+  ]
+}

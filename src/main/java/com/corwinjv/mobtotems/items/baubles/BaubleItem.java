@@ -2,17 +2,15 @@ package com.corwinjv.mobtotems.items.baubles;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
-import com.corwinjv.mobtotems.items.BaseItem;
+import com.corwinjv.mobtotems.items.ModItem;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
 
 import java.util.List;
 
@@ -20,7 +18,7 @@ import java.util.List;
  * Created by CorwinJV on 1/31/2016.
  */
 @Optional.Interface(modid = "Baubles", iface = "baubles.api.IBauble")
-public class BaubleItem extends BaseItem implements IBauble
+public class BaubleItem extends ModItem implements IBauble
 {
     protected static final String CHARGE_LEVEL = "CHARGE_LEVEL";
     protected static final int MAX_CHARGE_LEVEL = 16;
