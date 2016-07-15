@@ -2,6 +2,7 @@ package com.corwinjv.mobtotems.blocks.tiles;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -18,7 +19,7 @@ public class SacredLightTileEntity extends ModTileEntity
     public boolean canSpawnMobHere(Entity mob)
     {
         double dist = mob.getPosition().getDistance(pos.getX(), pos.getY(), pos.getZ());
-        if(mob instanceof EntityMob
+        if(mob instanceof IMob
                 && dist < getSacredLightRadius())
         {
             return false;
