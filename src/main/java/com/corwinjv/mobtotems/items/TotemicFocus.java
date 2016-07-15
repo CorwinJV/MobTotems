@@ -6,6 +6,7 @@ import com.corwinjv.mobtotems.utils.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -34,9 +35,23 @@ public class TotemicFocus extends ModItem
                 if(blockToPlace != null)
                 {
                     world.setBlockState(pos, blockToPlace.getDefaultState());
+                    return EnumActionResult.SUCCESS;
                 }
             }
         }
-        return super.onItemUse(stack, player, world, pos, enumHand, side, hitX, hitY, hitZ);
+        return EnumActionResult.FAIL;
+    }
+
+    /**
+     * returns the action that specifies what animation to play when the items is being used
+     */
+    public EnumAction getItemUseAction(ItemStack stack)
+    {
+        return EnumAction.BLOCK;
+    }
+
+    public boolean canItemEditBlocks()
+    {
+        return true;
     }
 }
