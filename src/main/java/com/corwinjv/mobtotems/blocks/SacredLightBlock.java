@@ -8,8 +8,10 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nonnull;
 
@@ -73,11 +75,16 @@ public class SacredLightBlock extends ModBlock
         this.checkForDrop(worldIn, pos, state);
     }
 
-    // neighborChanged is deprecated and I have no idea what I'm supposed to use instead
+    // Okay, so I see that neighborChanged is deprecated but it appears that onNeighborChange(IBlockAccess, BlockPos, BlockPos)
+    // doesn't get called when a sand block is broken under the SacredLightBlock
+    @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
     {
         this.checkForDrop(worldIn, pos, state);
     }
+
+    @Override
+    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {}
 
     protected boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state)
     {
