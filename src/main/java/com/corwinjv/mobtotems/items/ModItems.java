@@ -26,19 +26,14 @@ public class ModItems
     public static final String WOLF_TOTEM_BAUBLE = "wolf_totem_bauble";
     public static final String TOTEMIC_FOCUS = "totemic_focus";
 
+    // We're going to use the TotemicFocus for the CreativeTab:
+    public static Item TOTEMIC_FOCUS_ITEM = new TotemicFocus().setUnlocalizedName(TOTEMIC_FOCUS);
     private static Map<String,ModItem> mItems = Collections.emptyMap();
 
     public static void init()
     {
         mItems = new HashMap<String,ModItem>();
-
-        ModItem wolf_totem_bauble = new WolfTotemBauble();
-        wolf_totem_bauble.setUnlocalizedName(WOLF_TOTEM_BAUBLE);
-        mItems.put(WOLF_TOTEM_BAUBLE, wolf_totem_bauble);
-
-        ModItem totemic_focus = new TotemicFocus();
-        totemic_focus.setUnlocalizedName(TOTEMIC_FOCUS);
-        mItems.put(TOTEMIC_FOCUS, totemic_focus);
+        mItems.put(TOTEMIC_FOCUS, (ModItem)TOTEMIC_FOCUS_ITEM);
     }
 
     public static void registerItems()

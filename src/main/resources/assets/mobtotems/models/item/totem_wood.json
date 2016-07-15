@@ -1,5 +1,5 @@
 {
-  "parent": "block/oak_log",
+  "parent": "mobtotems:block/totem_wood",
   "display": {
     "thirdperson": {
       "rotation": [ 10, -45, 170 ],
