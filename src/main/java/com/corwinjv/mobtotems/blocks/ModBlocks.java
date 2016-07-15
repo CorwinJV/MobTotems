@@ -100,10 +100,13 @@ public class ModBlocks
     {
         ModBlock item = mBlocks.get(SACRED_LIGHT);
         GameRegistry.addRecipe(new ItemStack(item, 1),
-                "XXX",
+                "GRG",
                 "XOX",
-                "XXX",
-                'X', Items.GLOWSTONE_DUST,
-                'O', Blocks.TORCH);
+                "GTG",
+                'G', Items.GUNPOWDER,
+                'R', Items.BLAZE_ROD,
+                'X', Items.ROTTEN_FLESH,
+                'O', Blocks.TORCH,
+                'T', mBlocks.get(TOTEM_WOOD));
     }
 }
