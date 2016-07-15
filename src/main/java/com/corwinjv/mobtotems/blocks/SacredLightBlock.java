@@ -3,6 +3,7 @@ package com.corwinjv.mobtotems.blocks;
 import com.corwinjv.mobtotems.blocks.tiles.SacredLightTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -30,6 +31,9 @@ public class SacredLightBlock extends ModBlock implements ITileEntityProvider
     public SacredLightBlock()
     {
         super(Material.CIRCUITS);
+        this.setHardness(2.0F);
+        this.setSoundType(SoundType.WOOD);
+
         MinecraftForge.EVENT_BUS.register(new EntityJoinWorldHandler());
     }
 

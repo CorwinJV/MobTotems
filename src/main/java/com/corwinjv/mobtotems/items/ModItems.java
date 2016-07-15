@@ -75,15 +75,7 @@ public class ModItems
 
     public static void registerRecipes()
     {
-        Item item = mItems.get(WOLF_TOTEM_BAUBLE);
-        GameRegistry.addRecipe(new ItemStack(item),
-                "GFG",
-                " G ",
-                " F ",
-                'G', Items.GUNPOWDER,
-                'F', Blocks.OAK_FENCE);
-
-        item = mItems.get(TOTEMIC_FOCUS);
+        Item item = mItems.get(TOTEMIC_FOCUS);
         GameRegistry.addRecipe(new ItemStack(item),
                 "GXF",
                 " X ",
