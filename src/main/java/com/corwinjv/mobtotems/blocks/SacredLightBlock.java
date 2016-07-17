@@ -1,6 +1,8 @@
 package com.corwinjv.mobtotems.blocks;
 
 import com.corwinjv.mobtotems.blocks.tiles.SacredLightTileEntity;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -21,6 +23,8 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -143,20 +147,25 @@ public class SacredLightBlock extends ModBlock implements ITileEntityProvider
         {
             if(!e.getWorld().isRemote)
             {
-                for(TileEntity tileEntity : e.getWorld().loadedTileEntityList)
-                {
-                    if(tileEntity instanceof SacredLightTileEntity)
+                List<TileEntity> loadedTileEntityList = new ArrayList<TileEntity>((ArrayList)e.getWorld().loadedTileEntityList);
+
+                for (TileEntity tileEntity : Collections2.filter(loadedTileEntityList, sacredLightPredicate)) {
+                    if(!((SacredLightTileEntity)tileEntity).canSpawnMobHere(e.getEntity()))
                     {
-                        if(!((SacredLightTileEntity)tileEntity).canSpawnMobHere(e.getEntity()))
-                        {
-                            e.setCanceled(true);
-                            break;
-                        }
+                        e.setCanceled(true);
+                        break;
                     }
                 }
             }
         }
     }
+    private Predicate<TileEntity> sacredLightPredicate = new Predicate<TileEntity>()
+    {
+        @Override public boolean apply(TileEntity tileEntity)
+        {
+            return tileEntity instanceof SacredLightTileEntity;
+        }
+    };
 
     @Nonnull
     @Override
