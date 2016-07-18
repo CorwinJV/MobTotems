@@ -1,19 +1,29 @@
 package com.corwinjv.mobtotems.items.baubles;
 
 import baubles.api.BaubleType;
+import com.corwinjv.mobtotems.entities.EntitySpiritWolf;
+import com.corwinjv.mobtotems.entities.ModEntities;
 import com.google.common.base.Predicate;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.IEntityLivingData;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -50,13 +60,14 @@ public class WolfTotemBauble extends BaubleItem {
         super.initNbtData(stack);
         NBTTagCompound tagCompound = stack.getTagCompound();
 
-        NBTTagCompound wolfTotemCompound = tagCompound.getCompoundTag(WOLF_TOTEM_COMPOUND);
-        if(wolfTotemCompound == null)
+        if(tagCompound == null)
         {
-            wolfTotemCompound = new NBTTagCompound();
-            wolfTotemCompound.setString(WOLF_ID, "");
-            tagCompound.setTag(WOLF_TOTEM_COMPOUND, wolfTotemCompound);
+            tagCompound = new NBTTagCompound();
         }
+
+        NBTTagCompound wolfTotemCompound = tagCompound.getCompoundTag(WOLF_TOTEM_COMPOUND);
+        wolfTotemCompound.setString(WOLF_ID, "");
+        tagCompound.setTag(WOLF_TOTEM_COMPOUND, wolfTotemCompound);
 
         stack.setTagCompound(tagCompound);
     }
@@ -69,41 +80,32 @@ public class WolfTotemBauble extends BaubleItem {
             FMLLog.log(Level.WARN, "WolfTotemBauble onBaubleActivated() no tagCompound");
             return false;
         }
-        NBTTagCompound wolfTotemCompound = tagCompound.getCompoundTag(WOLF_TOTEM_COMPOUND);
-        if(wolfTotemCompound == null)
-        {
-            FMLLog.log(Level.WARN, "WolfTotemBauble onBaubleActivated() no wolfTotemCompound");
-            return false;
-        }
         return true;
     }
 
-    private EntityWolf getWolf(ItemStack stack, World world)
+    @Nullable
+    private EntitySpiritWolf getWolf(@Nonnull ItemStack stack, @Nonnull World world)
     {
         NBTTagCompound tagCompound = stack.getTagCompound();
-        NBTTagCompound wolfTotemCompound = tagCompound.getCompoundTag(WOLF_TOTEM_COMPOUND);
-        if (wolfTotemCompound != null)
+        if(tagCompound != null)
         {
+            NBTTagCompound wolfTotemCompound = tagCompound.getCompoundTag(WOLF_TOTEM_COMPOUND);
             String wolfId = wolfTotemCompound.getString(WOLF_ID);
             if (!StringUtils.isNullOrEmpty(wolfId))
             {
                 final UUID wolfUUID = UUID.fromString(wolfId);
-                Predicate<EntityWolf> searchPredicate = new Predicate<EntityWolf>() {
+                Predicate<EntitySpiritWolf> spiritWolfForUUID = new Predicate<EntitySpiritWolf>() {
                     @Override
-                    public boolean apply(@Nullable EntityWolf input)
+                    public boolean apply(@Nullable EntitySpiritWolf input)
                     {
-                        if(input != null)
-                        {
-                            return input.getUniqueID().equals(wolfUUID);
-                        }
-                        return false;
+                        return (input != null && input.getUniqueID().equals(wolfUUID));
                     }
                 };
 
-                for(EntityWolf entity : world.getEntities(EntityWolf.class, searchPredicate))
+                List<EntitySpiritWolf> entities = new ArrayList<EntitySpiritWolf>(world.getEntities(EntitySpiritWolf.class, spiritWolfForUUID));
+                if(entities.size() > 0)
                 {
-                    //FMLLog.log(Level.INFO, "Found entityWolf with matching UUID, returning wolf");
-                    return (EntityWolf)entity;
+                    return entities.get(0);
                 }
             }
         }
@@ -123,7 +125,7 @@ public class WolfTotemBauble extends BaubleItem {
             NBTTagCompound tagCompound = stack.getTagCompound();
             NBTTagCompound wolfTotemCompound = tagCompound.getCompoundTag(WOLF_TOTEM_COMPOUND);
 
-            EntityWolf spiritWolf = getWolf(stack, player.worldObj);
+            EntitySpiritWolf spiritWolf = getWolf(stack, player.worldObj);
             if(spiritWolf == null
                     && tagCompound.getInteger(CHARGE_LEVEL) > 0)
             {
@@ -133,10 +135,9 @@ public class WolfTotemBauble extends BaubleItem {
                 double posY = player.posY + (facingVec.getY() * SPAWN_DISTANCE);
                 double posZ = player.posZ + (facingVec.getZ() * SPAWN_DISTANCE);
 
-                spiritWolf = (EntityWolf)ItemMonsterPlacer.spawnCreature(player.worldObj, "Wolf", posX, posY, posZ);
+                spiritWolf = spawnSpiritWolf(player.worldObj, posX, posY, posZ);
                 tameSpiritWolf(spiritWolf, player);
 
-                //FMLLog.log(Level.INFO, "Saving spiritWolf id: " + spiritWolf.getPersistentID().toString());
                 wolfTotemCompound.setString(WOLF_ID, spiritWolf.getPersistentID().toString());
             }
             else if(spiritWolf != null)
@@ -149,8 +150,22 @@ public class WolfTotemBauble extends BaubleItem {
         }
     }
 
+    // Spawning entities should only be done server side
+    private EntitySpiritWolf spawnSpiritWolf(World worldIn, double x, double y, double z)
+    {
+        EntityLiving entityliving = new EntitySpiritWolf(worldIn);
+        entityliving.setLocationAndAngles(x, y, z, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
+        entityliving.rotationYawHead = entityliving.rotationYaw;
+        entityliving.renderYawOffset = entityliving.rotationYaw;
+        entityliving.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(entityliving)), (IEntityLivingData)null);
+        worldIn.spawnEntityInWorld(entityliving);
+        entityliving.playLivingSound();
+
+        return (EntitySpiritWolf)entityliving;
+    }
+
     // TODO: Move to custom SpiritWolf Entity when I get around to writing one
-    private void tameSpiritWolf(EntityWolf spiritWolf, EntityPlayer ownerPlayer)
+    private void tameSpiritWolf(EntitySpiritWolf spiritWolf, EntityPlayer ownerPlayer)
     {
         spiritWolf.setTamed(true);
         spiritWolf.getNavigator().clearPathEntity();
