@@ -8,8 +8,26 @@ import net.minecraft.world.World;
  */
 public class EntitySpiritWolf extends EntityWolf
 {
+    private boolean initialized = false;
+
     public EntitySpiritWolf(World worldIn)
     {
         super(worldIn);
     }
+
+    public void setInitialized(boolean initialized)
+    {
+        this.initialized = initialized;
+    }
+
+    public void onLivingUpdate()
+    {
+        super.onLivingUpdate();
+
+        if(initialized && getOwner() == null)
+        {
+            setDead();
+        }
+    }
+
 }
