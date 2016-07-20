@@ -149,7 +149,7 @@ public class SacredLightBlock extends ModBlock implements ITileEntityProvider
             {
                 List<TileEntity> loadedTileEntityList = new ArrayList<TileEntity>((ArrayList)e.getWorld().loadedTileEntityList);
 
-                for (TileEntity tileEntity : Collections2.filter(loadedTileEntityList, sacredLightPredicate)) {
+                for (TileEntity tileEntity : Collections2.filter(loadedTileEntityList, SacredLightTEPredicate)) {
                     if(!((SacredLightTileEntity)tileEntity).canSpawnMobHere(e.getEntity()))
                     {
                         e.setCanceled(true);
@@ -159,7 +159,7 @@ public class SacredLightBlock extends ModBlock implements ITileEntityProvider
             }
         }
     }
-    private Predicate<TileEntity> sacredLightPredicate = new Predicate<TileEntity>()
+    public static Predicate<TileEntity> SacredLightTEPredicate = new Predicate<TileEntity>()
     {
         @Override public boolean apply(TileEntity tileEntity)
         {

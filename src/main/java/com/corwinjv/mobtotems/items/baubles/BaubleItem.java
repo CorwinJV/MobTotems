@@ -22,6 +22,7 @@ public class BaubleItem extends ModItem implements IBauble
 {
     protected static final String CHARGE_LEVEL = "CHARGE_LEVEL";
     protected static final int MAX_CHARGE_LEVEL = 16;
+    protected static final int INIT_CHARGE_LEVEL = 0;
 
     public BaubleItem()
     {
@@ -41,9 +42,58 @@ public class BaubleItem extends ModItem implements IBauble
         {
             nbtTagCompound = new NBTTagCompound();
         }
-        nbtTagCompound.setInteger(CHARGE_LEVEL, MAX_CHARGE_LEVEL);
+        nbtTagCompound.setInteger(CHARGE_LEVEL, INIT_CHARGE_LEVEL);
 
         stack.setTagCompound(nbtTagCompound);
+    }
+
+    public int getChargeLevel(ItemStack stack)
+    {
+        int chargeLevel = 0;
+        NBTTagCompound tagCompound = stack.getTagCompound();
+        if(tagCompound == null)
+        {
+            tagCompound = new NBTTagCompound();
+        }
+        if(tagCompound.hasKey(CHARGE_LEVEL))
+        {
+            chargeLevel = tagCompound.getInteger(CHARGE_LEVEL);
+        }
+        return chargeLevel;
+    }
+
+    public void setChargeLevel(ItemStack stack, int chargeLevel)
+    {
+        NBTTagCompound tagCompound = stack.getTagCompound();
+        if(tagCompound == null)
+        {
+            tagCompound = new NBTTagCompound();
+        }
+
+        tagCompound.setInteger(CHARGE_LEVEL, chargeLevel);
+    }
+
+    public void decrementChargeLevel(ItemStack stack, int amount)
+    {
+        int chargeLevel = getChargeLevel(stack);
+        chargeLevel -= amount;
+        if(chargeLevel < 0)
+        {
+            chargeLevel = 0;
+        }
+
+        setChargeLevel(stack, chargeLevel);
+    }
+
+    public void incrementChargeLevel(ItemStack stack, int amount)
+    {
+        int chargeLevel = getChargeLevel(stack);
+        chargeLevel += amount;
+        if(chargeLevel > MAX_CHARGE_LEVEL)
+        {
+            chargeLevel = MAX_CHARGE_LEVEL;
+        }
+        setChargeLevel(stack, chargeLevel);
     }
 
     public void onBaubleActivated(ItemStack stack, EntityPlayer player)
@@ -72,7 +122,6 @@ public class BaubleItem extends ModItem implements IBauble
 
     @Override
     public void onWornTick(ItemStack stack, EntityLivingBase player) {
-
     }
 
     @Override
@@ -81,7 +130,6 @@ public class BaubleItem extends ModItem implements IBauble
 
     @Override
     public void onUnequipped(ItemStack stack, EntityLivingBase player) {
-
     }
 
     @Override

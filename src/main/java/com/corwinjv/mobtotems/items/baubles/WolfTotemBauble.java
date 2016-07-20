@@ -1,17 +1,18 @@
 package com.corwinjv.mobtotems.items.baubles;
 
 import baubles.api.BaubleType;
+import com.corwinjv.mobtotems.blocks.SacredLightBlock;
 import com.corwinjv.mobtotems.entities.EntitySpiritWolf;
-import com.corwinjv.mobtotems.entities.ModEntities;
 import com.google.common.base.Predicate;
-import net.minecraft.entity.Entity;
+import com.google.common.collect.Collections2;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.passive.EntityWolf;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -34,6 +35,12 @@ public class WolfTotemBauble extends BaubleItem {
     private static final String WOLF_ID = "WOLF_ID";
     private static final String WOLF_TOTEM_COMPOUND = "WOLF_TOTEM_COMPOUND";
     private static final int SPAWN_DISTANCE = 3;
+    private static final long UPDATE_TICKS = 20;
+    private static final double TMP_MANA_GAIN_DIST = 8;
+
+    private static final int CHARGE_COST_PER_TICK = 1;
+    private static final int CHARGE_GAIN_PER_TICK = 2;
+
 
     public WolfTotemBauble()
     {
@@ -56,7 +63,6 @@ public class WolfTotemBauble extends BaubleItem {
     @Override
     protected void initNbtData(ItemStack stack)
     {
-        //FMLLog.log(Level.DEBUG, "WolfTotemBauble - initNbtData()");
         super.initNbtData(stack);
         NBTTagCompound tagCompound = stack.getTagCompound();
 
@@ -81,6 +87,17 @@ public class WolfTotemBauble extends BaubleItem {
             return false;
         }
         return true;
+    }
+
+    private void setWolfId(@Nonnull ItemStack stack, @Nonnull String wolfId)
+    {
+        NBTTagCompound tagCompound = stack.getTagCompound();
+        if(tagCompound == null)
+        {
+            tagCompound = new NBTTagCompound();
+        }
+        NBTTagCompound wolfTotemCompound = tagCompound.getCompoundTag(WOLF_TOTEM_COMPOUND);
+        wolfTotemCompound.setString(WOLF_ID, wolfId);
     }
 
     @Nullable
@@ -150,7 +167,7 @@ public class WolfTotemBauble extends BaubleItem {
         }
     }
 
-    // Spawning entities should only be done server side
+    // Spirit Wolf Spawning
     private EntitySpiritWolf spawnSpiritWolf(World worldIn, double x, double y, double z)
     {
         EntityLiving entityliving = new EntitySpiritWolf(worldIn);
@@ -175,4 +192,69 @@ public class WolfTotemBauble extends BaubleItem {
         spiritWolf.setOwnerId(ownerPlayer.getUniqueID());
         spiritWolf.worldObj.setEntityState(spiritWolf, (byte)7);
     }
+
+    /**
+     * This method is called once per tick if the bauble is being worn by a player
+     */
+    public void onWornTick(ItemStack stack, EntityLivingBase player)
+    {
+        World world = player.getEntityWorld();
+        if(!world.isRemote)
+        {
+            long worldTime = world.getWorldInfo().getWorldTime();
+            EntitySpiritWolf spiritWolf = getWolf(stack, world);
+
+            if(worldTime % UPDATE_TICKS == 0)
+            {
+                if(spiritWolf != null)
+                {
+                    decrementChargeLevel(stack, CHARGE_COST_PER_TICK);
+                }
+
+                // Search nearby entities for totems
+                // for each one, incrementChargeLevel
+                List<TileEntity> tileEntities = new ArrayList<TileEntity>(world.loadedTileEntityList);
+                for(TileEntity tileEntity : Collections2.filter(tileEntities, SacredLightBlock.SacredLightTEPredicate))
+                {
+                    BlockPos pos = tileEntity.getPos();
+                    if(player.getPosition().getDistance(pos.getX(), pos.getY(), pos.getZ()) < TMP_MANA_GAIN_DIST)
+                    {
+                        incrementChargeLevel(stack, CHARGE_GAIN_PER_TICK);
+                    }
+                }
+            }
+
+            // Should wolf still be summoned? This should happen every tick
+            if(spiritWolf != null
+                    && getChargeLevel(stack) == 0)
+            {
+                spiritWolf.setDead();
+                setWolfId(stack, "");
+            }
+        }
+    }
+
+    /**
+     * This method is called when the bauble is unequipped by a player
+     */
+    public void onUnequipped(ItemStack stack, EntityLivingBase player)
+    {
+        if(!player.getEntityWorld().isRemote)
+        {
+            EntitySpiritWolf spiritWolf = getWolf(stack, player.getEntityWorld());
+            if(spiritWolf != null)
+            {
+                spiritWolf.setDead();
+            }
+            setWolfId(stack, "");
+        }
+    }
+
+    Predicate<EntityItem> wolfTotemBaublePredicate = new Predicate<EntityItem>() {
+        @Override
+        public boolean apply(@Nullable EntityItem input) {
+            return (input != null) && (input.getEntityItem().getItem() instanceof WolfTotemBauble);
+        }
+    };
+
 }
