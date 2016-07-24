@@ -10,6 +10,7 @@ entity.mobtotems.spirit_wolf.name=Spirit Wolf
 #blocks
 tiles.mobtotems:totem_wood.name=Totem Wood
 tiles.mobtotems:sacred_light.name=Sacred Light
+tiles.mobtotems:incense_kindling_box.name=Incense Kindling Box
 
 #items
 item.wolf_totem_bauble.name=Personal Wolf Totem

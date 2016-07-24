@@ -38,6 +38,7 @@ public class SacredLightBlock extends ModBlock implements ITileEntityProvider
         this.setHardness(2.0F);
         this.setSoundType(SoundType.WOOD);
 
+        this.isBlockContainer = true;
         MinecraftForge.EVENT_BUS.register(new EntityJoinWorldHandler());
     }
 

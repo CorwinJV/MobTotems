@@ -1,10 +1,8 @@
 package com.corwinjv.mobtotems.items.baubles;
 
 import baubles.api.BaubleType;
-import com.corwinjv.mobtotems.blocks.SacredLightBlock;
 import com.corwinjv.mobtotems.entities.EntitySpiritWolf;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
@@ -12,7 +10,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -36,10 +33,8 @@ public class WolfTotemBauble extends BaubleItem {
     private static final String WOLF_TOTEM_COMPOUND = "WOLF_TOTEM_COMPOUND";
     private static final int SPAWN_DISTANCE = 3;
     private static final long UPDATE_TICKS = 20;
-    private static final double TMP_MANA_GAIN_DIST = 8;
 
     private static final int CHARGE_COST_PER_TICK = 1;
-    private static final int CHARGE_GAIN_PER_TICK = 2;
 
 
     public WolfTotemBauble()
@@ -210,18 +205,6 @@ public class WolfTotemBauble extends BaubleItem {
                 if(spiritWolf != null)
                 {
                     decrementChargeLevel(stack, CHARGE_COST_PER_TICK);
-                }
-
-                // Search nearby entities for totems
-                // for each one, incrementChargeLevel
-                List<TileEntity> tileEntities = new ArrayList<TileEntity>(world.loadedTileEntityList);
-                for(TileEntity tileEntity : Collections2.filter(tileEntities, SacredLightBlock.SacredLightTEPredicate))
-                {
-                    BlockPos pos = tileEntity.getPos();
-                    if(player.getPosition().getDistance(pos.getX(), pos.getY(), pos.getZ()) < TMP_MANA_GAIN_DIST)
-                    {
-                        incrementChargeLevel(stack, CHARGE_GAIN_PER_TICK);
-                    }
                 }
             }
 

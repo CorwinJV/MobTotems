@@ -1,6 +1,7 @@
 package com.corwinjv.mobtotems.blocks;
 
 import com.corwinjv.mobtotems.Reference;
+import com.corwinjv.mobtotems.blocks.tiles.IncenseKindlingBoxTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.SacredLightTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
 import net.minecraft.client.Minecraft;
@@ -26,6 +27,7 @@ public class ModBlocks
 {
     public static final String TOTEM_WOOD = "totem_wood";
     public static final String SACRED_LIGHT = "sacred_light";
+    public static final String INCENSE_KINDLING_BOX = "incense_kindling_box";
 
     private static Map<String,ModBlock> mBlocks = Collections.emptyMap();
     private static Map<String,Class<? extends TileEntity>> mTileEntityClasses = Collections.emptyMap();
@@ -44,6 +46,11 @@ public class ModBlocks
         sacred_light.setUnlocalizedName(SACRED_LIGHT);
         mTileEntityClasses.put(SACRED_LIGHT, SacredLightTileEntity.class);
         mBlocks.put(SACRED_LIGHT, sacred_light);
+
+        ModBlock incense_kindling_box = new IncenseKindlingBox();
+        incense_kindling_box.setUnlocalizedName(INCENSE_KINDLING_BOX);
+        mTileEntityClasses.put(INCENSE_KINDLING_BOX, IncenseKindlingBoxTileEntity.class);
+        mBlocks.put(INCENSE_KINDLING_BOX, incense_kindling_box);
     }
 
     public static ModBlock getBlock(String key)
@@ -108,5 +115,14 @@ public class ModBlocks
                 'X', Items.ROTTEN_FLESH,
                 'O', Blocks.TORCH,
                 'T', mBlocks.get(TOTEM_WOOD));
+
+        item = mBlocks.get(INCENSE_KINDLING_BOX);
+        GameRegistry.addRecipe(new ItemStack(item, 4),
+                "PPP",
+                "PIP",
+                "PFP",
+                'P', Blocks.PLANKS,
+                'I', Blocks.TALLGRASS,
+                'F', Items.FLINT);
     }
 }
