@@ -187,7 +187,7 @@ public class WolfTotemBauble extends BaubleItem {
         spiritWolf.setTamed(true);
         spiritWolf.getNavigator().clearPathEntity();
         spiritWolf.setAttackTarget(null);
-        spiritWolf.getAISit().setSitting(true);
+        spiritWolf.getAISit().setSitting(false);
         spiritWolf.setHealth(20.0F);
         spiritWolf.setOwnerId(ownerPlayer.getUniqueID());
         spiritWolf.worldObj.setEntityState(spiritWolf, (byte)7);

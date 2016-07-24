@@ -100,7 +100,6 @@ public class BaubleItem extends ModItem implements IBauble
     {
     }
 
-    // Baubles
     @Override
     public BaubleType getBaubleType(ItemStack stack) {
         return null;
