@@ -2,7 +2,6 @@ package com.corwinjv.mobtotems.blocks.tiles;
 
 import baubles.api.BaublesApi;
 import com.corwinjv.mobtotems.interfaces.ICharged;
-import com.corwinjv.mobtotems.items.baubles.BaubleItem;
 import com.google.common.base.Predicate;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Random;
 
 /**
  * Created by CorwinJV on 7/24/2016.
@@ -96,6 +97,12 @@ public class IncenseKindlingBox extends ModBlock implements ITileEntityProvider
         IncenseKindlingBoxTileEntity te = new IncenseKindlingBoxTileEntity();
         te.setCreationTime(worldIn.getTotalWorldTime());
         return te;
+    }
+
+    @Override
+    public int quantityDropped(Random random)
+    {
+        return 0;
     }
 
 }
