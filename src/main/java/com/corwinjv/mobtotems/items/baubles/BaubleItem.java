@@ -2,6 +2,7 @@ package com.corwinjv.mobtotems.items.baubles;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
+import com.corwinjv.mobtotems.interfaces.ICharged;
 import com.corwinjv.mobtotems.items.ModItem;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +19,7 @@ import java.util.List;
  * Created by CorwinJV on 1/31/2016.
  */
 @Optional.Interface(modid = "Baubles", iface = "baubles.api.IBauble")
-public class BaubleItem extends ModItem implements IBauble
+public class BaubleItem extends ModItem implements IBauble, ICharged
 {
     protected static final String CHARGE_LEVEL = "CHARGE_LEVEL";
     protected static final int MAX_CHARGE_LEVEL = 16;
@@ -47,6 +48,7 @@ public class BaubleItem extends ModItem implements IBauble
         stack.setTagCompound(nbtTagCompound);
     }
 
+    @Override
     public int getChargeLevel(ItemStack stack)
     {
         int chargeLevel = 0;
@@ -62,6 +64,7 @@ public class BaubleItem extends ModItem implements IBauble
         return chargeLevel;
     }
 
+    @Override
     public void setChargeLevel(ItemStack stack, int chargeLevel)
     {
         NBTTagCompound tagCompound = stack.getTagCompound();
@@ -73,6 +76,7 @@ public class BaubleItem extends ModItem implements IBauble
         tagCompound.setInteger(CHARGE_LEVEL, chargeLevel);
     }
 
+    @Override
     public void decrementChargeLevel(ItemStack stack, int amount)
     {
         int chargeLevel = getChargeLevel(stack);
@@ -85,6 +89,7 @@ public class BaubleItem extends ModItem implements IBauble
         setChargeLevel(stack, chargeLevel);
     }
 
+    @Override
     public void incrementChargeLevel(ItemStack stack, int amount)
     {
         int chargeLevel = getChargeLevel(stack);
@@ -115,7 +120,7 @@ public class BaubleItem extends ModItem implements IBauble
         }
 
         // TODO: Use locale strings
-        int chargeLevel = stack.getTagCompound().getInteger(CHARGE_LEVEL);
+        int chargeLevel = getChargeLevel(stack);
         tooltip.add("Charge Level: " + chargeLevel + "/" + MAX_CHARGE_LEVEL);
     }
 
