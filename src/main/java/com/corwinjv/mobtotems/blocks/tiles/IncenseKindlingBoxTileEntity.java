@@ -1,7 +1,7 @@
 package com.corwinjv.mobtotems.blocks.tiles;
 
 import baubles.api.BaublesApi;
-import com.corwinjv.mobtotems.interfaces.ICharged;
+import com.corwinjv.mobtotems.interfaces.IChargeable;
 import com.google.common.base.Predicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
@@ -118,9 +118,9 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity
             {
                 final ItemStack baubleStack = inventory.getStackInSlot(i);
                 if(baubleStack != null
-                        && baubleStack.getItem() instanceof ICharged)
+                        && baubleStack.getItem() instanceof IChargeable)
                 {
-                    ((ICharged) baubleStack.getItem()).incrementChargeLevel(baubleStack, CHARGE_GAIN_PER_TICK);
+                    ((IChargeable) baubleStack.getItem()).incrementChargeLevel(baubleStack, CHARGE_GAIN_PER_TICK);
                 }
             }
         }

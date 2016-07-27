@@ -2,7 +2,7 @@ package com.corwinjv.mobtotems.items.baubles;
 
 import baubles.api.BaubleType;
 import baubles.api.IBauble;
-import com.corwinjv.mobtotems.interfaces.ICharged;
+import com.corwinjv.mobtotems.interfaces.IChargeable;
 import com.corwinjv.mobtotems.items.ModItem;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +19,7 @@ import java.util.List;
  * Created by CorwinJV on 1/31/2016.
  */
 @Optional.Interface(modid = "Baubles", iface = "baubles.api.IBauble")
-public class BaubleItem extends ModItem implements IBauble, ICharged
+public class BaubleItem extends ModItem implements IBauble, IChargeable
 {
     protected static final String CHARGE_LEVEL = "CHARGE_LEVEL";
     protected static final int MAX_CHARGE_LEVEL = 16;

@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 /**
  * Created by CorwinJV on 7/24/2016.
  */
-public interface ICharged
+public interface IChargeable
 {
     int getChargeLevel(ItemStack stack);
     void setChargeLevel(ItemStack stack, int chargeLevel);
