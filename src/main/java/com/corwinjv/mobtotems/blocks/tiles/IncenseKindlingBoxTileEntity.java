@@ -6,7 +6,6 @@ import com.google.common.base.Predicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,7 +23,7 @@ import java.util.Random;
  */
 public class IncenseKindlingBoxTileEntity extends ModTileEntity
 {
-    private static final String CREATION_TIME = "CREATION_TIME";
+    private static final String CUR_TTL = "CUR_TTL";
 
     private static final long UPDATE_TICKS = 20;
     private static final long PARTICLE_UPDATE_TICKS = 40;
@@ -32,17 +31,17 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity
     public static final int CHARGE_GAIN_PER_TICK = 2;
     private static final long TTL = 200;
 
-
-    private long creationTime = 0;
+    private long curTTL = 0;
 
     public IncenseKindlingBoxTileEntity()
     {
         super();
+
     }
 
-    public void setCreationTime(long time)
+    public void setCurTTL(long ttl)
     {
-        creationTime = time;
+        curTTL = ttl;
         markForUpdate();
     }
 
@@ -50,20 +49,21 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
-        super.writeToNBT(compound);
-        compound.setLong(CREATION_TIME, creationTime);
-        return compound;
+        NBTTagCompound ret = super.writeToNBT(compound);
+        ret.setLong(CUR_TTL, curTTL);
+        return ret;
     }
 
     @Override
     public void readFromNBT(NBTTagCompound compound)
     {
+        super.readFromNBT(compound);
         long time = 0;
-        if(compound.hasKey(CREATION_TIME))
+        if(compound.hasKey(CUR_TTL))
         {
-            time = compound.getLong(CREATION_TIME);
+            time = compound.getLong(CUR_TTL);
         }
-        creationTime = time;
+        curTTL = time;
     }
 
     @Override
@@ -91,7 +91,8 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity
 
     private void performTTLUpdate()
     {
-        if((getWorld().getTotalWorldTime() - creationTime) > TTL)
+        curTTL++;
+        if(curTTL > TTL)
         {
             getWorld().destroyBlock(pos, false);
         }

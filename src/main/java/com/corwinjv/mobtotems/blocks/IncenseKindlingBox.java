@@ -94,9 +94,7 @@ public class IncenseKindlingBox extends ModBlock implements ITileEntityProvider
     @Override
     public TileEntity createNewTileEntity(@Nullable World worldIn, int meta)
     {
-        IncenseKindlingBoxTileEntity te = new IncenseKindlingBoxTileEntity();
-        te.setCreationTime(worldIn.getTotalWorldTime());
-        return te;
+        return new IncenseKindlingBoxTileEntity();
     }
 
     @Override
