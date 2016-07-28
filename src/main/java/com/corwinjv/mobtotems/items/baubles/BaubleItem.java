@@ -1,11 +1,15 @@
 package com.corwinjv.mobtotems.items.baubles;
 
 import baubles.api.BaubleType;
+import baubles.api.BaublesApi;
 import baubles.api.IBauble;
 import com.corwinjv.mobtotems.interfaces.IChargeable;
 import com.corwinjv.mobtotems.items.ModItem;
+import com.corwinjv.mobtotems.network.Network;
+import com.corwinjv.mobtotems.network.SyncEquippedBauble;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -22,8 +26,7 @@ import java.util.List;
 public class BaubleItem extends ModItem implements IBauble, IChargeable
 {
     protected static final String CHARGE_LEVEL = "CHARGE_LEVEL";
-    protected static final int MAX_CHARGE_LEVEL = 16;
-    protected static final int INIT_CHARGE_LEVEL = 0;
+    private int maxChargeLevel = 16;
 
     public BaubleItem()
     {
@@ -43,7 +46,7 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
         {
             nbtTagCompound = new NBTTagCompound();
         }
-        nbtTagCompound.setInteger(CHARGE_LEVEL, INIT_CHARGE_LEVEL);
+        nbtTagCompound.setInteger(CHARGE_LEVEL, 0);
 
         stack.setTagCompound(nbtTagCompound);
     }
@@ -94,11 +97,16 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
     {
         int chargeLevel = getChargeLevel(stack);
         chargeLevel += amount;
-        if(chargeLevel > MAX_CHARGE_LEVEL)
+        if(chargeLevel > maxChargeLevel)
         {
-            chargeLevel = MAX_CHARGE_LEVEL;
+            chargeLevel = maxChargeLevel;
         }
         setChargeLevel(stack, chargeLevel);
+    }
+
+    @Override
+    public int getMaxChargeLevel() {
+        return maxChargeLevel;
     }
 
     public void onBaubleActivated(ItemStack stack, EntityPlayer player)
@@ -114,18 +122,25 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
     {
-        if(stack.getTagCompound() == null)
-        {
-            initNbtData(stack);
-        }
-
-        // TODO: Use locale strings
-        int chargeLevel = getChargeLevel(stack);
-        tooltip.add("Charge Level: " + chargeLevel + "/" + MAX_CHARGE_LEVEL);
+        super.addInformation(stack, playerIn, tooltip, advanced);
     }
 
     @Override
-    public void onWornTick(ItemStack stack, EntityLivingBase player) {
+    public void onWornTick(ItemStack stack, EntityLivingBase player)
+    {
+        // Look, I'm not wild about this either, but I'm not sure how to get a reference to the world/player from within setCharge()
+        if(!player.getEntityWorld().isRemote
+            && player.getEntityWorld().getTotalWorldTime() % 20 == 0)
+        {
+            IInventory baubleInventory = BaublesApi.getBaubles((EntityPlayer)player);
+            for(int i = 0; i < baubleInventory.getSizeInventory(); i++)
+            {
+                if(baubleInventory.getStackInSlot(i) == stack)
+                {
+                    Network.sendToAll(new SyncEquippedBauble(i, stack, (EntityPlayer)player));
+                }
+            }
+        }
     }
 
     @Override

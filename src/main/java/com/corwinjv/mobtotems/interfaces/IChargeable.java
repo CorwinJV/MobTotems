@@ -11,4 +11,5 @@ public interface IChargeable
     void setChargeLevel(ItemStack stack, int chargeLevel);
     void decrementChargeLevel(ItemStack stack, int amount);
     void incrementChargeLevel(ItemStack stack, int amount);
+    int getMaxChargeLevel();
 }

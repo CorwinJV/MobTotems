@@ -194,6 +194,7 @@ public class WolfTotemBauble extends BaubleItem {
      */
     public void onWornTick(ItemStack stack, EntityLivingBase player)
     {
+        super.onWornTick(stack, player);
         World world = player.getEntityWorld();
         if(!world.isRemote)
         {
