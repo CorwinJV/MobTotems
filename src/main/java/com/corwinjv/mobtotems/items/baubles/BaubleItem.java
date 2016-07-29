@@ -27,6 +27,7 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
 {
     protected static final String CHARGE_LEVEL = "CHARGE_LEVEL";
     private int maxChargeLevel = 16;
+    private boolean doSync = false;
 
     public BaubleItem()
     {
@@ -76,6 +77,10 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
             tagCompound = new NBTTagCompound();
         }
 
+        if(tagCompound.getInteger(CHARGE_LEVEL) != chargeLevel)
+        {
+            markForSync();
+        }
         tagCompound.setInteger(CHARGE_LEVEL, chargeLevel);
     }
 
@@ -130,7 +135,8 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
     {
         // Look, I'm not wild about this either, but I'm not sure how to get a reference to the world/player from within setCharge()
         if(!player.getEntityWorld().isRemote
-            && player.getEntityWorld().getTotalWorldTime() % 20 == 0)
+                && player.getEntityWorld().getTotalWorldTime() % 20 == 0
+                && doSync)
         {
             IInventory baubleInventory = BaublesApi.getBaubles((EntityPlayer)player);
             for(int i = 0; i < baubleInventory.getSizeInventory(); i++)
@@ -140,6 +146,7 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
                     Network.sendToAll(new SyncEquippedBauble(i, stack, (EntityPlayer)player));
                 }
             }
+            doSync = false;
         }
     }
 
@@ -159,5 +166,10 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
     @Override
     public boolean canUnequip(ItemStack itemstack, EntityLivingBase player) {
         return true;
+    }
+
+    private void markForSync()
+    {
+        doSync = true;
     }
 }

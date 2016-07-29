@@ -36,7 +36,6 @@ public class WolfTotemBauble extends BaubleItem {
 
     private static final int CHARGE_COST_PER_TICK = 1;
 
-
     public WolfTotemBauble()
     {
         super();
