@@ -12,6 +12,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.FMLLog;
+import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -23,7 +25,7 @@ import java.util.Random;
  */
 public class IncenseKindlingBoxTileEntity extends ModTileEntity
 {
-    private static final String CUR_TTL = "CUR_TTL";
+    private static final String TIME_LIVED = "TIME_LIVED";
 
     private static final long UPDATE_TICKS = 20;
     private static final long PARTICLE_UPDATE_TICKS = 40;
@@ -31,17 +33,16 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity
     public static final int CHARGE_GAIN_PER_TICK = 2;
     private static final long TTL = 200;
 
-    private long curTTL = 0;
+    private long timeLived = 0;
 
     public IncenseKindlingBoxTileEntity()
     {
         super();
-
     }
 
-    public void setCurTTL(long ttl)
+    public void setTimeLived(long ttl)
     {
-        curTTL = ttl;
+        timeLived = ttl;
         markForUpdate();
     }
 
@@ -50,7 +51,7 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
     {
         NBTTagCompound ret = super.writeToNBT(compound);
-        ret.setLong(CUR_TTL, curTTL);
+        ret.setLong(TIME_LIVED, timeLived);
         return ret;
     }
 
@@ -59,11 +60,11 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity
     {
         super.readFromNBT(compound);
         long time = 0;
-        if(compound.hasKey(CUR_TTL))
+        if(compound.hasKey(TIME_LIVED))
         {
-            time = compound.getLong(CUR_TTL);
+            time = compound.getLong(TIME_LIVED);
         }
-        curTTL = time;
+        timeLived = time;
     }
 
     @Override
@@ -91,8 +92,8 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity
 
     private void performTTLUpdate()
     {
-        curTTL++;
-        if(curTTL > TTL)
+        timeLived++;
+        if(timeLived > TTL)
         {
             getWorld().destroyBlock(pos, false);
         }

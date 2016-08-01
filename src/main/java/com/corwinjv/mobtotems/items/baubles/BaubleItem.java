@@ -5,8 +5,6 @@ import baubles.api.BaublesApi;
 import baubles.api.IBauble;
 import com.corwinjv.mobtotems.interfaces.IChargeable;
 import com.corwinjv.mobtotems.items.ModItem;
-import com.corwinjv.mobtotems.network.Network;
-import com.corwinjv.mobtotems.network.SyncEquippedBauble;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -16,7 +14,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.logging.log4j.Level;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -40,7 +40,7 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
         initNbtData(stack);
     }
 
-    protected void initNbtData(ItemStack stack)
+    protected NBTTagCompound initNbtData(ItemStack stack)
     {
         NBTTagCompound nbtTagCompound = stack.getTagCompound();
         if(nbtTagCompound == null)
@@ -50,22 +50,20 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
         nbtTagCompound.setInteger(CHARGE_LEVEL, 0);
 
         stack.setTagCompound(nbtTagCompound);
+        return nbtTagCompound;
     }
 
+    @SuppressWarnings("all")
     @Override
     public int getChargeLevel(ItemStack stack)
     {
-        int chargeLevel = 0;
         NBTTagCompound tagCompound = stack.getTagCompound();
         if(tagCompound == null)
         {
-            tagCompound = new NBTTagCompound();
+            tagCompound = initNbtData(stack);
+            markForSync();
         }
-        if(tagCompound.hasKey(CHARGE_LEVEL))
-        {
-            chargeLevel = tagCompound.getInteger(CHARGE_LEVEL);
-        }
-        return chargeLevel;
+        return tagCompound.getInteger(CHARGE_LEVEL);
     }
 
     @Override
@@ -74,7 +72,8 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
         NBTTagCompound tagCompound = stack.getTagCompound();
         if(tagCompound == null)
         {
-            tagCompound = new NBTTagCompound();
+            tagCompound = initNbtData(stack);
+            markForSync();
         }
 
         if(tagCompound.getInteger(CHARGE_LEVEL) != chargeLevel)
@@ -138,24 +137,19 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
                 && player.getEntityWorld().getTotalWorldTime() % 20 == 0
                 && doSync)
         {
-            IInventory baubleInventory = BaublesApi.getBaubles((EntityPlayer)player);
-            for(int i = 0; i < baubleInventory.getSizeInventory(); i++)
-            {
-                if(baubleInventory.getStackInSlot(i) == stack)
-                {
-                    Network.sendToAll(new SyncEquippedBauble(i, stack, (EntityPlayer)player));
-                }
-            }
+            syncBaubleToClient(stack, player);
             doSync = false;
         }
     }
 
     @Override
-    public void onEquipped(ItemStack stack, EntityLivingBase player) {
+    public void onEquipped(ItemStack stack, EntityLivingBase player)
+    {
     }
 
     @Override
-    public void onUnequipped(ItemStack stack, EntityLivingBase player) {
+    public void onUnequipped(ItemStack stack, EntityLivingBase player)
+    {
     }
 
     @Override
@@ -166,6 +160,31 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
     @Override
     public boolean canUnequip(ItemStack itemstack, EntityLivingBase player) {
         return true;
+    }
+
+    private void syncBaubleToClient(ItemStack stack, EntityLivingBase player)
+    {
+        IInventory baubleInventory = BaublesApi.getBaubles((EntityPlayer)player);
+        for(int i = 0; i < baubleInventory.getSizeInventory(); i++)
+        {
+            if(baubleInventory.getStackInSlot(i) == stack)
+            {
+                try {
+                    Field field = ((Object)baubleInventory).getClass().getDeclaredField("blockEvents");
+                    if(field != null)
+                    {
+                        field.setAccessible(true);
+                        field.set(baubleInventory, true);
+                        baubleInventory.setInventorySlotContents(i, stack);
+                        field.set(baubleInventory, false);
+                    }
+                } catch (NoSuchFieldException e1) {
+                    e1.printStackTrace();
+                } catch (IllegalAccessException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
     }
 
     private void markForSync()

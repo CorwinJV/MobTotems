@@ -55,7 +55,7 @@ public class WolfTotemBauble extends BaubleItem {
     }
 
     @Override
-    protected void initNbtData(ItemStack stack)
+    protected NBTTagCompound initNbtData(ItemStack stack)
     {
         super.initNbtData(stack);
         NBTTagCompound tagCompound = stack.getTagCompound();
@@ -70,6 +70,7 @@ public class WolfTotemBauble extends BaubleItem {
         tagCompound.setTag(WOLF_TOTEM_COMPOUND, wolfTotemCompound);
 
         stack.setTagCompound(tagCompound);
+        return tagCompound;
     }
 
     private boolean hasValidNbt(ItemStack stack)

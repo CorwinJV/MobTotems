@@ -17,7 +17,6 @@ public class Network {
         instance = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID);
 
         instance.registerMessage(ActivateBaubleMessage.class, ActivateBaubleMessage.class, getDiscriminatorId(), Side.SERVER);
-        instance.registerMessage(SyncEquippedBauble.class, SyncEquippedBauble.class, getDiscriminatorId(), Side.CLIENT);
     }
 
     private static int getDiscriminatorId()
