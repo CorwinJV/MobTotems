@@ -4,6 +4,7 @@ import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.blocks.tiles.IncenseKindlingBoxTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.SacredLightTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
+import com.corwinjv.mobtotems.items.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;

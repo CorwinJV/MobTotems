@@ -6,6 +6,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -19,11 +20,25 @@ import java.util.Random;
  */
 public class IncenseKindlingBox extends ModBlock implements ITileEntityProvider
 {
+    private static final AxisAlignedBB boundingBox = new AxisAlignedBB(0.2D, 0.D, 0.2D, 0.8D, 0.5D, 0.8D);
+
     public IncenseKindlingBox()
     {
         super();
         this.setHardness(2.0F);
         this.isBlockContainer = true;
+    }
+
+    // Collision
+    @Nonnull
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return boundingBox;
+    }
+
+    @Override
+    public boolean isBlockSolid(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
+        return false;
     }
 
     // Rendering stuff
@@ -90,6 +105,7 @@ public class IncenseKindlingBox extends ModBlock implements ITileEntityProvider
         }
     }
 
+    // TE
     @Nonnull
     @Override
     public TileEntity createNewTileEntity(@Nullable World worldIn, int meta)
@@ -97,6 +113,7 @@ public class IncenseKindlingBox extends ModBlock implements ITileEntityProvider
         return new IncenseKindlingBoxTileEntity();
     }
 
+    // Consumable block!
     @Override
     public int quantityDropped(Random random)
     {

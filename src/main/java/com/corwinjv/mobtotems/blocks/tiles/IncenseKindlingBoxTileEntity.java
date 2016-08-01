@@ -40,12 +40,6 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity
         super();
     }
 
-    public void setTimeLived(long ttl)
-    {
-        timeLived = ttl;
-        markForUpdate();
-    }
-
     @Nonnull
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound)
