@@ -18,7 +18,6 @@ public class ClientProxy extends CommonProxy
     {
         ModBlocks.registerRenders();
         ModItems.registerRenders();
-        ModEntities.registerRenders();
     }
 
     @Override

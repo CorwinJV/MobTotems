@@ -1,6 +1,8 @@
 package com.corwinjv.mobtotems.entities;
 
+import com.corwinjv.mobtotems.entities.render.SpiritWolfRenderFactory;
 import net.minecraft.entity.Entity;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 import java.util.Collections;
@@ -37,19 +39,8 @@ public class ModEntities
         }
     }
 
-    public static void registerRenders()
+    public static void registerEntityRenders()
     {
-        for (String key : mEntities.keySet())
-        {
-            Class<? extends Entity> entityClass = mEntities.get(key);
-            if(entityClass != null)
-            {
-                registerRender(entityClass, key);
-            }
-        }
-    }
-
-    private static void registerRender(Class<? extends Entity> entityClass, String key)
-    {
+        RenderingRegistry.registerEntityRenderingHandler(EntitySpiritWolf.class, new SpiritWolfRenderFactory());
     }
 }

@@ -22,6 +22,9 @@ public class BaublesChargeGui extends Gui
     private static final int ICON_BORDER = 2;
     private static final int ICON_WIDTH = 16;
     private static final int ICON_HEIGHT = 16;
+    private static final int BG_BORDER = 1;
+    private static final int BG_WIDTH = 18;
+    private static final int BG_HEIGHT = 18;
     private static final int CHARGE_COLOR = 0xFF00FF00;
 
     private Minecraft minecraft = null;
@@ -49,10 +52,17 @@ public class BaublesChargeGui extends Gui
                     && baubleStack.getItem() instanceof BaubleItem)
             {
                 final BaubleItem baubleItem = (BaubleItem)baubleStack.getItem();
-
-                // Draw the icon of the chargeable item
                 GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
                 GL11.glDisable(GL11.GL_LIGHTING);
+
+                // Draw the background for the chargeable item
+                minecraft.renderEngine.bindTexture(getGuiResourceLocation("chargeable_bg.png"));
+                drawTexturedModalRect(BG_BORDER, (i * (ICON_HEIGHT + ICON_BORDER)) + BG_BORDER, 0, 0, BG_WIDTH, BG_HEIGHT);
+
+
+                // TODO: Draw is currently activated
+
+                // Draw the icon of the chargeable item
                 minecraft.renderEngine.bindTexture(getGuiResourceLocation(baubleItem));
                 drawTexturedModalRect(ICON_BORDER, (i * (ICON_HEIGHT + ICON_BORDER)) + ICON_BORDER, 0, 0, ICON_WIDTH, ICON_HEIGHT);
 
@@ -65,8 +75,6 @@ public class BaublesChargeGui extends Gui
                 int chargeTop = (i * (ICON_HEIGHT + ICON_BORDER)) + ICON_HEIGHT + ICON_BORDER;
                 drawRect(ICON_BORDER, chargeTop, ICON_BORDER + chargeWidth, chargeTop + 2, CHARGE_COLOR);
 
-                // TODO: Draw is currently activated
-
                 // TODO: (Maybe) Draw is on cooldown
             }
         }
@@ -77,4 +85,10 @@ public class BaublesChargeGui extends Gui
         String resourceName = baubleItem.getRegistryName().toString().substring(Reference.RESOURCE_PREFIX.length());
         return new ResourceLocation(Reference.RESOURCE_PREFIX + "textures/gui/" + resourceName + ".png");
     }
+
+    public ResourceLocation getGuiResourceLocation(@Nonnull String guiFileName)
+    {
+        return new ResourceLocation(Reference.RESOURCE_PREFIX + "textures/gui/" + guiFileName);
+    }
+
 }
