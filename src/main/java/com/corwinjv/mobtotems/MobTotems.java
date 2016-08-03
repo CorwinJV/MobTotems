@@ -50,7 +50,7 @@ public class MobTotems
         // Entities
         ModEntities.init();
         ModEntities.registerEntities(instance);
-        ModEntities.registerEntityRenders();
+        proxy.registerEntityRenders();
 
         // Keybinds
         proxy.registerKeys();
