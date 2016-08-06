@@ -4,7 +4,6 @@ import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.blocks.tiles.IncenseKindlingBoxTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.SacredLightTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
-import com.corwinjv.mobtotems.items.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
@@ -30,8 +29,8 @@ public class ModBlocks
     public static final String SACRED_LIGHT = "sacred_light";
     public static final String INCENSE_KINDLING_BOX = "incense_kindling_box";
 
-    private static Map<String,ModBlock> mBlocks = Collections.emptyMap();
-    private static Map<String,Class<? extends TileEntity>> mTileEntityClasses = Collections.emptyMap();
+    private static Map<String, ModBlock> mBlocks = Collections.emptyMap();
+    private static Map<String, Class<? extends TileEntity>> mTileEntityClasses = Collections.emptyMap();
 
     public static void init()
     {
@@ -56,7 +55,7 @@ public class ModBlocks
 
     public static ModBlock getBlock(String key)
     {
-        if(mBlocks.containsKey(key))
+        if (mBlocks.containsKey(key))
         {
             return mBlocks.get(key);
         }
@@ -68,13 +67,13 @@ public class ModBlocks
         for (String key : mBlocks.keySet())
         {
             ModBlock block = mBlocks.get(key);
-            if(block != null)
+            if (block != null)
             {
                 GameRegistry.register(block.setRegistryName(new ResourceLocation(Reference.MOD_ID, key)));
                 GameRegistry.register(new ItemBlock(block), block.getRegistryName());
 
                 Class<? extends TileEntity> tileEntityClass = mTileEntityClasses.get(key);
-                if(tileEntityClass != null)
+                if (tileEntityClass != null)
                 {
                     GameRegistry.registerTileEntity(tileEntityClass, key);
                 }
@@ -87,15 +86,14 @@ public class ModBlocks
         for (String key : mBlocks.keySet())
         {
             ModBlock block = mBlocks.get(key);
-            if(block != null)
+            if (block != null)
             {
                 registerRender(block, key);
             }
         }
     }
 
-    private static void registerRender(ModBlock block, String key)
-    {
+    private static void registerRender(ModBlock block, String key) {
         Item item = Item.getItemFromBlock(block);
 
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher()
@@ -104,8 +102,7 @@ public class ModBlocks
                         new ModelResourceLocation(Reference.RESOURCE_PREFIX + key, "inventory"));
     }
 
-    public static void registerRecipes()
-    {
+    public static void registerRecipes() {
         ModBlock item = mBlocks.get(SACRED_LIGHT);
         GameRegistry.addRecipe(new ItemStack(item, 1),
                 "GRG",

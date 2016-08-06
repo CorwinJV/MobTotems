@@ -1,10 +1,17 @@
 package com.corwinjv.mobtotems.entities;
 
+import com.corwinjv.mobtotems.particles.ModParticles;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.IParticleFactory;
+import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import org.apache.logging.log4j.Level;
 
 /**
  * Created by CorwinJV on 2/14/2016.
@@ -32,6 +39,11 @@ public class EntitySpiritWolf extends EntityWolf
         {
             setDead();
         }
+
+        if(getEntityWorld().isRemote)
+        {
+            spawnParticles();
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -57,5 +69,16 @@ public class EntitySpiritWolf extends EntityWolf
         this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(4.0D);
     }
 
+    @SideOnly(Side.CLIENT)
+    private void spawnParticles()
+    {
+        IParticleFactory particleFactory = new ModParticles.Factory();
 
+        long worldTime = getEntityWorld().getTotalWorldTime();
+        if(worldTime % 20 == 0)
+        {
+            Particle particle = particleFactory.getEntityFX(ModParticles.WOLF_IDLE_SMOKE, getEntityWorld(), posX, posY, posZ, 0d, 0d, 0d);
+            Minecraft.getMinecraft().effectRenderer.addEffect(particle);
+        }
+    }
 }

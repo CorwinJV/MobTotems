@@ -28,7 +28,8 @@ import java.util.UUID;
 /**
  * Created by CorwinJV on 1/31/2016.
  */
-public class WolfTotemBauble extends BaubleItem {
+public class WolfTotemBauble extends BaubleItem
+{
     private static final String WOLF_ID = "WOLF_ID";
     private static final String WOLF_TOTEM_COMPOUND = "WOLF_TOTEM_COMPOUND";
     private static final int SPAWN_DISTANCE = 3;

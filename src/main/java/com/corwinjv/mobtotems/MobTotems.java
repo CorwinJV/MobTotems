@@ -5,11 +5,9 @@ package com.corwinjv.mobtotems;
 
 import com.corwinjv.mobtotems.blocks.ModBlocks;
 import com.corwinjv.mobtotems.entities.ModEntities;
-import com.corwinjv.mobtotems.gui.BaublesChargeGui;
 import com.corwinjv.mobtotems.items.ModItems;
 import com.corwinjv.mobtotems.network.Network;
 import com.corwinjv.mobtotems.proxy.CommonProxy;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -66,5 +64,6 @@ public class MobTotems
     public void postInit(FMLPostInitializationEvent event)
     {
         proxy.registerGui();
+        proxy.registerParticleRenderer();
     }
 }

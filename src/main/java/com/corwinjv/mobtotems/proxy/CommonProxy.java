@@ -26,4 +26,9 @@ public class CommonProxy
     {
 
     }
+
+    public void registerParticleRenderer()
+    {
+
+    }
 }
