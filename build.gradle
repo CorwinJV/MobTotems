@@ -24,8 +24,13 @@ version = "1.10.2-0.1.2"
 group= "com.corwinjv.mobtotems" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "mobtotems"
 
+sourceCompatibility = targetCompatibility = "1.6" // Need this here so eclipse task generates correctly.
+compileJava {
+    sourceCompatibility = targetCompatibility = "1.6"
+}
+
 minecraft {
-    version = "1.10.2-12.18.1.2046"
+    version = "1.10.2-12.18.1.2076"
     runDir = "run"
     
     // the mappings can be changed at any time, and must be in the following format.
