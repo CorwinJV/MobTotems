@@ -6,6 +6,7 @@ import com.corwinjv.mobtotems.utils.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -23,7 +24,7 @@ public class TotemicFocus extends ModItem
 {
     @Nonnull
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand enumHand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand enumHand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (!world.isRemote)
         {
             Block targetBlock = BlockUtils.getBlock(world, pos);

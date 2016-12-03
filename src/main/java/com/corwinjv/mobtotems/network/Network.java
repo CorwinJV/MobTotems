@@ -28,4 +28,9 @@ public class Network {
     {
         instance.sendToServer(message);
     }
+
+    public static void sendToAll(Message message)
+    {
+        instance.sendToAll(message);
+    }
 }

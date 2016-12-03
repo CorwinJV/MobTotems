@@ -28,13 +28,7 @@ public class ActivateBaubleMessage extends Message<ActivateBaubleMessage>
             if(baubleStack != null
                     && baubleStack.getItem() instanceof BaubleItem)
             {
-                final EntityPlayerMP fPlayer = player;
-                FMLCommonHandler.instance().getMinecraftServerInstance().addScheduledTask(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((BaubleItem) baubleStack.getItem()).onBaubleActivated(baubleStack, fPlayer);
-                    }
-                });
+                ((BaubleItem) baubleStack.getItem()).onBaubleActivated(baubleStack, player);
             }
         }
     }

@@ -48,6 +48,7 @@ public class MobTotems
         // Entities
         ModEntities.init();
         ModEntities.registerEntities(instance);
+        proxy.registerEntityRenders();
 
         // Keybinds
         proxy.registerKeys();
@@ -62,5 +63,7 @@ public class MobTotems
     @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
+        proxy.registerGui();
+        proxy.registerParticleRenderer();
     }
 }

@@ -38,6 +38,7 @@ public class SacredLightBlock extends ModBlock implements ITileEntityProvider
         this.setHardness(2.0F);
         this.setSoundType(SoundType.WOOD);
 
+        this.isBlockContainer = true;
         MinecraftForge.EVENT_BUS.register(new EntityJoinWorldHandler());
     }
 
@@ -110,7 +111,7 @@ public class SacredLightBlock extends ModBlock implements ITileEntityProvider
     // Okay, so I see that neighborChanged is deprecated but it appears that onNeighborChange(IBlockAccess, BlockPos, BlockPos)
     // doesn't get called when a sand block is broken under the SacredLightBlock
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos p_189540_5_)
     {
         this.checkForDrop(worldIn, pos, state);
     }
@@ -149,7 +150,7 @@ public class SacredLightBlock extends ModBlock implements ITileEntityProvider
             {
                 List<TileEntity> loadedTileEntityList = new ArrayList<TileEntity>((ArrayList)e.getWorld().loadedTileEntityList);
 
-                for (TileEntity tileEntity : Collections2.filter(loadedTileEntityList, sacredLightPredicate)) {
+                for (TileEntity tileEntity : Collections2.filter(loadedTileEntityList, SacredLightTEPredicate)) {
                     if(!((SacredLightTileEntity)tileEntity).canSpawnMobHere(e.getEntity()))
                     {
                         e.setCanceled(true);
@@ -159,7 +160,7 @@ public class SacredLightBlock extends ModBlock implements ITileEntityProvider
             }
         }
     }
-    private Predicate<TileEntity> sacredLightPredicate = new Predicate<TileEntity>()
+    public static Predicate<TileEntity> SacredLightTEPredicate = new Predicate<TileEntity>()
     {
         @Override public boolean apply(TileEntity tileEntity)
         {

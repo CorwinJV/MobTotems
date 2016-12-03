@@ -16,18 +16,34 @@ import javax.annotation.Nonnull;
  */
 public class ModTileEntity extends TileEntity implements ITickable
 {
+    public ModTileEntity()
+    {
+        super();
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound)
+    {
+        return super.writeToNBT(tagCompound);
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tagCompound)
+    {
+        super.readFromNBT(tagCompound);
+    }
+
     @Nonnull
     @Override
-    public final NBTTagCompound getUpdateTag() {
-        return writeToNBT(new NBTTagCompound());
+    public final NBTTagCompound getUpdateTag()
+    {
+        return writeToNBT(super.getUpdateTag());
     }
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket()
     {
-        NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        writeToNBT(nbtTagCompound);
-        return new SPacketUpdateTileEntity(pos, 0, nbtTagCompound);
+        return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
     }
 
     @Override
@@ -35,6 +51,9 @@ public class ModTileEntity extends TileEntity implements ITickable
     {
         super.onDataPacket(networkManager, packet);
         readFromNBT(packet.getNbtCompound());
+
+        final IBlockState state = getWorld().getBlockState(getPos());
+        getWorld().notifyBlockUpdate(getPos(), state, state, 3);
     }
 
     @Override
@@ -51,9 +70,6 @@ public class ModTileEntity extends TileEntity implements ITickable
 
     public void markForUpdate()
     {
-        // TODO: find way to do this in 1.9+? Maybe not needed anymore?
-        // I can't figure out how to get the blocks to send their packets to the client
-        //worldObj.markBlockForUpdate(pos);
         markDirty();
     }
 }
