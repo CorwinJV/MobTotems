@@ -16,12 +16,12 @@ public class SpiritWolfRender extends RenderWolf
     private static final ResourceLocation SPIRIT_WOLF_TEXTURES = new ResourceLocation(Reference.RESOURCE_PREFIX + "textures/entity/entity_spirit_wolf.png");
 
     public SpiritWolfRender(RenderManager renderManagerIn, ModelBase modelBaseIn, float shadowSizeIn) {
-        super(renderManagerIn, modelBaseIn, shadowSizeIn);
+        super(renderManagerIn);
         for(int i = layerRenderers.size() - 1; i >= 0; i--)
         {
             if(this.layerRenderers.get(i) instanceof LayerWolfCollar)
             {
-                this.removeLayer(this.layerRenderers.get(i));
+                this.layerRenderers.remove(i);
             }
         }
     }

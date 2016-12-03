@@ -24,7 +24,7 @@ public class TotemicFocus extends ModItem
 {
     @Nonnull
     @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumHand enumHand, EnumFacing side, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand enumHand, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (!world.isRemote)
         {
             Block targetBlock = BlockUtils.getBlock(world, pos);

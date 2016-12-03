@@ -1,7 +1,9 @@
 package com.corwinjv.mobtotems.entities;
 
+import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.entities.render.SpiritWolfRenderFactory;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 
@@ -33,8 +35,8 @@ public class ModEntities
             Class<? extends Entity> entityClass = mEntities.get(key);
             if(entityClass != null)
             {
-                EntityRegistry.registerModEntity(entityClass, key, ENTITY_ID++, modObject, 80, 3, false);
-                EntityRegistry.registerEgg(entityClass, 1, 2);
+                EntityRegistry.registerModEntity(new ResourceLocation(Reference.RESOURCE_PREFIX + entityClass.getSimpleName()), entityClass, key, ENTITY_ID++, modObject, 80, 3, false);
+                EntityRegistry.registerEgg(new ResourceLocation(Reference.RESOURCE_PREFIX + entityClass.getSimpleName()), 1, 2);
             }
         }
     }

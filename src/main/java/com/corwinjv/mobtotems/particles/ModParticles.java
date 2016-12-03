@@ -27,7 +27,7 @@ public class ModParticles
     public static class Factory implements IParticleFactory
     {
         @Nullable
-        public Particle getEntityFX(int particleID, @Nonnull World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double xSpeedIn, double ySpeedIn, double zSpeedIn, int... p_178902_15_)
+        public Particle createParticle(int particleID, @Nonnull World worldIn, double xCoordIn, double yCoordIn, double zCoordIn, double xSpeedIn, double ySpeedIn, double zSpeedIn, int... p_178902_15_)
         {
             Particle ret = null;
 

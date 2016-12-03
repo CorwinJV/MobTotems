@@ -87,7 +87,7 @@ public class EntitySpiritWolf extends EntityWolf
             Vec3d posVec = new Vec3d(posX - (lookVec.xCoord * 0.25), posY -(lookVec.yCoord * 0.25), posZ - (lookVec.zCoord * 0.25));
             Vec3d speedVec = new Vec3d(-lookVec.xCoord * 0.10, -lookVec.yCoord * 0.10 + initialYSpeed, -lookVec.zCoord * 0.10);
 
-            Particle particle = particleFactory.getEntityFX(ModParticles.WOLF_IDLE_SMOKE, getEntityWorld(), posVec.xCoord, posVec.yCoord, posVec.zCoord, speedVec.xCoord, speedVec.yCoord, speedVec.zCoord);
+            Particle particle = particleFactory.createParticle(ModParticles.WOLF_IDLE_SMOKE, getEntityWorld(), posVec.xCoord, posVec.yCoord, posVec.zCoord, speedVec.xCoord, speedVec.yCoord, speedVec.zCoord);
             Minecraft.getMinecraft().effectRenderer.addEffect(particle);
         }
     }

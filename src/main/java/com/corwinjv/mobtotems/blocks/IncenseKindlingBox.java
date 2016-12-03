@@ -77,7 +77,7 @@ public class IncenseKindlingBox extends ModBlock implements ITileEntityProvider
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn)
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos p_189540_5_)
     {
         this.checkForDrop(worldIn, pos, state);
     }
