@@ -11,6 +11,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLLog;
+import org.apache.logging.log4j.Level;
 import org.lwjgl.opengl.GL11;
 
 import java.util.LinkedList;
@@ -21,11 +23,10 @@ import java.util.Queue;
  */
 public class WolfIdleParticle extends Particle
 {
-    public static final ResourceLocation PARTICLE_TEXTURES = new ResourceLocation(Reference.RESOURCE_PREFIX + "textures/items/totemic_focus.png");
+    private static final ResourceLocation PARTICLE_TEXTURES = new ResourceLocation(Reference.RESOURCE_PREFIX + "textures/particles/spirit_wolf_smoke.png");
 
-    static Queue<WolfIdleParticle> queuedRenders = new LinkedList<WolfIdleParticle>();
+    private static Queue<WolfIdleParticle> queuedRenders = new LinkedList<WolfIdleParticle>();
 
-    private Entity entity = null;
     private float partialTicks;
     private float rotationX;
     private float rotationZ;
@@ -33,16 +34,44 @@ public class WolfIdleParticle extends Particle
     private float rotationXZ;
     private float rotationXY;
 
-    protected WolfIdleParticle(World worldIn, double posXIn, double posYIn, double posZIn) {
-        super(worldIn, posXIn, posYIn, posZIn);
+    private static final int numFrames = 2;
 
-        this.motionY = 0.025f;
+    public WolfIdleParticle(World worldIn, double posXIn, double posYIn, double posZIn)
+    {
+        super(worldIn, posXIn, posYIn, posZIn);
+        this.particleGravity = 0.06F;
+        this.particleMaxAge = (int)(8.0F / (this.rand.nextFloat() * 0.9F + 0.1F));
+    }
+
+    public WolfIdleParticle(World worldIn, double posXIn, double posYIn, double posZIn, double speedXIn, double speedYIn, double speedZIn)
+    {
+        this(worldIn, posXIn, posYIn, posZIn);
+        this.motionX = speedXIn;
+        this.motionY = speedYIn;
+        this.motionZ = speedZIn;
+    }
+
+    @Override
+    public void onUpdate()
+    {
+        super.onUpdate();
+
+        float cappedParticleAge = (particleAge > particleMaxAge) ? particleMaxAge : particleAge;
+        float particleTime = cappedParticleAge / particleMaxAge;
+        int curFrame = (int)Math.floor(particleTime * numFrames);
+
+        this.setParticleTextureIndex(curFrame);
+    }
+
+    @Override
+    public void setParticleTextureIndex(int particleTextureIndex)
+    {
+        particleTextureIndexX = particleTextureIndex;
     }
 
     @Override
     public void renderParticle(VertexBuffer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ)
     {
-        this.entity = entityIn;
         this.partialTicks = partialTicks;
         this.rotationX = rotationX;
         this.rotationZ = rotationZ;
@@ -57,7 +86,6 @@ public class WolfIdleParticle extends Particle
     {
         return 1;
     }
-
 
     static void RenderQueuedRenders(Tessellator tessellator)
     {
@@ -76,11 +104,17 @@ public class WolfIdleParticle extends Particle
 
     public void renderQueued(Tessellator tessellator)
     {
-        float minU = 0.0f;
-        float maxU = 1.0f;
+        float numFrames = 2;
+        float width = 16;
+        //int height = 16;
+
+        float minU = (width * (float)particleTextureIndexX) / (numFrames * width);
+        float maxU = minU + (width / (numFrames * width));
         float minV = 0.0f;
         float maxV = 1.0f;
         float scale = 0.1f * this.particleScale;
+
+        //FMLLog.log(Level.ERROR, "renderQueued() - indexX: " + particleTextureIndexX + "minU: " + minU + "maxU: " + maxU);
 
         Vec3d[] avec3d = new Vec3d[]
                 {

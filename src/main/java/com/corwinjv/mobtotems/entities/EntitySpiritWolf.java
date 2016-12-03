@@ -8,10 +8,14 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityWolf;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.logging.log4j.Level;
+
+import java.util.Random;
 
 /**
  * Created by CorwinJV on 2/14/2016.
@@ -75,9 +79,15 @@ public class EntitySpiritWolf extends EntityWolf
         IParticleFactory particleFactory = new ModParticles.Factory();
 
         long worldTime = getEntityWorld().getTotalWorldTime();
-        if(worldTime % 20 == 0)
+        if(worldTime % 8 == 0)
         {
-            Particle particle = particleFactory.getEntityFX(ModParticles.WOLF_IDLE_SMOKE, getEntityWorld(), posX, posY, posZ, 0d, 0d, 0d);
+            double initialYSpeed = 0.05D;
+
+            Vec3d lookVec = getLook(1.0f);
+            Vec3d posVec = new Vec3d(posX - (lookVec.xCoord * 0.25), posY -(lookVec.yCoord * 0.25), posZ - (lookVec.zCoord * 0.25));
+            Vec3d speedVec = new Vec3d(-lookVec.xCoord * 0.10, -lookVec.yCoord * 0.10 + initialYSpeed, -lookVec.zCoord * 0.10);
+
+            Particle particle = particleFactory.getEntityFX(ModParticles.WOLF_IDLE_SMOKE, getEntityWorld(), posVec.xCoord, posVec.yCoord, posVec.zCoord, speedVec.xCoord, speedVec.yCoord, speedVec.zCoord);
             Minecraft.getMinecraft().effectRenderer.addEffect(particle);
         }
     }

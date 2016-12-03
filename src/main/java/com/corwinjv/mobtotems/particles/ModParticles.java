@@ -35,7 +35,7 @@ public class ModParticles
             {
                 case WOLF_IDLE_SMOKE:
                 {
-                    ret = new WolfIdleParticle(worldIn, xCoordIn, yCoordIn, zCoordIn);
+                    ret = new WolfIdleParticle(worldIn, xCoordIn, yCoordIn, zCoordIn, xSpeedIn, ySpeedIn, zSpeedIn);
                     break;
                 }
                 default:
