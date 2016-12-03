@@ -36,9 +36,10 @@ public class ModItems
     {
         mItems = new HashMap<String,ModItem>();
 
-        ModItem wolf_totem_bauble = new WolfTotemBauble();
-        wolf_totem_bauble.setUnlocalizedName(WOLF_TOTEM_BAUBLE);
-        mItems.put(WOLF_TOTEM_BAUBLE, wolf_totem_bauble);
+        // TODO: next release
+//        ModItem wolf_totem_bauble = new WolfTotemBauble();
+//        wolf_totem_bauble.setUnlocalizedName(WOLF_TOTEM_BAUBLE);
+//        mItems.put(WOLF_TOTEM_BAUBLE, wolf_totem_bauble);
 
         mItems.put(TOTEMIC_FOCUS, (ModItem)TOTEMIC_FOCUS_ITEM);
     }

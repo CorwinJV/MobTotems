@@ -25,7 +25,8 @@ public class ModEntities
     public static void init()
     {
         mEntities = new HashMap<String,Class<? extends Entity>>();
-        mEntities.put(SPIRIT_WOLF, EntitySpiritWolf.class);
+        // TODO: next release
+//        mEntities.put(SPIRIT_WOLF, EntitySpiritWolf.class);
     }
 
     public static void registerEntities(Object modObject)
