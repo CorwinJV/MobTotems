@@ -148,7 +148,7 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity
                         double motionX = rand.nextGaussian() * 0.02D;
                         double motionY = rand.nextGaussian() * 0.02D;
                         double motionZ = rand.nextGaussian() * 0.02D;
-                        worldObj.spawnParticle(
+                        world.spawnParticle(
                                 EnumParticleTypes.CLOUD,
                                 x + rand.nextFloat() * width * 2.0F - width,
                                 y + 1.0D + rand.nextFloat() * height,
@@ -163,7 +163,7 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity
                         motionX = rand.nextGaussian() * 0.02D;
                         motionY = rand.nextGaussian() * 0.02D;
                         motionZ = rand.nextGaussian() * 0.02D;
-                        worldObj.spawnParticle(
+                        world.spawnParticle(
                                 EnumParticleTypes.VILLAGER_HAPPY,
                                 x + rand.nextFloat() * width * 2.0F - width,
                                 y + 0.5D + rand.nextFloat() * height,

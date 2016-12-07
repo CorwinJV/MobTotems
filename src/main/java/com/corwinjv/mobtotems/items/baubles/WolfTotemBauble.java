@@ -128,7 +128,7 @@ public class WolfTotemBauble extends BaubleItem
     @Override
     public void onBaubleActivated(ItemStack stack, EntityPlayer player)
     {
-        if(!player.worldObj.isRemote)
+        if(!player.world.isRemote)
         {
             if(!hasValidNbt(stack))
             {
@@ -138,7 +138,7 @@ public class WolfTotemBauble extends BaubleItem
             NBTTagCompound tagCompound = stack.getTagCompound();
             NBTTagCompound wolfTotemCompound = tagCompound.getCompoundTag(WOLF_TOTEM_COMPOUND);
 
-            EntitySpiritWolf spiritWolf = getWolf(stack, player.worldObj);
+            EntitySpiritWolf spiritWolf = getWolf(stack, player.world);
             if(spiritWolf == null
                     && tagCompound.getInteger(CHARGE_LEVEL) > 0)
             {
@@ -148,7 +148,7 @@ public class WolfTotemBauble extends BaubleItem
                 double posY = player.posY + (facingVec.getY() * SPAWN_DISTANCE);
                 double posZ = player.posZ + (facingVec.getZ() * SPAWN_DISTANCE);
 
-                spiritWolf = spawnSpiritWolf(player.worldObj, posX, posY, posZ);
+                spiritWolf = spawnSpiritWolf(player.world, posX, posY, posZ);
                 tameSpiritWolf(spiritWolf, player);
 
                 wolfTotemCompound.setString(WOLF_ID, spiritWolf.getPersistentID().toString());
@@ -171,7 +171,7 @@ public class WolfTotemBauble extends BaubleItem
         entityliving.rotationYawHead = entityliving.rotationYaw;
         entityliving.renderYawOffset = entityliving.rotationYaw;
         entityliving.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(entityliving)), (IEntityLivingData)null);
-        worldIn.spawnEntityInWorld(entityliving);
+        worldIn.spawnEntity(entityliving);
         entityliving.playLivingSound();
 
         return (EntitySpiritWolf)entityliving;
@@ -186,7 +186,7 @@ public class WolfTotemBauble extends BaubleItem
         spiritWolf.getAISit().setSitting(false);
         spiritWolf.setHealth(20.0F);
         spiritWolf.setOwnerId(ownerPlayer.getUniqueID());
-        spiritWolf.worldObj.setEntityState(spiritWolf, (byte)7);
+        spiritWolf.world.setEntityState(spiritWolf, (byte)7);
         spiritWolf.setInitialized(true);
     }
 

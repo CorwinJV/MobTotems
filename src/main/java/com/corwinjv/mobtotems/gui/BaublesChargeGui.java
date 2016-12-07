@@ -44,7 +44,7 @@ public class BaublesChargeGui extends Gui
             return;
         }
 
-        IInventory baublesInventory = BaublesApi.getBaubles(minecraft.thePlayer);
+        IInventory baublesInventory = BaublesApi.getBaubles(minecraft.player);
         for(int i = 0; i < baublesInventory.getSizeInventory(); i++)
         {
             final ItemStack baubleStack = baublesInventory.getStackInSlot(i);

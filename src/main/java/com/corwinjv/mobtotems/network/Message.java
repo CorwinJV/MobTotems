@@ -22,7 +22,7 @@ public class Message<REQ extends IMessage> implements IMessage, IMessageHandler<
 
         if(ctx.side == Side.SERVER)
         {
-            ((IThreadListener) ctx.getServerHandler().playerEntity.worldObj).addScheduledTask(new Runnable() {
+            ((IThreadListener) ctx.getServerHandler().playerEntity.world).addScheduledTask(new Runnable() {
                 @Override
                 public void run() {
                     handleServer(message, ctx.getServerHandler().playerEntity);
@@ -34,7 +34,7 @@ public class Message<REQ extends IMessage> implements IMessage, IMessageHandler<
             Minecraft.getMinecraft().addScheduledTask(new Runnable() {
                 @Override
                 public void run() {
-                    handleClient(message, Minecraft.getMinecraft().thePlayer);
+                    handleClient(message, Minecraft.getMinecraft().player);
                 }
             });
         }
