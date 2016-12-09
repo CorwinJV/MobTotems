@@ -1,33 +1,28 @@
 package com.corwinjv.mobtotems.items.baubles;
 
 import baubles.api.BaubleType;
-import baubles.api.BaublesApi;
 import baubles.api.IBauble;
 import com.corwinjv.mobtotems.interfaces.IChargeable;
 import com.corwinjv.mobtotems.items.ModItem;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 /**
  * Created by CorwinJV on 1/31/2016.
  */
-@Optional.Interface(modid = "Baubles", iface = "baubles.api.IBauble")
+@Optional.Interface(modid = "baubles", iface = "baubles.api.IBauble")
 public class BaubleItem extends ModItem implements IBauble, IChargeable
 {
     protected static final String CHARGE_LEVEL = "CHARGE_LEVEL";
     private int maxChargeLevel = 16;
-    private boolean doSync = false;
 
     public BaubleItem()
     {
@@ -61,7 +56,6 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
         if(tagCompound == null)
         {
             tagCompound = initNbtData(stack);
-            markForSync();
         }
         return tagCompound.getInteger(CHARGE_LEVEL);
     }
@@ -73,12 +67,6 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
         if(tagCompound == null)
         {
             tagCompound = initNbtData(stack);
-            markForSync();
-        }
-
-        if(tagCompound.getInteger(CHARGE_LEVEL) != chargeLevel)
-        {
-            markForSync();
         }
         tagCompound.setInteger(CHARGE_LEVEL, chargeLevel);
     }
@@ -118,11 +106,6 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
     }
 
     @Override
-    public BaubleType getBaubleType(ItemStack stack) {
-        return null;
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
     {
@@ -130,26 +113,8 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
     }
 
     @Override
-    public void onWornTick(ItemStack stack, EntityLivingBase player)
-    {
-        // Look, I'm not wild about this either, but I'm not sure how to get a reference to the world/player from within setCharge()
-        if(!player.getEntityWorld().isRemote
-                && player.getEntityWorld().getTotalWorldTime() % 20 == 0
-                && doSync)
-        {
-            syncBaubleToClient(stack, player);
-            doSync = false;
-        }
-    }
-
-    @Override
-    public void onEquipped(ItemStack stack, EntityLivingBase player)
-    {
-    }
-
-    @Override
-    public void onUnequipped(ItemStack stack, EntityLivingBase player)
-    {
+    public BaubleType getBaubleType(ItemStack itemstack) {
+        return BaubleType.TRINKET;
     }
 
     @Override
@@ -162,33 +127,8 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
         return true;
     }
 
-    private void syncBaubleToClient(ItemStack stack, EntityLivingBase player)
-    {
-        IInventory baubleInventory = BaublesApi.getBaubles((EntityPlayer)player);
-        for(int i = 0; i < baubleInventory.getSizeInventory(); i++)
-        {
-            if(baubleInventory.getStackInSlot(i) == stack)
-            {
-                try {
-                    Field field = ((Object)baubleInventory).getClass().getDeclaredField("blockEvents");
-                    if(field != null)
-                    {
-                        field.setAccessible(true);
-                        field.set(baubleInventory, true);
-                        baubleInventory.setInventorySlotContents(i, stack);
-                        field.set(baubleInventory, false);
-                    }
-                } catch (NoSuchFieldException e1) {
-                    e1.printStackTrace();
-                } catch (IllegalAccessException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        }
-    }
-
-    private void markForSync()
-    {
-        doSync = true;
+    @Override
+    public boolean willAutoSync(ItemStack itemstack, EntityLivingBase player) {
+        return true;
     }
 }

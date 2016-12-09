@@ -35,8 +35,7 @@ public class BaublesChargeGui extends Gui
         minecraft = mc;
     }
 
-    // TODO: Continue work on this when baubles works for 1.11
-    //@SubscribeEvent()
+    @SubscribeEvent()
     public void onRenderOverlay(RenderGameOverlayEvent e)
     {
         if(e.isCancelable() || e.getType() != RenderGameOverlayEvent.ElementType.POTION_ICONS)
