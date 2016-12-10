@@ -9,6 +9,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
@@ -28,13 +29,13 @@ public class BaublesChargeGui extends Gui
     private static final int CHARGE_COLOR = 0xFF00FF00;
 
     private Minecraft minecraft = null;
-
     public BaublesChargeGui(Minecraft mc)
     {
         super();
         minecraft = mc;
     }
 
+    @Optional.Method(modid = "baubles")
     @SubscribeEvent()
     public void onRenderOverlay(RenderGameOverlayEvent e)
     {
