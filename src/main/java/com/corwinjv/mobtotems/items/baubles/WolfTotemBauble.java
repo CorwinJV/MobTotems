@@ -2,7 +2,9 @@ package com.corwinjv.mobtotems.items.baubles;
 
 import baubles.api.BaubleType;
 import com.corwinjv.mobtotems.entities.EntitySpiritWolf;
+import com.corwinjv.mobtotems.utils.BlockUtils;
 import com.google.common.base.Predicate;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
@@ -15,6 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
@@ -149,15 +152,18 @@ public class WolfTotemBauble extends BaubleItem
                 //FMLLog.log(Level.INFO, "spiritWolf is null and charge is greater than zero");
                 Vec3i facingVec = player.getHorizontalFacing().getDirectionVec();
                 double posX = player.posX + (facingVec.getX() * SPAWN_DISTANCE);
-                double posY = player.posY + (facingVec.getY() * SPAWN_DISTANCE);
+                double posY = player.posY;
                 double posZ = player.posZ + (facingVec.getZ() * SPAWN_DISTANCE);
 
-                // TODO: Check if spawn location is occupied by a solid block
+                // Check if spawn location is occupied by a solid block
+                BlockPos blockPos = new BlockPos((int)posX, (int)posY, (int)posZ);
+                if(!BlockUtils.isAreaSolid(player, blockPos))
+                {
+                    spiritWolf = spawnSpiritWolf(player.world, posX, posY, posZ);
+                    spiritWolf.tame(player);
 
-                spiritWolf = spawnSpiritWolf(player.world, posX, posY, posZ);
-                tameSpiritWolf(spiritWolf, player);
-
-                wolfTotemCompound.setString(WOLF_ID, spiritWolf.getPersistentID().toString());
+                    wolfTotemCompound.setString(WOLF_ID, spiritWolf.getPersistentID().toString());
+                }
             }
             else if(spiritWolf != null)
             {
@@ -183,18 +189,6 @@ public class WolfTotemBauble extends BaubleItem
         return (EntitySpiritWolf)entityliving;
     }
 
-    // TODO: Move to custom SpiritWolf Entity when I get around to writing one
-    private void tameSpiritWolf(EntitySpiritWolf spiritWolf, EntityPlayer ownerPlayer)
-    {
-        spiritWolf.setTamed(true);
-        spiritWolf.getNavigator().clearPathEntity();
-        spiritWolf.setAttackTarget(null);
-        spiritWolf.getAISit().setSitting(false);
-        spiritWolf.setHealth(20.0F);
-        spiritWolf.setOwnerId(ownerPlayer.getUniqueID());
-        spiritWolf.world.setEntityState(spiritWolf, (byte)7);
-        spiritWolf.setInitialized(true);
-    }
 
     /**
      * This method is called once per tick if the bauble is being worn by a player

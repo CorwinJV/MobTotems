@@ -8,6 +8,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityWolf;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -34,6 +35,18 @@ public class EntitySpiritWolf extends EntityWolf
     public void setInitialized(boolean initialized)
     {
         this.initialized = initialized;
+    }
+
+    public void tame(EntityPlayer player)
+    {
+        setTamed(true);
+        getNavigator().clearPathEntity();
+        setAttackTarget(null);
+        getAISit().setSitting(false);
+        setHealth(20.0F);
+        setOwnerId(player.getUniqueID());
+        world.setEntityState(this, (byte)7);
+        setInitialized(true);
     }
 
     @Override

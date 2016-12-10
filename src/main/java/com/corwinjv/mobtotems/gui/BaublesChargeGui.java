@@ -1,6 +1,7 @@
 package com.corwinjv.mobtotems.gui;
 
 import baubles.api.BaublesApi;
+import baubles.api.cap.IBaublesItemHandler;
 import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.items.baubles.BaubleItem;
 import net.minecraft.client.Minecraft;
@@ -44,11 +45,10 @@ public class BaublesChargeGui extends Gui
             return;
         }
 
-        // TODO: Switch to new IBaublesItemHandler system since this is deprecated
-        IInventory baublesInventory = BaublesApi.getBaubles(minecraft.player);
-        for(int i = 0; i < baublesInventory.getSizeInventory(); i++)
+        IBaublesItemHandler baublesItemHandler = BaublesApi.getBaublesHandler(minecraft.player);
+        for(int i = 0; i < baublesItemHandler.getSlots(); i++)
         {
-            final ItemStack baubleStack = baublesInventory.getStackInSlot(i);
+            final ItemStack baubleStack = baublesItemHandler.getStackInSlot(i);
 
             if(baubleStack != ItemStack.EMPTY
                     && baubleStack.getItem() instanceof BaubleItem)

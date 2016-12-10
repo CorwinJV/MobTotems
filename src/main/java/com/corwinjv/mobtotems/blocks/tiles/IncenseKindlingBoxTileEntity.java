@@ -1,6 +1,7 @@
 package com.corwinjv.mobtotems.blocks.tiles;
 
 import baubles.api.BaublesApi;
+import baubles.api.cap.IBaublesItemHandler;
 import com.corwinjv.mobtotems.interfaces.IChargeable;
 import com.google.common.base.Predicate;
 import net.minecraft.block.Block;
@@ -108,10 +109,10 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity
 
         for(EntityPlayer player : playersWithinRange)
         {
-            IInventory inventory = BaublesApi.getBaubles(player);
-            for(int i = 0; i < inventory.getSizeInventory(); i++)
+            IBaublesItemHandler baublesItemHandler = BaublesApi.getBaublesHandler(player);
+            for(int i = 0; i < baublesItemHandler.getSlots(); i++)
             {
-                final ItemStack baubleStack = inventory.getStackInSlot(i);
+                final ItemStack baubleStack = baublesItemHandler.getStackInSlot(i);
                 if(baubleStack != ItemStack.EMPTY
                         && baubleStack.getItem() instanceof IChargeable)
                 {
