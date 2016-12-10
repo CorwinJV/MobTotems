@@ -112,7 +112,7 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity
             for(int i = 0; i < inventory.getSizeInventory(); i++)
             {
                 final ItemStack baubleStack = inventory.getStackInSlot(i);
-                if(baubleStack != null
+                if(baubleStack != ItemStack.EMPTY
                         && baubleStack.getItem() instanceof IChargeable)
                 {
                     ((IChargeable) baubleStack.getItem()).incrementChargeLevel(baubleStack, CHARGE_GAIN_PER_TICK);

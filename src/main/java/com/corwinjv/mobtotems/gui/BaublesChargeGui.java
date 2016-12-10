@@ -44,12 +44,13 @@ public class BaublesChargeGui extends Gui
             return;
         }
 
+        // TODO: Switch to new IBaublesItemHandler system since this is deprecated
         IInventory baublesInventory = BaublesApi.getBaubles(minecraft.player);
         for(int i = 0; i < baublesInventory.getSizeInventory(); i++)
         {
             final ItemStack baubleStack = baublesInventory.getStackInSlot(i);
 
-            if(baubleStack != null
+            if(baubleStack != ItemStack.EMPTY
                     && baubleStack.getItem() instanceof BaubleItem)
             {
                 final BaubleItem baubleItem = (BaubleItem)baubleStack.getItem();

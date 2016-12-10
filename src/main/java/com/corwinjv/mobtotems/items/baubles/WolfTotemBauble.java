@@ -48,6 +48,10 @@ public class WolfTotemBauble extends BaubleItem
         return BaubleType.AMULET;
     }
 
+    @Override
+    public int getMaxChargeLevel() {
+        return 32;
+    }
 
     @Override
     public void onCreated(ItemStack stack, World world, EntityPlayer player)
@@ -147,6 +151,8 @@ public class WolfTotemBauble extends BaubleItem
                 double posX = player.posX + (facingVec.getX() * SPAWN_DISTANCE);
                 double posY = player.posY + (facingVec.getY() * SPAWN_DISTANCE);
                 double posZ = player.posZ + (facingVec.getZ() * SPAWN_DISTANCE);
+
+                // TODO: Check if spawn location is occupied by a solid block
 
                 spiritWolf = spawnSpiritWolf(player.world, posX, posY, posZ);
                 tameSpiritWolf(spiritWolf, player);

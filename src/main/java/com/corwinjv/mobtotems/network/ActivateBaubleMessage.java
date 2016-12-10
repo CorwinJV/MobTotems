@@ -25,7 +25,7 @@ public class ActivateBaubleMessage extends Message<ActivateBaubleMessage>
         for(int i = 0; i < baubleInventory.getSizeInventory(); i++)
         {
             final ItemStack baubleStack = baubleInventory.getStackInSlot(i);
-            if(baubleStack != null
+            if(baubleStack != ItemStack.EMPTY
                     && baubleStack.getItem() instanceof BaubleItem)
             {
                 ((BaubleItem) baubleStack.getItem()).onBaubleActivated(baubleStack, player);

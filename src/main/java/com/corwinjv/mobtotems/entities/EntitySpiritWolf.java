@@ -8,6 +8,8 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityWolf;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLLog;
@@ -83,12 +85,17 @@ public class EntitySpiritWolf extends EntityWolf
         {
             double initialYSpeed = 0.05D;
 
-            Vec3d lookVec = getLook(1.0f);
-            Vec3d posVec = new Vec3d(posX - (lookVec.xCoord * 0.25), posY -(lookVec.yCoord * 0.25), posZ - (lookVec.zCoord * 0.25));
-            Vec3d speedVec = new Vec3d(-lookVec.xCoord * 0.10, -lookVec.yCoord * 0.10 + initialYSpeed, -lookVec.zCoord * 0.10);
+            Vec3d forwardVec = getForward();
+            Vec3d speedVec = new Vec3d(0, -forwardVec.yCoord * 0.10 + initialYSpeed, 0);
+            float yPos = (float)this.getEntityBoundingBox().minY;
 
-            Particle particle = particleFactory.createParticle(ModParticles.WOLF_IDLE_SMOKE, getEntityWorld(), posVec.xCoord, posVec.yCoord, posVec.zCoord, speedVec.xCoord, speedVec.yCoord, speedVec.zCoord);
-            Minecraft.getMinecraft().effectRenderer.addEffect(particle);
+            for (int j = 0; j < 2; ++j)
+            {
+                float xPos = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
+                float zPos = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
+                Particle particle = particleFactory.createParticle(ModParticles.WOLF_IDLE_SMOKE, getEntityWorld(), this.posX + (double)xPos, (double)(yPos + 0.1F), this.posZ + (double)zPos, speedVec.xCoord, speedVec.yCoord, speedVec.zCoord);
+                Minecraft.getMinecraft().effectRenderer.addEffect(particle);
+            }
         }
     }
 }

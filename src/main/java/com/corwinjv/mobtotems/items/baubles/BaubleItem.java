@@ -22,7 +22,6 @@ import java.util.List;
 public class BaubleItem extends ModItem implements IBauble, IChargeable
 {
     protected static final String CHARGE_LEVEL = "CHARGE_LEVEL";
-    private int maxChargeLevel = 16;
 
     public BaubleItem()
     {
@@ -89,16 +88,16 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
     {
         int chargeLevel = getChargeLevel(stack);
         chargeLevel += amount;
-        if(chargeLevel > maxChargeLevel)
+        if(chargeLevel > getMaxChargeLevel())
         {
-            chargeLevel = maxChargeLevel;
+            chargeLevel = getMaxChargeLevel();
         }
         setChargeLevel(stack, chargeLevel);
     }
 
     @Override
     public int getMaxChargeLevel() {
-        return maxChargeLevel;
+        return 16;
     }
 
     public void onBaubleActivated(ItemStack stack, EntityPlayer player)
