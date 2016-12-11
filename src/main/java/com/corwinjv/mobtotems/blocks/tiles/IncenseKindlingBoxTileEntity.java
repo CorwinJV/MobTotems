@@ -1,6 +1,7 @@
 package com.corwinjv.mobtotems.blocks.tiles;
 
 import baubles.api.BaublesApi;
+import baubles.api.cap.IBaublesItemHandler;
 import com.corwinjv.mobtotems.interfaces.IChargeable;
 import com.google.common.base.Predicate;
 import net.minecraft.block.Block;
@@ -108,11 +109,11 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity
 
         for(EntityPlayer player : playersWithinRange)
         {
-            IInventory inventory = BaublesApi.getBaubles(player);
-            for(int i = 0; i < inventory.getSizeInventory(); i++)
+            IBaublesItemHandler baublesItemHandler = BaublesApi.getBaublesHandler(player);
+            for(int i = 0; i < baublesItemHandler.getSlots(); i++)
             {
-                final ItemStack baubleStack = inventory.getStackInSlot(i);
-                if(baubleStack != null
+                final ItemStack baubleStack = baublesItemHandler.getStackInSlot(i);
+                if(baubleStack != ItemStack.EMPTY
                         && baubleStack.getItem() instanceof IChargeable)
                 {
                     ((IChargeable) baubleStack.getItem()).incrementChargeLevel(baubleStack, CHARGE_GAIN_PER_TICK);
@@ -148,7 +149,7 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity
                         double motionX = rand.nextGaussian() * 0.02D;
                         double motionY = rand.nextGaussian() * 0.02D;
                         double motionZ = rand.nextGaussian() * 0.02D;
-                        worldObj.spawnParticle(
+                        world.spawnParticle(
                                 EnumParticleTypes.CLOUD,
                                 x + rand.nextFloat() * width * 2.0F - width,
                                 y + 1.0D + rand.nextFloat() * height,
@@ -163,7 +164,7 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity
                         motionX = rand.nextGaussian() * 0.02D;
                         motionY = rand.nextGaussian() * 0.02D;
                         motionZ = rand.nextGaussian() * 0.02D;
-                        worldObj.spawnParticle(
+                        world.spawnParticle(
                                 EnumParticleTypes.VILLAGER_HAPPY,
                                 x + rand.nextFloat() * width * 2.0F - width,
                                 y + 0.5D + rand.nextFloat() * height,

@@ -5,7 +5,7 @@ key.mobtotems.activateBaubleDescription=Activate Personal Totem
 itemGroup.mobtotems=Mob Totems
 
 #entities
-entity.mobtotems.spirit_wolf.name=Spirit Wolf
+entity.mobtotems:spirit_wolf.name=Spirit Wolf
 
 #blocks
 tiles.mobtotems:totem_wood.name=Totem Wood

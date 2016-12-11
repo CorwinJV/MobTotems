@@ -1,6 +1,7 @@
 package com.corwinjv.mobtotems.network;
 
 import baubles.api.BaublesApi;
+import baubles.api.cap.IBaublesItemHandler;
 import com.corwinjv.mobtotems.items.baubles.BaubleItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -15,17 +16,17 @@ public class ActivateBaubleMessage extends Message<ActivateBaubleMessage>
     @Override
     protected void handleServer(ActivateBaubleMessage message, EntityPlayerMP player)
     {
-        final IInventory baubleInventory = BaublesApi.getBaubles(player);
+        final IBaublesItemHandler baublesItemHandler = BaublesApi.getBaublesHandler(player);
 
-        if(baubleInventory == null)
+        if(baublesItemHandler == null)
         {
             return;
         }
 
-        for(int i = 0; i < baubleInventory.getSizeInventory(); i++)
+        for(int i = 0; i < baublesItemHandler.getSlots(); i++)
         {
-            final ItemStack baubleStack = baubleInventory.getStackInSlot(i);
-            if(baubleStack != null
+            final ItemStack baubleStack = baublesItemHandler.getStackInSlot(i);
+            if(baubleStack != ItemStack.EMPTY
                     && baubleStack.getItem() instanceof BaubleItem)
             {
                 ((BaubleItem) baubleStack.getItem()).onBaubleActivated(baubleStack, player);

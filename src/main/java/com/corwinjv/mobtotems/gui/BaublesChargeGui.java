@@ -1,6 +1,7 @@
 package com.corwinjv.mobtotems.gui;
 
 import baubles.api.BaublesApi;
+import baubles.api.cap.IBaublesItemHandler;
 import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.items.baubles.BaubleItem;
 import net.minecraft.client.Minecraft;
@@ -9,6 +10,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.opengl.GL11;
 
@@ -28,15 +30,14 @@ public class BaublesChargeGui extends Gui
     private static final int CHARGE_COLOR = 0xFF00FF00;
 
     private Minecraft minecraft = null;
-
     public BaublesChargeGui(Minecraft mc)
     {
         super();
         minecraft = mc;
     }
 
-    // TODO: Continue work on this when baubles works for 1.11
-    //@SubscribeEvent()
+    @Optional.Method(modid = "baubles")
+    @SubscribeEvent()
     public void onRenderOverlay(RenderGameOverlayEvent e)
     {
         if(e.isCancelable() || e.getType() != RenderGameOverlayEvent.ElementType.POTION_ICONS)
@@ -44,12 +45,12 @@ public class BaublesChargeGui extends Gui
             return;
         }
 
-        IInventory baublesInventory = BaublesApi.getBaubles(minecraft.thePlayer);
-        for(int i = 0; i < baublesInventory.getSizeInventory(); i++)
+        IBaublesItemHandler baublesItemHandler = BaublesApi.getBaublesHandler(minecraft.player);
+        for(int i = 0; i < baublesItemHandler.getSlots(); i++)
         {
-            final ItemStack baubleStack = baublesInventory.getStackInSlot(i);
+            final ItemStack baubleStack = baublesItemHandler.getStackInSlot(i);
 
-            if(baubleStack != null
+            if(baubleStack != ItemStack.EMPTY
                     && baubleStack.getItem() instanceof BaubleItem)
             {
                 final BaubleItem baubleItem = (BaubleItem)baubleStack.getItem();

@@ -47,11 +47,10 @@ public class ModBlocks
         mTileEntityClasses.put(SACRED_LIGHT, SacredLightTileEntity.class);
         mBlocks.put(SACRED_LIGHT, sacred_light);
 
-        // TODO: next release
-//        ModBlock incense_kindling_box = new IncenseKindlingBox();
-//        incense_kindling_box.setUnlocalizedName(INCENSE_KINDLING_BOX);
-//        mTileEntityClasses.put(INCENSE_KINDLING_BOX, IncenseKindlingBoxTileEntity.class);
-//        mBlocks.put(INCENSE_KINDLING_BOX, incense_kindling_box);
+        ModBlock incense_kindling_box = new IncenseKindlingBox();
+        incense_kindling_box.setUnlocalizedName(INCENSE_KINDLING_BOX);
+        mTileEntityClasses.put(INCENSE_KINDLING_BOX, IncenseKindlingBoxTileEntity.class);
+        mBlocks.put(INCENSE_KINDLING_BOX, incense_kindling_box);
     }
 
     public static ModBlock getBlock(String key)
@@ -115,14 +114,13 @@ public class ModBlocks
                 'O', Blocks.TORCH,
                 'T', mBlocks.get(TOTEM_WOOD));
 
-        // TODO: next release
-//        item = mBlocks.get(INCENSE_KINDLING_BOX);
-//        GameRegistry.addRecipe(new ItemStack(item, 4),
-//                "PPP",
-//                "PIP",
-//                "PFP",
-//                'P', Blocks.PLANKS,
-//                'I', Blocks.TALLGRASS,
-//                'F', Items.FLINT);
+        item = mBlocks.get(INCENSE_KINDLING_BOX);
+        GameRegistry.addRecipe(new ItemStack(item, 4),
+                "WWW",
+                "WIW",
+                "WFW",
+                'W', Blocks.PLANKS,
+                'I', Blocks.TALLGRASS,
+                'F', Items.FLINT);
     }
 }

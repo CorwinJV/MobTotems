@@ -1,7 +1,6 @@
 package com.corwinjv.mobtotems.items;
 
 import com.corwinjv.mobtotems.Reference;
-import com.corwinjv.mobtotems.blocks.ModBlock;
 import com.corwinjv.mobtotems.items.baubles.WolfTotemBauble;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -36,10 +35,9 @@ public class ModItems
     {
         mItems = new HashMap<String,ModItem>();
 
-        // TODO: next release
-//        ModItem wolf_totem_bauble = new WolfTotemBauble();
-//        wolf_totem_bauble.setUnlocalizedName(WOLF_TOTEM_BAUBLE);
-//        mItems.put(WOLF_TOTEM_BAUBLE, wolf_totem_bauble);
+        ModItem wolf_totem_bauble = new WolfTotemBauble();
+        wolf_totem_bauble.setUnlocalizedName(WOLF_TOTEM_BAUBLE);
+        mItems.put(WOLF_TOTEM_BAUBLE, wolf_totem_bauble);
 
         mItems.put(TOTEMIC_FOCUS, (ModItem)TOTEMIC_FOCUS_ITEM);
     }
@@ -96,5 +94,16 @@ public class ModItems
                 'X', Items.STICK,
                 'G', Items.GUNPOWDER,
                 'F', Items.FEATHER);
+
+        // Wolf totem bauble recipe
+
+        item = mItems.get(WOLF_TOTEM_BAUBLE);
+        GameRegistry.addRecipe(new ItemStack(item),
+                "SSS",
+                "CPC",
+                " C ",
+                'C', Blocks.CLAY,
+                'P', Items.BLAZE_POWDER,
+                'S', Items.STRING);
     }
 }
