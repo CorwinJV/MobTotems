@@ -4,6 +4,7 @@ import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.items.baubles.WolfTotemBauble;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -93,5 +94,16 @@ public class ModItems
                 'X', Items.STICK,
                 'G', Items.GUNPOWDER,
                 'F', Items.FEATHER);
+
+        // Wolf totem bauble recipe
+
+        item = mItems.get(WOLF_TOTEM_BAUBLE);
+        GameRegistry.addRecipe(new ItemStack(item),
+                "SSS",
+                "CPC",
+                " C ",
+                'C', Blocks.CLAY,
+                'P', Items.BLAZE_POWDER,
+                'S', Items.STRING);
     }
 }

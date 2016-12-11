@@ -56,7 +56,12 @@ public class IncenseKindlingBox extends ModBlock implements ITileEntityProvider
     private boolean canPlaceOn(World worldIn, BlockPos pos)
     {
         IBlockState state = worldIn.getBlockState(pos);
-        return state.isSideSolid(worldIn, pos, EnumFacing.UP) || (state.getBlock().canPlaceTorchOnTop(state, worldIn, pos));
+        return state.getBlock().isBlockSolid(worldIn, pos, EnumFacing.UP) || (state.getBlock().canPlaceTorchOnTop(state, worldIn, pos));
+    }
+
+    @Override
+    public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return false;
     }
 
     @Override

@@ -116,10 +116,10 @@ public class ModBlocks
 
         item = mBlocks.get(INCENSE_KINDLING_BOX);
         GameRegistry.addRecipe(new ItemStack(item, 4),
-                "PPP",
-                "PIP",
-                "PFP",
-                'P', Blocks.PLANKS,
+                "WWW",
+                "WIW",
+                "WFW",
+                'W', Blocks.PLANKS,
                 'I', Blocks.TALLGRASS,
                 'F', Items.FLINT);
     }
