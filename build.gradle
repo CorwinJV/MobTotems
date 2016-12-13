@@ -32,7 +32,16 @@ minecraft {
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
+repositories {
+		maven { url 'http://tehnut.info/maven/' }
+}
+
 dependencies {
+	// Guide-api
+	deobfCompile "info.amerifrance.guideapi:Guide-API:1.11-2.1.0-47"
+
+	
+	
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
