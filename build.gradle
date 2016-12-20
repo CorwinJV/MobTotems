@@ -38,9 +38,8 @@ repositories {
 
 dependencies {
 	// Guide-api
-	deobfCompile "info.amerifrance.guideapi:Guide-API:1.11-2.1.0-47"
+	deobfCompile "info.amerifrance.guideapi:Guide-API:1.11-2.1.0-48"
 
-	
 	
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
