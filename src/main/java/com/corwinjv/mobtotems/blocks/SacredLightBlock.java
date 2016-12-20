@@ -1,7 +1,6 @@
 package com.corwinjv.mobtotems.blocks;
 
 import com.corwinjv.mobtotems.blocks.tiles.SacredLightTileEntity;
-import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -26,6 +25,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
 
 /**
  * Created by CorwinJV on 7/13/2016.
@@ -150,7 +150,7 @@ public class SacredLightBlock extends ModBlock implements ITileEntityProvider
             {
                 List<TileEntity> loadedTileEntityList = new ArrayList<TileEntity>((ArrayList)e.getWorld().loadedTileEntityList);
 
-                for (TileEntity tileEntity : Collections2.filter(loadedTileEntityList, SacredLightTEPredicate)) {
+                for (TileEntity tileEntity : Collections2.filter(loadedTileEntityList, SacredLightTEPredicate::test)) {
                     if(!((SacredLightTileEntity)tileEntity).canSpawnMobHere(e.getEntity()))
                     {
                         e.setCanceled(true);
@@ -160,13 +160,7 @@ public class SacredLightBlock extends ModBlock implements ITileEntityProvider
             }
         }
     }
-    public static Predicate<TileEntity> SacredLightTEPredicate = new Predicate<TileEntity>()
-    {
-        @Override public boolean apply(TileEntity tileEntity)
-        {
-            return tileEntity instanceof SacredLightTileEntity;
-        }
-    };
+    public static Predicate<TileEntity> SacredLightTEPredicate = tileEntity -> tileEntity instanceof SacredLightTileEntity;
 
     @Nonnull
     @Override

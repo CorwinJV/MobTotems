@@ -10,7 +10,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
 
-version = "1.11-0.2.0"
+version = "1.11-0.2.1"
 group= "com.corwinjv.mobtotems" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "mobtotems"
 
@@ -32,7 +32,15 @@ minecraft {
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
+repositories {
+		maven { url 'http://tehnut.info/maven/' }
+}
+
 dependencies {
+	// Guide-api
+	deobfCompile "info.amerifrance.guideapi:Guide-API:1.11-2.1.0-48"
+
+	
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"

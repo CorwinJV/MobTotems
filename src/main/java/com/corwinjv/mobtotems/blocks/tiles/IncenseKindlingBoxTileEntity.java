@@ -3,23 +3,19 @@ package com.corwinjv.mobtotems.blocks.tiles;
 import baubles.api.BaublesApi;
 import baubles.api.cap.IBaublesItemHandler;
 import com.corwinjv.mobtotems.interfaces.IChargeable;
-import com.google.common.base.Predicate;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.FMLLog;
-import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Predicate;
 
 /**
  * Created by CorwinJV on 7/24/2016.
@@ -97,15 +93,9 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity
     private void performChargeAura()
     {
         final BlockPos targetPos = getPos();
-        Predicate<EntityPlayer> playerWithinRangePredicate = new Predicate<EntityPlayer>()
-        {
-            @Override
-            public boolean apply(@Nullable EntityPlayer input)
-            {
-                return input != null && input.getPosition().getDistance(targetPos.getX(), targetPos.getY(), targetPos.getZ()) < TMP_MANA_GAIN_DIST;
-            }
-        };
-        List<EntityPlayer> playersWithinRange = getWorld().getEntities(EntityPlayer.class, playerWithinRangePredicate);
+        Predicate<EntityPlayer> playerWithinRangePredicate = input -> input != null
+                && input.getPosition().getDistance(targetPos.getX(), targetPos.getY(), targetPos.getZ()) < TMP_MANA_GAIN_DIST;
+        List<EntityPlayer> playersWithinRange = getWorld().getEntities(EntityPlayer.class, playerWithinRangePredicate::test);
 
         for(EntityPlayer player : playersWithinRange)
         {

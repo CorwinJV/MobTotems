@@ -3,21 +3,17 @@ package com.corwinjv.mobtotems.items.baubles;
 import baubles.api.BaubleType;
 import com.corwinjv.mobtotems.entities.EntitySpiritWolf;
 import com.corwinjv.mobtotems.utils.BlockUtils;
-import com.google.common.base.Predicate;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
+import net.minecraft.util.StringUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
@@ -26,6 +22,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 
 /**
@@ -114,15 +111,9 @@ public class WolfTotemBauble extends BaubleItem
             if (!StringUtils.isNullOrEmpty(wolfId))
             {
                 final UUID wolfUUID = UUID.fromString(wolfId);
-                Predicate<EntitySpiritWolf> spiritWolfForUUID = new Predicate<EntitySpiritWolf>() {
-                    @Override
-                    public boolean apply(@Nullable EntitySpiritWolf input)
-                    {
-                        return (input != null && input.getUniqueID().equals(wolfUUID));
-                    }
-                };
+                Predicate<EntitySpiritWolf> spiritWolfForUUID = input -> (input != null && input.getUniqueID().equals(wolfUUID));
 
-                List<EntitySpiritWolf> entities = new ArrayList<EntitySpiritWolf>(world.getEntities(EntitySpiritWolf.class, spiritWolfForUUID));
+                List<EntitySpiritWolf> entities = new ArrayList<EntitySpiritWolf>(world.getEntities(EntitySpiritWolf.class, spiritWolfForUUID::test));
                 if(entities.size() > 0)
                 {
                     return entities.get(0);
@@ -235,12 +226,4 @@ public class WolfTotemBauble extends BaubleItem
             setWolfId(stack, "");
         }
     }
-
-    Predicate<EntityItem> wolfTotemBaublePredicate = new Predicate<EntityItem>() {
-        @Override
-        public boolean apply(@Nullable EntityItem input) {
-            return (input != null) && (input.getEntityItem().getItem() instanceof WolfTotemBauble);
-        }
-    };
-
 }

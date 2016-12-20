@@ -17,7 +17,8 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import com.corwinjv.mobtotems.config.ConfigurationHandler;
 
-@Mod(modid=Reference.MOD_ID, name=Reference.MOD_NAME, version=Reference.MOD_VERSION, guiFactory = Reference.GUI_FACTORY_CLASS)
+@Mod(modid=Reference.MOD_ID, name=Reference.MOD_NAME, version=Reference.MOD_VERSION, guiFactory = Reference.GUI_FACTORY_CLASS,
+        dependencies = "before:guideapi")
 public class MobTotems
 {
     @Mod.Instance

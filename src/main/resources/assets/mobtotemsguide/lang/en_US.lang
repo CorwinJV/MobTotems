@@ -1,0 +1,18 @@
+#PARSE_ESCAPES
+mobtotems.GuideBook.title=Teachings of Old
+mobtotems.text.guide.name=MobTotems: Teachings of Old
+mobtotems.text.guide.welcome=MobTotems
+
+mobtotems.text.guide.totems_category_name=Totems
+mobtotems.text.guide.totemic_focus_entry_name=Totemic Focus
+mobtotems.text.guide.totemic_focus_page_1=To make totems, you will need to craft a totemic focus.\n\nWith your totemic focus in hand, right click logs to carve it into a totem wood block.
+
+mobtotems.text.guide.sacred_light_entry_name=Sacred Light
+mobtotems.text.guide.sacred_light_page_1=Next craft the Sacred Light block. This block will stop mobs within 32 blocks of it from spawning.\n\nYou can extend it's range by placing it on top of stacked totem wood blocks.\n\nEach totem wood block will extend it's range by 16 to a maximum of 64.
+mobtotems.text.guide.sacred_light_example=An example of a maxed out Sacred Light Totem
+
+mobtotems.text.guide.baubles_category_name=Baubles
+mobtotems.text.guide.wolf_bauble_entry_name=Wolf Totem Bauble
+mobtotems.text.guide.wolf_bauble_page_1=If you have Baubles installed, you can use the new Personal Wolf Totem amulet to summon a spirit wolf to fight by your side.\n\nActivate equipped MobTotems baubles by pressing the 'h' key by default.
+mobtotems.text.guide.wolf_bauble_page_2=In order to summon the spirit wolf, your bauble needs charge.\n\nThis is where the new Incense Kindling Box comes in.
+mobtotems.text.guide.wolf_bauble_page_3=If you stand near a placed Incense Kindling Box, your equipped MobTotems baubles will fill up with charge and can be activated by pressing the 'h' key.\n\nThe Incense Kindling Box will burn up and disappear shortly, so don't waste them.
