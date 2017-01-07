@@ -4,7 +4,7 @@
     "name": "Mob Totems",
     "description": "A mod which adds Mob Totems to the game. Craft these totems and ward off evil mobs and more.",
     "version": "0.2.1",
-    "mcversion": "1.11",
+    "mcversion": "1.11.2",
     "url": "https://github.com/CorwinJV/MobTotems",
     "updateUrl": "",
     "authorList": [ "CorwinJV" ],
