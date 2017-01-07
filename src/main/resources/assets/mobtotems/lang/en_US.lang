@@ -1,5 +1,6 @@
 #keybinds
 key.mobtotems.activateBaubleDescription=Activate Personal Totem
+key.mobtotems.category=Mob Totems
 
 #gui
 itemGroup.mobtotems=Mob Totems
