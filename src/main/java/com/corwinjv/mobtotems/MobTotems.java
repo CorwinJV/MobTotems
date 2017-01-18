@@ -39,7 +39,6 @@ public class MobTotems
 
         // Blocks and Items
         ModBlocks.init();
-        ModBlocks.registerBlocks();
         ModBlocks.registerRecipes();
 
         ModItems.init();

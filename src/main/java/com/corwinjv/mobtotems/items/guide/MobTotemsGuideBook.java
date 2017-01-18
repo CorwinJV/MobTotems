@@ -56,7 +56,7 @@ public class MobTotemsGuideBook implements IGuideBook {
 
         pages = new ArrayList<>();
         pages.add(new PageText(getLocalizedGuideText("sacred_light_page_1")));
-        pages.add(new PageIRecipe(new ShapedOreRecipe(ModBlocks.getBlock(ModBlocks.SACRED_LIGHT),
+        pages.add(new PageIRecipe(new ShapedOreRecipe(ModBlocks.SACRED_LIGHT,
                 "GRG",
                 "XOX",
                 "GTG",
@@ -64,13 +64,13 @@ public class MobTotemsGuideBook implements IGuideBook {
                 'R', Items.BLAZE_ROD,
                 'X', Items.ROTTEN_FLESH,
                 'O', Blocks.TORCH,
-                'T', ModBlocks.getBlock(ModBlocks.TOTEM_WOOD))));
+                'T', ModBlocks.TOTEM_WOOD)));
         pages.add(new PageTextImage(getLocalizedGuideText("sacred_light_example"), getGuideResourceLocation("finished_totem_example.png"), false));
-        entries.put(new ResourceLocation(Reference.MOD_ID, "sacred_light"), new EntryItemStack(pages, getLocalizedGuideText("sacred_light_entry_name"), new ItemStack(ModBlocks.getBlock(ModBlocks.SACRED_LIGHT))));
+        entries.put(new ResourceLocation(Reference.MOD_ID, "sacred_light"), new EntryItemStack(pages, getLocalizedGuideText("sacred_light_entry_name"), new ItemStack(ModBlocks.SACRED_LIGHT)));
 
         // Setup the list of categories and add our entries to it.
         List<CategoryAbstract> categories = new ArrayList<CategoryAbstract>();
-        categories.add(new CategoryItemStack(entries, getLocalizedGuideText("totems_category_name"), new ItemStack(ModBlocks.getBlock(ModBlocks.SACRED_LIGHT))));
+        categories.add(new CategoryItemStack(entries, getLocalizedGuideText("totems_category_name"), new ItemStack(ModBlocks.SACRED_LIGHT)));
 
 
         entries = new LinkedHashMap<>();
@@ -85,7 +85,7 @@ public class MobTotemsGuideBook implements IGuideBook {
                 'P', Items.BLAZE_POWDER,
                 'S', Items.STRING)));
         pages.add(new PageText(getLocalizedGuideText("wolf_bauble_page_2")));
-        pages.add(new PageIRecipe(new ShapedOreRecipe(ModBlocks.getBlock(ModBlocks.INCENSE_KINDLING_BOX), "WWW",
+        pages.add(new PageIRecipe(new ShapedOreRecipe(ModBlocks.INCENSE_KINDLING_BOX, "WWW",
                 "WIW",
                 "WFW",
                 'W', Blocks.PLANKS,

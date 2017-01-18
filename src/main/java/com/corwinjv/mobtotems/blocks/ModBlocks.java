@@ -4,106 +4,72 @@ import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.blocks.tiles.IncenseKindlingBoxTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.SacredLightTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
-import net.minecraft.client.Minecraft;
+import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelRegistryEvent;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by CorwinJV on 9/1/14.
  */
 
+@Mod.EventBusSubscriber
 public class ModBlocks
 {
-    public static final String TOTEM_WOOD = "totem_wood";
-    public static final String SACRED_LIGHT = "sacred_light";
-    public static final String INCENSE_KINDLING_BOX = "incense_kindling_box";
+    public static final String TOTEM_WOOD_NAME = "totem_wood";
+    public static final String SACRED_LIGHT_NAME = "sacred_light";
+    public static final String INCENSE_KINDLING_BOX_NAME = "incense_kindling_box";
 
-    private static Map<String, ModBlock> mBlocks = Collections.emptyMap();
-    private static Map<String, Class<? extends TileEntity>> mTileEntityClasses = Collections.emptyMap();
+    public static final Block TOTEM_WOOD = new TotemWoodBlock().setUnlocalizedName(TOTEM_WOOD_NAME);
+    public static final Block SACRED_LIGHT = new SacredLightBlock().setUnlocalizedName(SACRED_LIGHT_NAME);
+    public static final Block INCENSE_KINDLING_BOX = new IncenseKindlingBox().setUnlocalizedName(INCENSE_KINDLING_BOX_NAME);
 
     public static void init()
     {
-        mBlocks = new HashMap<String, ModBlock>();
-        mTileEntityClasses = new HashMap<String, Class<? extends TileEntity>>();
-
-        ModBlock totem_wood = new TotemWoodBlock();
-        totem_wood.setUnlocalizedName(TOTEM_WOOD);
-        mBlocks.put(TOTEM_WOOD, totem_wood);
-        mTileEntityClasses.put(TOTEM_WOOD, TotemTileEntity.class);
-
-        ModBlock sacred_light = new SacredLightBlock();
-        sacred_light.setUnlocalizedName(SACRED_LIGHT);
-        mTileEntityClasses.put(SACRED_LIGHT, SacredLightTileEntity.class);
-        mBlocks.put(SACRED_LIGHT, sacred_light);
-
-        ModBlock incense_kindling_box = new IncenseKindlingBox();
-        incense_kindling_box.setUnlocalizedName(INCENSE_KINDLING_BOX);
-        mTileEntityClasses.put(INCENSE_KINDLING_BOX, IncenseKindlingBoxTileEntity.class);
-        mBlocks.put(INCENSE_KINDLING_BOX, incense_kindling_box);
+        GameRegistry.registerTileEntity(TotemTileEntity.class, TOTEM_WOOD_NAME);
+        GameRegistry.registerTileEntity(SacredLightTileEntity.class, SACRED_LIGHT_NAME);
+        GameRegistry.registerTileEntity(IncenseKindlingBoxTileEntity.class, INCENSE_KINDLING_BOX_NAME);
     }
 
-    public static ModBlock getBlock(String key)
+    @SubscribeEvent
+    public static void registerBlocks(RegistryEvent.Register<Block> e)
     {
-        if (mBlocks.containsKey(key))
-        {
-            return mBlocks.get(key);
-        }
-        return null;
+        GameRegistry.register(TOTEM_WOOD.setRegistryName(new ResourceLocation(Reference.MOD_ID,  TOTEM_WOOD_NAME)));
+        GameRegistry.register(new ItemBlock(TOTEM_WOOD), TOTEM_WOOD.getRegistryName());
+
+        GameRegistry.register(SACRED_LIGHT.setRegistryName(new ResourceLocation(Reference.MOD_ID, SACRED_LIGHT_NAME)));
+        GameRegistry.register(new ItemBlock(SACRED_LIGHT), SACRED_LIGHT.getRegistryName());
+
+        GameRegistry.register(INCENSE_KINDLING_BOX.setRegistryName(new ResourceLocation(Reference.MOD_ID, INCENSE_KINDLING_BOX_NAME)));
+        GameRegistry.register(new ItemBlock(INCENSE_KINDLING_BOX), INCENSE_KINDLING_BOX.getRegistryName());
     }
 
-    public static void registerBlocks()
+
+    @SubscribeEvent
+    public static void registerRenders(ModelRegistryEvent e)
     {
-        for (String key : mBlocks.keySet())
-        {
-            ModBlock block = mBlocks.get(key);
-            if (block != null)
-            {
-                GameRegistry.register(block.setRegistryName(new ResourceLocation(Reference.MOD_ID, key)));
-                GameRegistry.register(new ItemBlock(block), block.getRegistryName());
-
-                Class<? extends TileEntity> tileEntityClass = mTileEntityClasses.get(key);
-                if (tileEntityClass != null)
-                {
-                    GameRegistry.registerTileEntity(tileEntityClass, key);
-                }
-            }
-        }
+        registerRender(TOTEM_WOOD, TOTEM_WOOD_NAME);
+        registerRender(SACRED_LIGHT, SACRED_LIGHT_NAME);
+        registerRender(INCENSE_KINDLING_BOX, INCENSE_KINDLING_BOX_NAME);
     }
 
-    public static void registerRenders()
-    {
-        for (String key : mBlocks.keySet())
-        {
-            ModBlock block = mBlocks.get(key);
-            if (block != null)
-            {
-                registerRender(block, key);
-            }
-        }
-    }
-
-    private static void registerRender(ModBlock block, String key) {
+    private static void registerRender(Block block, String key) {
         Item item = Item.getItemFromBlock(block);
-
-        Minecraft.getMinecraft().getRenderItem().getItemModelMesher()
-                .register(item,
-                        0,
-                        new ModelResourceLocation(Reference.RESOURCE_PREFIX + key, "inventory"));
+        ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(Reference.RESOURCE_PREFIX + key, "inventory"));
     }
 
     public static void registerRecipes() {
-        ModBlock item = mBlocks.get(SACRED_LIGHT);
+        Block item = SACRED_LIGHT;
         GameRegistry.addRecipe(new ItemStack(item, 1),
                 "GRG",
                 "XOX",
@@ -112,9 +78,9 @@ public class ModBlocks
                 'R', Items.BLAZE_ROD,
                 'X', Items.ROTTEN_FLESH,
                 'O', Blocks.TORCH,
-                'T', mBlocks.get(TOTEM_WOOD));
+                'T', TOTEM_WOOD_NAME);
 
-        item = mBlocks.get(INCENSE_KINDLING_BOX);
+        item = INCENSE_KINDLING_BOX;
         GameRegistry.addRecipe(new ItemStack(item, 4),
                 "WWW",
                 "WIW",
