@@ -1,6 +1,7 @@
 package com.corwinjv.mobtotems.blocks;
 
 import com.corwinjv.mobtotems.Reference;
+import com.corwinjv.mobtotems.blocks.items.TotemWoodItemBlock;
 import com.corwinjv.mobtotems.blocks.tiles.IncenseKindlingBoxTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.SacredLightTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
@@ -58,7 +59,7 @@ public class ModBlocks
     @SubscribeEvent
     public static void registerRenders(ModelRegistryEvent e)
     {
-        registerRender(TOTEM_WOOD, TOTEM_WOOD_NAME);
+        registerVariants(TOTEM_WOOD, TOTEM_WOOD_NAME, 11);
         registerRender(SACRED_LIGHT, SACRED_LIGHT_NAME);
         registerRender(INCENSE_KINDLING_BOX, INCENSE_KINDLING_BOX_NAME);
     }
@@ -66,6 +67,16 @@ public class ModBlocks
     private static void registerRender(Block block, String key) {
         Item item = Item.getItemFromBlock(block);
         ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(Reference.RESOURCE_PREFIX + key, "inventory"));
+    }
+
+    private static void registerVariants(Block block, String key, int numVariants)
+    {
+        for(int i = 0; i < numVariants; i++)
+        {
+            Item item = new TotemWoodItemBlock(block);
+            ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(Reference.RESOURCE_PREFIX + key + "_" + item.getUnlocalizedName(), "inventory"));
+        }
+
     }
 
     public static void registerRecipes() {
