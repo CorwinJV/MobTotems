@@ -58,14 +58,14 @@ public class BaublesChargeGui extends Gui
                 GL11.glDisable(GL11.GL_LIGHTING);
 
                 // Draw the background for the chargeable item
-                minecraft.renderEngine.bindTexture(getGuiResourceLocation("chargeable_bg.png"));
+                minecraft.renderEngine.bindTexture(util.getGuiResourceLocation("chargeable_bg.png"));
                 drawTexturedModalRect(BG_BORDER, (i * (ICON_HEIGHT + ICON_BORDER)) + BG_BORDER, 0, 0, BG_WIDTH, BG_HEIGHT);
 
 
                 // TODO: Draw is currently activated
 
                 // Draw the icon of the chargeable item
-                minecraft.renderEngine.bindTexture(getGuiResourceLocation(baubleItem));
+                minecraft.renderEngine.bindTexture(util.getGuiResourceLocation(baubleItem));
                 drawTexturedModalRect(ICON_BORDER, (i * (ICON_HEIGHT + ICON_BORDER)) + ICON_BORDER, 0, 0, ICON_WIDTH, ICON_HEIGHT);
 
                 // Draw the charge level beneath the icon
@@ -82,15 +82,5 @@ public class BaublesChargeGui extends Gui
         }
     }
 
-    public ResourceLocation getGuiResourceLocation(@Nonnull BaubleItem baubleItem)
-    {
-        String resourceName = baubleItem.getRegistryName().toString().substring(Reference.RESOURCE_PREFIX.length());
-        return new ResourceLocation(Reference.RESOURCE_PREFIX + "textures/gui/" + resourceName + ".png");
-    }
-
-    public ResourceLocation getGuiResourceLocation(@Nonnull String guiFileName)
-    {
-        return new ResourceLocation(Reference.RESOURCE_PREFIX + "textures/gui/" + guiFileName);
-    }
 
 }

@@ -3,6 +3,7 @@ package com.corwinjv.mobtotems.items;
 import com.corwinjv.mobtotems.blocks.ModBlocks;
 import com.corwinjv.mobtotems.blocks.TotemType;
 import com.corwinjv.mobtotems.blocks.TotemWoodBlock;
+import com.corwinjv.mobtotems.gui.CarvingSelectorGui;
 import com.corwinjv.mobtotems.network.ActivateKnifeMessage;
 import com.corwinjv.mobtotems.network.Network;
 import com.corwinjv.mobtotems.utils.BlockUtils;
@@ -50,7 +51,8 @@ public class CarvingKnife extends ModItem {
     {
         if (world.isRemote)
         {
-            Network.sendToServer(new ActivateKnifeMessage().setHand(hand));
+            FMLClientHandler.instance().displayGuiScreen(player, new CarvingSelectorGui());
+            //Network.sendToServer(new ActivateKnifeMessage().setHand(hand));
             return new ActionResult(EnumActionResult.PASS, player.getHeldItem(hand));
         }
         return new ActionResult(EnumActionResult.FAIL, player.getHeldItem(hand));
