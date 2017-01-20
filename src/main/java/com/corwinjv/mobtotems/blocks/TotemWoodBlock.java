@@ -1,5 +1,6 @@
 package com.corwinjv.mobtotems.blocks;
 
+import com.corwinjv.mobtotems.blocks.items.TotemWoodItemBlock;
 import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -8,10 +9,14 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -36,9 +41,18 @@ public class TotemWoodBlock extends ModBlock implements ITileEntityProvider
     }
 
     @Override
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
+        for(int i = 0; i < 11; i++)
+        {
+            list.add(new ItemStack(itemIn, 1, i));
+        }
+    }
+
+    @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer(this, new IProperty[] {TOTEM_TYPE});
     }
+
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
@@ -47,7 +61,7 @@ public class TotemWoodBlock extends ModBlock implements ITileEntityProvider
 
     @Override
     public int getMetaFromState(IBlockState state) {
-        return ((TotemType)state.getValue(TOTEM_TYPE)).getMeta();
+        return state.getValue(TOTEM_TYPE).getMeta();
     }
 
     @Nonnull

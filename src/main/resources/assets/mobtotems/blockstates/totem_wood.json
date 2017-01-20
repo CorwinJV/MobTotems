@@ -14,7 +14,7 @@
       "model" : "mobtotems:creeper_totem",
       "textures": {
         "0": "mobtotems:blocks/creeper_totem_face"
-      }
+		}
     },
     "totem_type=ender":
     {
@@ -74,7 +74,10 @@
     },
     "totem_type=rabbit":
     {
-      "model" : "mobtotems:creeper_totem"
+      "model" : "mobtotems:creeper_totem",
+      "textures": {
+        "0": "mobtotems:blocks/rabbit_totem_face"
+      }
     }
   }
 }

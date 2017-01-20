@@ -27,6 +27,6 @@ public class TotemWoodItemBlock extends ItemBlock{
     public String getUnlocalizedName(ItemStack stack)
     {
         TotemType totemType = TotemType.fromMeta(stack.getMetadata());
-        return super.getUnlocalizedName() + "." + totemType.toString();
+        return super.getUnlocalizedName() + "." + totemType.getName();
     }
 }

@@ -16,9 +16,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import org.apache.logging.log4j.Level;
 
 /**
  * Created by CorwinJV on 9/1/14.
@@ -46,7 +48,7 @@ public class ModBlocks
     public static void registerBlocks(RegistryEvent.Register<Block> e)
     {
         GameRegistry.register(TOTEM_WOOD.setRegistryName(new ResourceLocation(Reference.MOD_ID,  TOTEM_WOOD_NAME)));
-        GameRegistry.register(new ItemBlock(TOTEM_WOOD), TOTEM_WOOD.getRegistryName());
+        GameRegistry.register(new TotemWoodItemBlock(TOTEM_WOOD), TOTEM_WOOD.getRegistryName());
 
         GameRegistry.register(SACRED_LIGHT.setRegistryName(new ResourceLocation(Reference.MOD_ID, SACRED_LIGHT_NAME)));
         GameRegistry.register(new ItemBlock(SACRED_LIGHT), SACRED_LIGHT.getRegistryName());
@@ -59,7 +61,14 @@ public class ModBlocks
     @SubscribeEvent
     public static void registerRenders(ModelRegistryEvent e)
     {
-        registerVariants(TOTEM_WOOD, TOTEM_WOOD_NAME, 11);
+        for(int i = 0; i < TotemType.values().length; i++)
+        {
+            Item item = Item.getItemFromBlock(TOTEM_WOOD);
+            ModelResourceLocation modelResourceLocation = new ModelResourceLocation(Reference.RESOURCE_PREFIX + TOTEM_WOOD_NAME, "totem_type=" + TotemType.fromMeta(i).getName()) ;
+            ModelLoader.setCustomModelResourceLocation(item, i, modelResourceLocation);
+            //FMLLog.log(Level.INFO, i + " modelResourceLocation: " + modelResourceLocation.toString());
+        }
+
         registerRender(SACRED_LIGHT, SACRED_LIGHT_NAME);
         registerRender(INCENSE_KINDLING_BOX, INCENSE_KINDLING_BOX_NAME);
     }
@@ -67,16 +76,6 @@ public class ModBlocks
     private static void registerRender(Block block, String key) {
         Item item = Item.getItemFromBlock(block);
         ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(Reference.RESOURCE_PREFIX + key, "inventory"));
-    }
-
-    private static void registerVariants(Block block, String key, int numVariants)
-    {
-        for(int i = 0; i < numVariants; i++)
-        {
-            Item item = new TotemWoodItemBlock(block);
-            ModelLoader.setCustomModelResourceLocation(item, i, new ModelResourceLocation(Reference.RESOURCE_PREFIX + key + "_" + item.getUnlocalizedName(), "inventory"));
-        }
-
     }
 
     public static void registerRecipes() {
