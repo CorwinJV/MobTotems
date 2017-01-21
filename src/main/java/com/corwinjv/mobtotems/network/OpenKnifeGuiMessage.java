@@ -2,7 +2,7 @@ package com.corwinjv.mobtotems.network;
 
 import com.corwinjv.mobtotems.items.CarvingKnife;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 
@@ -14,7 +14,7 @@ public class OpenKnifeGuiMessage extends Message<OpenKnifeGuiMessage> {
     private int meta = 0;
 
     @Override
-    protected void handleClient(OpenKnifeGuiMessage message, EntityPlayerSP player) {
+    protected void handleClient(OpenKnifeGuiMessage message, EntityPlayer player) {
         ItemStack stack = player.getHeldItem(message.hand);
         if(stack.getItem() instanceof CarvingKnife)
         {

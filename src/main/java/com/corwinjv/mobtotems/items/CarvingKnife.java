@@ -1,6 +1,5 @@
 package com.corwinjv.mobtotems.items;
 
-import com.corwinjv.mobtotems.blocks.ModBlocks;
 import com.corwinjv.mobtotems.blocks.TotemType;
 import com.corwinjv.mobtotems.blocks.TotemWoodBlock;
 import com.corwinjv.mobtotems.gui.CarvingSelectorGui;
@@ -9,28 +8,20 @@ import com.corwinjv.mobtotems.network.Network;
 import com.corwinjv.mobtotems.network.OpenKnifeGuiMessage;
 import com.corwinjv.mobtotems.utils.BlockUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLog;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.gui.GuiScreenDemo;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
-import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.FMLLog;
-import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nonnull;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 /**
  * Created by CorwinJV on 1/14/2017.
@@ -59,6 +50,7 @@ public class CarvingKnife extends ModItem {
         return new ActionResult(EnumActionResult.FAIL, player.getHeldItem(hand));
     }
 
+    @SideOnly(Side.CLIENT)
     public void openGui(EntityPlayer player, int meta)
     {
         FMLClientHandler.instance().displayGuiScreen(player, new CarvingSelectorGui(meta));
