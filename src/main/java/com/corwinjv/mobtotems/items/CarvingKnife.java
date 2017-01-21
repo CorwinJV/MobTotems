@@ -6,12 +6,14 @@ import com.corwinjv.mobtotems.blocks.TotemWoodBlock;
 import com.corwinjv.mobtotems.gui.CarvingSelectorGui;
 import com.corwinjv.mobtotems.network.ActivateKnifeMessage;
 import com.corwinjv.mobtotems.network.Network;
+import com.corwinjv.mobtotems.network.OpenKnifeGuiMessage;
 import com.corwinjv.mobtotems.utils.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.GuiScreenDemo;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
@@ -51,11 +53,15 @@ public class CarvingKnife extends ModItem {
     {
         if (world.isRemote)
         {
-            FMLClientHandler.instance().displayGuiScreen(player, new CarvingSelectorGui());
-            //Network.sendToServer(new ActivateKnifeMessage().setHand(hand));
+            Network.sendToServer(new ActivateKnifeMessage().setHand(hand));
             return new ActionResult(EnumActionResult.PASS, player.getHeldItem(hand));
         }
         return new ActionResult(EnumActionResult.FAIL, player.getHeldItem(hand));
+    }
+
+    public void openGui(EntityPlayer player, int meta)
+    {
+        FMLClientHandler.instance().displayGuiScreen(player, new CarvingSelectorGui(meta));
     }
 
     public void onKnifeActivated(EntityPlayer player, EnumHand hand)
@@ -85,11 +91,7 @@ public class CarvingKnife extends ModItem {
             }
             else
             {
-                setSelectedCarving(stack, getSelectedCarving(stack) + 1);
-                if(getSelectedCarving(stack) >= TotemType.values().length)
-                {
-                    setSelectedCarving(stack, 0);
-                }
+                Network.sendTo(new OpenKnifeGuiMessage().setMeta(getSelectedCarving(stack)), (EntityPlayerMP)player);
             }
         }
     }

@@ -2,33 +2,41 @@ package com.corwinjv.mobtotems.network;
 
 import com.corwinjv.mobtotems.items.CarvingKnife;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 
 /**
- * Created by CorwinJV on 1/19/2017.
+ * Created by CorwinJV on 1/20/2017.
  */
-public class ActivateKnifeMessage extends Message<ActivateKnifeMessage> {
+public class OpenKnifeGuiMessage extends Message<OpenKnifeGuiMessage> {
     private EnumHand hand = EnumHand.MAIN_HAND;
+    private int meta = 0;
 
     @Override
-    protected void handleServer(ActivateKnifeMessage message, EntityPlayerMP player) {
+    protected void handleClient(OpenKnifeGuiMessage message, EntityPlayerSP player) {
         ItemStack stack = player.getHeldItem(message.hand);
         if(stack.getItem() instanceof CarvingKnife)
         {
-            ((CarvingKnife)stack.getItem()).onKnifeActivated(player, message.hand);
+            ((CarvingKnife)stack.getItem()).openGui(player, message.meta);
         }
     }
 
-    public ActivateKnifeMessage setHand(EnumHand hand)
+    public OpenKnifeGuiMessage setHand(EnumHand hand)
     {
         this.hand = hand;
         return this;
     }
 
+    public OpenKnifeGuiMessage setMeta(int meta)
+    {
+        this.meta = meta;
+        return this;
+    }
+
     @Override
     public void toBytes(ByteBuf buf) {
+        buf.writeInt(meta);
         switch(hand)
         {
             case MAIN_HAND:
@@ -46,6 +54,7 @@ public class ActivateKnifeMessage extends Message<ActivateKnifeMessage> {
 
     @Override
     public void fromBytes(ByteBuf buf) {
+        meta = buf.readInt();
         int handInt = buf.readInt();
         switch(handInt)
         {
