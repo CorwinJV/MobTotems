@@ -5,6 +5,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 
 /**
  * Created by CorwinJV on 1/22/2017.
@@ -17,13 +18,13 @@ public class OfferingBoxContainer extends Container {
     public static int PLAYER_WIDTH = 9;
     public static int PLAYER_HEIGHT = 4;
 
-    public OfferingBoxContainer(InventoryPlayer playerInventory, IInventory iinventory)
+    public OfferingBoxContainer(InventoryPlayer playerInventory, IInventory inventory)
     {
         for(int x = 0; x < width; x++)
         {
             for(int y = 0; y < height; y++)
             {
-                addSlotToContainer(new Slot(iinventory, x + (y * width), 62 + (x * 18), 17 + (y * 18)));
+                addSlotToContainer(new Slot(inventory, x + (y * width), 62 + (x * 18), 17 + (y * 18)));
             }
         }
 
@@ -43,5 +44,48 @@ public class OfferingBoxContainer extends Container {
     @Override
     public boolean canInteractWith(EntityPlayer playerIn) {
         return true;
+    }
+
+    @Override
+    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
+        ItemStack prevStack = ItemStack.EMPTY;
+        Slot slot = this.inventorySlots.get(index);
+
+        if(slot != null && slot.getHasStack())
+        {
+            ItemStack stack = slot.getStack();
+            prevStack = stack.copy();
+
+            if (index < 9)
+            {
+                if (!this.mergeItemStack(stack, 9, 45, true))
+                {
+                    return ItemStack.EMPTY;
+                }
+            }
+            else
+            {
+                if (!this.mergeItemStack(stack, 0, 9, false))
+                {
+                    return ItemStack.EMPTY;
+                }
+            }
+
+            if(stack.getCount() == 0)
+            {
+                slot.putStack(ItemStack.EMPTY);
+            }
+            else
+            {
+                slot.onSlotChanged();
+            }
+
+            if(stack.getCount() == prevStack.getCount())
+            {
+                return ItemStack.EMPTY;
+            }
+            slot.onTake(playerIn, stack);
+        }
+        return prevStack;
     }
 }

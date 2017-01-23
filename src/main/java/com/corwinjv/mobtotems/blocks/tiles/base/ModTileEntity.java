@@ -1,4 +1,4 @@
-package com.corwinjv.mobtotems.blocks.tiles;
+package com.corwinjv.mobtotems.blocks.tiles.base;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -66,10 +66,5 @@ public class ModTileEntity extends TileEntity implements ITickable
     public void update()
     {
 
-    }
-
-    public void markForUpdate()
-    {
-        markDirty();
     }
 }

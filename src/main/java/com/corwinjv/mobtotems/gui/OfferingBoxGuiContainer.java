@@ -9,13 +9,9 @@ import net.minecraft.inventory.IInventory;
  * Created by CorwinJV on 1/22/2017.
  */
 public class OfferingBoxGuiContainer extends GuiContainer {
-    private final InventoryPlayer inventoryPlayer;
-    private final IInventory offeringBoxTe;
 
     public OfferingBoxGuiContainer(InventoryPlayer inventoryPlayer, IInventory offeringBoxTe) {
         super(new OfferingBoxContainer(inventoryPlayer, offeringBoxTe));
-        this.inventoryPlayer = inventoryPlayer;
-        this.offeringBoxTe = offeringBoxTe;
     }
 
     @Override
