@@ -2,6 +2,8 @@ package com.corwinjv.mobtotems.interfaces;
 
 import net.minecraft.item.ItemStack;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by CorwinJV on 7/24/2016.
  */

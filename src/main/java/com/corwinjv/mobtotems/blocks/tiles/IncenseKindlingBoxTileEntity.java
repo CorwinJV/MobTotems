@@ -2,6 +2,7 @@ package com.corwinjv.mobtotems.blocks.tiles;
 
 import baubles.api.BaublesApi;
 import baubles.api.cap.IBaublesItemHandler;
+import com.corwinjv.mobtotems.blocks.tiles.base.ModTileEntity;
 import com.corwinjv.mobtotems.interfaces.IChargeable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;

@@ -6,6 +6,8 @@ import net.minecraft.entity.EntityList;
 
 import java.util.Iterator;
 
+import static com.corwinjv.mobtotems.blocks.ModBlocks.OFFERING_BOX;
+
 /**
  * Created by CorwinJV on 8/31/14.
  */
@@ -18,6 +20,11 @@ public class Reference {
     public static final String GUI_FACTORY_CLASS = "com.corwinjv.mobtotems.gui.GuiFactoryMT";
     public static final String CLIENT_SIDE_PROXY_CLASS = "com.corwinjv.mobtotems.proxy.ClientProxy";
     public static final String SERVER_SIDE_PROXY_CLASS = "com.corwinjv.mobtotems.proxy.CommonProxy";
+
+    public enum GUI_ID
+    {
+        OFFERING_BOX
+    };
 
     public static void PrintEntityList()
     {

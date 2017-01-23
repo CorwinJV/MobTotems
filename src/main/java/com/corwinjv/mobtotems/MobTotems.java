@@ -5,6 +5,7 @@ package com.corwinjv.mobtotems;
 
 import com.corwinjv.mobtotems.blocks.ModBlocks;
 import com.corwinjv.mobtotems.entities.ModEntities;
+import com.corwinjv.mobtotems.gui.OfferingBoxGuiHandler;
 import com.corwinjv.mobtotems.items.ModItems;
 import com.corwinjv.mobtotems.network.Network;
 import com.corwinjv.mobtotems.proxy.CommonProxy;
@@ -16,6 +17,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import com.corwinjv.mobtotems.config.ConfigurationHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 
 @Mod(modid=Reference.MOD_ID, name=Reference.MOD_NAME, version=Reference.MOD_VERSION, guiFactory = Reference.GUI_FACTORY_CLASS,
         dependencies = "before:guideapi")
@@ -32,6 +34,7 @@ public class MobTotems
     {
         // Network & Messages
         Network.init();
+        NetworkRegistry.INSTANCE.registerGuiHandler(MobTotems.instance, new OfferingBoxGuiHandler());
 
         // Config
         ConfigurationHandler.Init(event.getSuggestedConfigurationFile());
