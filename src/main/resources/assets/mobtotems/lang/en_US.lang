@@ -27,3 +27,7 @@ tiles.mobtotems:incense_kindling_box.name=Incense Kindling Box
 item.wolf_totem_bauble.name=Personal Wolf Totem
 item.totemic_focus.name=Totemic Focus
 item.carving_knife.name=Carving Knife
+
+#gui
+mobtotems:gui.carving.leftclick=[Left-click to select]
+mobtotems:gui.carving.rightclick=[Right-click to close]

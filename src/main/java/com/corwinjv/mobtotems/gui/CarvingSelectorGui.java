@@ -1,6 +1,7 @@
 package com.corwinjv.mobtotems.gui;
 
 import amerifrance.guideapi.api.util.TextHelper;
+import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.blocks.TotemType;
 import com.corwinjv.mobtotems.network.Network;
 import com.corwinjv.mobtotems.network.SetKnifeMetaMessage;
@@ -25,12 +26,14 @@ import static com.corwinjv.mobtotems.blocks.ModBlocks.TOTEM_WOOD;
  */
 public class CarvingSelectorGui extends GuiScreen
 {
-    private static int angleOffset = 17;
+    private static int INTRO_UPDATES = 5;
+    private static int ANGLE_OFFSET = 17;
 
     private int updates = 0;
     private boolean in = true;
 
     private TotemType selectedType = TotemType.NONE;
+
 
     public CarvingSelectorGui(int meta) {
         super();
@@ -43,7 +46,7 @@ public class CarvingSelectorGui extends GuiScreen
         for(TotemType type : TotemType.values())
         {
             float baseAngle = (360 / TotemType.values().length);
-            double angle =  (baseAngle * type.getMeta()) - angleOffset;
+            double angle =  (baseAngle * type.getMeta()) - ANGLE_OFFSET;
 
             double mouseAngle = getMouseAngle(new Vec2f(centerX, centerY), new Vec2f(mouseX, mouseY));
             double minToCheck = sanitizeDegree(angle - (baseAngle / 2));
@@ -87,7 +90,7 @@ public class CarvingSelectorGui extends GuiScreen
             ItemStack stack = new ItemStack(item, 1, type.getMeta());
             float radius = Math.min(updates * 20, 95f);
             float baseAngle = (360 / TotemType.values().length);
-            double angle =  (baseAngle * type.getMeta()) - angleOffset;
+            double angle =  (baseAngle * type.getMeta()) - ANGLE_OFFSET;
 
             angle = sanitizeDegree(angle);
 
@@ -107,9 +110,9 @@ public class CarvingSelectorGui extends GuiScreen
             renderItemModel(stack, x, y, model, mc.getRenderItem());
 
             // Render Text
-            int unselectedColor = 0xFFFFFFFF;
-            int selectedColor = 0xFF00FFFF;
-            int hoveredColor = 0xFFFF00FF;
+            int unselectedColor = 0xFFFFFF;
+            int selectedColor = 0xFFAA00;
+            int hoveredColor = 0x55FFFF;
 
             GlStateManager.pushMatrix();
             GlStateManager.translate(x-25, y+13, 100F + this.zLevel);
@@ -126,11 +129,16 @@ public class CarvingSelectorGui extends GuiScreen
             {
                 colorToPrint = hoveredColor;
             }
-            //FMLLog.log(Level.ERROR, "angle: " + angle + " minToCheck: " + minToCheck + " maxToCheck" + maxToCheck + " mouseAngle: " + mouseAngle);
 
             fontRendererObj.drawStringWithShadow(text, 0, 0, colorToPrint);
             fontRendererObj.drawStringWithShadow("", 0, 0, unselectedColor);
             GlStateManager.popMatrix();
+        }
+
+        if(updates >= INTRO_UPDATES)
+        {
+            fontRendererObj.drawStringWithShadow(TextHelper.localizeEffect(Reference.RESOURCE_PREFIX + "gui.carving.leftclick"), centerX - 50, centerY - 5, 0xFFFFFF);
+            fontRendererObj.drawStringWithShadow(TextHelper.localizeEffect(Reference.RESOURCE_PREFIX + "gui.carving.rightclick"), centerX - 50, 15 + centerY, 0xFFFFFF);
         }
 
         GlStateManager.popMatrix();
@@ -194,9 +202,9 @@ public class CarvingSelectorGui extends GuiScreen
         if(in)
         {
             updates++;
-            if(updates > 5)
+            if(updates > INTRO_UPDATES)
             {
-                updates = 5;
+                updates = INTRO_UPDATES;
             }
         }
         else
