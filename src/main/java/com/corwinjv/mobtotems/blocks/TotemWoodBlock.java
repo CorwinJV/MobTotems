@@ -53,7 +53,6 @@ public class TotemWoodBlock extends ModBlock implements ITileEntityProvider
         return new BlockStateContainer(this, new IProperty[] {TOTEM_TYPE});
     }
 
-
     @Override
     public IBlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(TOTEM_TYPE, TotemType.fromMeta(meta));
@@ -68,7 +67,7 @@ public class TotemWoodBlock extends ModBlock implements ITileEntityProvider
     @Override
     public TileEntity createNewTileEntity(@Nullable World worldIn, int meta)
     {
-        return new TotemTileEntity();
+        return new TotemTileEntity(TotemType.fromMeta(meta));
     }
 
     // Rendering stuff
@@ -87,4 +86,6 @@ public class TotemWoodBlock extends ModBlock implements ITileEntityProvider
     {
         super.breakBlock(world, pos, blockState);
     }
+
+
 }

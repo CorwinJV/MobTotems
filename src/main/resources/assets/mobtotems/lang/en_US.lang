@@ -10,6 +10,7 @@ entity.mobtotems:spirit_wolf.name=Spirit Wolf
 
 #blocks
 tiles.mobtotems:totem_wood.none.name=Totem Wood (blank)
+tiles.mobtotems:totem_wood.none.shortname=Totem Wood
 tiles.mobtotems:totem_wood.creeper.name=Creeper Totem
 tiles.mobtotems:totem_wood.ender.name=Ender Totem
 tiles.mobtotems:totem_wood.blaze.name=Blaze Totem

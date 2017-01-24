@@ -2,6 +2,7 @@ package com.corwinjv.mobtotems.items;
 
 import com.corwinjv.mobtotems.blocks.TotemType;
 import com.corwinjv.mobtotems.blocks.TotemWoodBlock;
+import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
 import com.corwinjv.mobtotems.gui.CarvingSelectorGui;
 import com.corwinjv.mobtotems.network.ActivateKnifeMessage;
 import com.corwinjv.mobtotems.network.Network;
@@ -12,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -47,7 +49,7 @@ public class CarvingKnife extends ModItem {
             Network.sendToServer(new ActivateKnifeMessage().setHand(hand));
             return new ActionResult(EnumActionResult.PASS, player.getHeldItem(hand));
         }
-        return new ActionResult(EnumActionResult.FAIL, player.getHeldItem(hand));
+        return new ActionResult(EnumActionResult.PASS, player.getHeldItem(hand));
     }
 
     @SideOnly(Side.CLIENT)
@@ -79,6 +81,11 @@ public class CarvingKnife extends ModItem {
                         && targetBlock instanceof TotemWoodBlock)
                 {
                     world.setBlockState(pos, targetBlock.getDefaultState().withProperty(TotemWoodBlock.TOTEM_TYPE, TotemType.fromMeta(getSelectedCarving(stack))));
+                    TileEntity te = world.getTileEntity(pos);
+                    if(te instanceof TotemTileEntity)
+                    {
+                        ((TotemTileEntity)te).setType(TotemType.fromMeta(getSelectedCarving(stack)));
+                    }
                 }
             }
             else

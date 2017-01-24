@@ -4,11 +4,14 @@ import com.corwinjv.mobtotems.MobTotems;
 import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.blocks.tiles.IncenseKindlingBoxTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity;
+import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -41,12 +44,25 @@ public class OfferingBox extends ModBlockContainer
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         boolean retVal = false;
 
-        if(!worldIn.isRemote)
-        {
+        if(!worldIn.isRemote) {
             playerIn.openGui(MobTotems.instance, Reference.GUI_ID.OFFERING_BOX.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
         }
         return retVal;
     }
+
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
+        TileEntity te = worldIn.getTileEntity(pos);
+
+        if(te != null &&
+                te instanceof OfferingBoxTileEntity)
+        {
+            ((OfferingBoxTileEntity)te).verifyMultiblock();
+        }
+    }
+
+
 
     @Override
     public boolean isFullCube(IBlockState state) {

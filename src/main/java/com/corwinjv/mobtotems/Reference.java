@@ -21,6 +21,8 @@ public class Reference {
     public static final String CLIENT_SIDE_PROXY_CLASS = "com.corwinjv.mobtotems.proxy.ClientProxy";
     public static final String SERVER_SIDE_PROXY_CLASS = "com.corwinjv.mobtotems.proxy.CommonProxy";
 
+    public static final int CHARGE_COLOR = 0xFF00FF00;
+
     public enum GUI_ID
     {
         OFFERING_BOX

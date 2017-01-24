@@ -27,7 +27,6 @@ public class BaublesChargeGui extends Gui
     private static final int BG_BORDER = 1;
     private static final int BG_WIDTH = 18;
     private static final int BG_HEIGHT = 18;
-    private static final int CHARGE_COLOR = 0xFF00FF00;
 
     private Minecraft minecraft = null;
     public BaublesChargeGui(Minecraft mc)
@@ -75,7 +74,7 @@ public class BaublesChargeGui extends Gui
 
                 int chargeWidth = (int)Math.floor(chargeRatio * ICON_WIDTH);
                 int chargeTop = (i * (ICON_HEIGHT + ICON_BORDER)) + ICON_HEIGHT + ICON_BORDER;
-                drawRect(ICON_BORDER, chargeTop, ICON_BORDER + chargeWidth, chargeTop + 2, CHARGE_COLOR);
+                drawRect(ICON_BORDER, chargeTop, ICON_BORDER + chargeWidth, chargeTop + 2, Reference.CHARGE_COLOR);
 
                 // TODO: (Maybe) Draw is on cooldown
             }

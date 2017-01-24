@@ -1,5 +1,6 @@
 package com.corwinjv.mobtotems.blocks.tiles.base;
 
+import com.corwinjv.mobtotems.blocks.TotemWoodBlock;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
