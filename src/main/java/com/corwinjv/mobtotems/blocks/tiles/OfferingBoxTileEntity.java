@@ -30,17 +30,19 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity
     @Override
     public void update() {
         // Verify multiblock status
+        if(this.verifyMultiblock())
+        {
+            // Get cost for current multiblock
 
-        // Get cost for current multiblock
+            // Look for items that match the cost in inventory
 
-        // Look for items that match the cost in inventory
+            // Remove items that match the cost in inventory
+            // Add charge
 
-        // Remove items that match the cost in inventory
-        // Add charge
+            // Check charge level
 
-        // Check charge level
-
-        // Perform charge effect
+            // Perform charge effect
+        }
     }
 
     @Nonnull
@@ -58,6 +60,7 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity
     }
 
 
+    // Charge
     private int incrementChargeLevel(int amount)
     {
         chargeLevel += amount;
@@ -74,6 +77,13 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity
         return chargeLevel;
     }
 
+    // Multiblock
+    @Override
+    public boolean verifyMultiblock() {
+        return false;
+    }
+
+    // Inventory
     @Nonnull
     @Override
     public Container createContainer(@Nonnull InventoryPlayer playerInventory, @Nonnull EntityPlayer playerIn) {
@@ -93,7 +103,7 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity
 
     @Override
     public int getInventoryStackLimit() {
-        return 64;
+        return 9;
     }
 
     @Nonnull

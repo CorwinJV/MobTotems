@@ -6,4 +6,5 @@ package com.corwinjv.mobtotems.interfaces;
 public interface IMultiblock {
     boolean getIsMaster();
     void setIsMaster(boolean isMaster);
+    boolean verifyMultiblock();
 }

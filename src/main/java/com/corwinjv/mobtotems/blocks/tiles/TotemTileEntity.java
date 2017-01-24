@@ -13,4 +13,9 @@ public class TotemTileEntity extends ModMultiblockTileEntity
     public boolean getIsMaster() {
         return false;
     }
+
+    @Override
+    public boolean verifyMultiblock() {
+        return false;
+    }
 }

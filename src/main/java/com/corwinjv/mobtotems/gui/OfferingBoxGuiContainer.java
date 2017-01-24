@@ -24,7 +24,7 @@ public class OfferingBoxGuiContainer extends GuiContainer {
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(util.getGuiResourceLocation("offering_box.png"));
+        this.mc.getTextureManager().bindTexture(util.getGuiResourceLocation("offering_box_gui.png"));
         this.drawTexturedModalRect(this.getGuiLeft(), this.getGuiTop(), 0, 0, 176, 166);
     }
 
