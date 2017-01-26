@@ -86,17 +86,4 @@ public class TotemTileEntity extends ModMultiblockTileEntity<TotemType>
         this.type = type;
         markDirty();
     }
-
-    public List<ItemStack> getCost()
-    {
-        List<ItemStack> cost = new ArrayList<ItemStack>();
-        switch(type)
-        {
-            default:
-            {
-                cost.add(new ItemStack(Items.APPLE, 1, 0));
-            }
-        }
-        return cost;
-    }
 }

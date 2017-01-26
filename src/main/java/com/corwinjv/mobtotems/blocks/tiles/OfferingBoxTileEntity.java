@@ -1,12 +1,16 @@
 package com.corwinjv.mobtotems.blocks.tiles;
 
 import com.corwinjv.mobtotems.Reference;
+import com.corwinjv.mobtotems.TotemHelper;
 import com.corwinjv.mobtotems.blocks.ModBlocks;
 import com.corwinjv.mobtotems.blocks.TotemType;
+import com.corwinjv.mobtotems.blocks.tiles.TotemLogic.Modifiers;
+import com.corwinjv.mobtotems.blocks.tiles.TotemLogic.TotemLogic;
 import com.corwinjv.mobtotems.blocks.tiles.base.ModMultiblockInventoryTileEntity;
 import com.corwinjv.mobtotems.gui.OfferingBoxContainer;
 import com.corwinjv.mobtotems.interfaces.IChargeableTileEntity;
 import com.corwinjv.mobtotems.interfaces.IMultiblock;
+import com.corwinjv.mobtotems.network.Network;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -14,6 +18,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.FMLLog;
+import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -24,7 +30,9 @@ import java.util.List;
  */
 public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<TotemType> implements IChargeableTileEntity
 {
-    public static int INVENTORY_SIZE = 9;
+    private static int INVENTORY_SIZE = 9;
+    private static int FUELED_INCR_AMOUNT = 100;
+    private static int TICK_DECR_AMOUNT = 1;
 
     private static final int MAX_CHARGE = 100;
     private static final String CHARGE_LEVEL = "CHARGE_LEVEL";
@@ -39,35 +47,82 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
 
     @Override
     public void update() {
-        // Verify multiblock status
-        if(getIsMaster())
-        {
+        long worldTime = world.getTotalWorldTime();
+
+        if(!world.isRemote
+                && getIsMaster()
+                && worldTime % 20 == 0) {
+
             List<ItemStack> cost = new ArrayList<>();
+
             // Get cost for current multiblock
-            for(BlockPos slavePos : getSlaves())
-            {
+            for(BlockPos slavePos : getSlaves()) {
                 TileEntity totemTe = world.getTileEntity(slavePos);
-                if(totemTe instanceof TotemTileEntity)
-                {
-                    List<ItemStack> totemCost = ((TotemTileEntity)totemTe).getCost();
-                    for(ItemStack stack : totemCost)
-                    {
+
+                if(totemTe instanceof TotemTileEntity) {
+                    List<ItemStack> totemCost = TotemHelper.getCostForTotemType((((TotemTileEntity)totemTe).getType()));
+                    for(ItemStack stack : totemCost) {
                         cost.add(stack);
                     }
                 }
             }
 
-            // Look for items that match the cost in inventory
+            // TODO: Condense cost stacks? If two totems both cost 3 grass, they should turn into 1 stack of 6 grass
 
-            // Remove items that match the cost in inventory
-            // Add charge
+            List<ItemStack> costCopy = new ArrayList<>(cost);
+            // Look for items that match the cost in inventory
+            for(int i = 0; i < getSizeInventory(); i++) {
+                for(ItemStack stack : cost) {
+                    if(stack.getItem() == getStackInSlot(i).getItem()) {
+                        // remove anything that matches in the inventory from costCopy
+
+                        //
+                    }
+                }
+            }
+
+            // If costCopy an empty list, add charge
+            if(costCopy.size() == 0)
+            {
+                incrementChargeLevel(FUELED_INCR_AMOUNT);
+            }
 
             // Check charge level
+            if(getChargeLevel() >= TICK_DECR_AMOUNT)
+            {
+                decrementChargeLevel(TICK_DECR_AMOUNT);
+                FMLLog.log(Level.ERROR, "OfferingBoxTE Decrementing charge, charge at: " + getChargeLevel());
 
-            // Perform charge effect
+                // Perform charge effect
+                performChargeEffect();
+            }
         }
     }
 
+    private void performChargeEffect()
+    {
+        List<TotemType> slaveTypes = getSlaveTypes();
+        List<TotemType> effects = new ArrayList<>();
+        List<TotemType> modifiers = new ArrayList<>();
+
+        TotemHelper.sortEffectsAndModifiers(slaveTypes, effects, modifiers);
+
+        for(TotemType type : effects) {
+            Modifiers mods = new Modifiers();
+            for(TotemType modifierType : modifiers) {
+                TotemLogic logic = TotemHelper.getTotemLogic(modifierType);
+                if(logic != null) {
+                    mods = logic.adjustModifiers(mods);
+                }
+            }
+
+            TotemLogic logic = TotemHelper.getTotemLogic(type);
+            if(logic != null)
+            {
+                logic.performEffect(pos, mods);
+            }
+        }
+    }
 
     @Nonnull
     @Override
@@ -105,6 +160,7 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
         chargeLevel -= amount;
         if(chargeLevel < 0)
             chargeLevel = 0;
+
         markDirty();
     }
 
@@ -122,8 +178,7 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
     public void verifyMultiblock() {
         // Check adjacent blocks for a totem wood
         TotemTileEntity firstSlave = null;
-        for(double x = getPos().getX() - 1; x <= getPos().getX() + 1; x++)
-        {
+        for(double x = getPos().getX() - 1; x <= getPos().getX() + 1; x++) {
             if(firstSlave != null) {
                 break;
             }
@@ -138,8 +193,8 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
                 }
             }
         }
-        if(firstSlave == null)
-        {
+
+        if(firstSlave == null) {
             this.setSlaves(new ArrayList<BlockPos>());
             this.setIsMaster(false);
             return;
@@ -151,9 +206,9 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
         // TODO: Validation
         this.setSlaves(tmpSlaves);
 
+        // Only want to markDirty() once
         this.isMaster = false;
-        if(this.slaves.size() > 0)
-        {
+        if(this.slaves.size() > 0) {
             this.isMaster = true;
         }
         this.setIsMaster(this.isMaster);
@@ -185,13 +240,13 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
     }
 
     @Override
-    public List getSlaveTypes() {
+    public List<TotemType> getSlaveTypes() {
         List<TotemType> slaveTypes = new ArrayList<>();
-        for(BlockPos slavePos : slaves)
-        {
+
+        for(BlockPos slavePos : slaves) {
             TileEntity te = world.getTileEntity(slavePos);
-            if(te instanceof TotemTileEntity)
-            {
+
+            if(te instanceof TotemTileEntity) {
                 slaveTypes.add(((TotemTileEntity)te).getType());
             }
         }
@@ -249,4 +304,34 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
     protected int getUsableDistance() {
         return 3;
     }
+
+    @Override
+    public int getField(int id)
+    {
+        switch(id)
+        {
+            default:
+            case 0:
+            {
+                return this.chargeLevel;
+            }
+        }
+    }
+
+    @Override
+    public void setField(int id, int value) {
+        switch(id)
+        {
+            default:
+            case 0:
+            {
+                setChargeLevel(value);
+            }
+        }
+    }
+
+    public int getFieldCount()
+    {
+        return 1;
+    };
 }

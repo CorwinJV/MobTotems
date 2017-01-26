@@ -1,5 +1,6 @@
 package com.corwinjv.mobtotems.items;
 
+import com.corwinjv.mobtotems.blocks.OfferingBox;
 import com.corwinjv.mobtotems.blocks.TotemType;
 import com.corwinjv.mobtotems.blocks.TotemWoodBlock;
 import com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity;
@@ -99,6 +100,13 @@ public class CarvingKnife extends ModItem {
                         }
 
                     }
+                }
+                // DEBUG REMOVE
+                TileEntity te = world.getTileEntity(pos);
+                if(te != null
+                        && te instanceof OfferingBoxTileEntity)
+                {
+                    ((OfferingBoxTileEntity)te).setChargeLevel(100);
                 }
             }
             else

@@ -4,6 +4,8 @@ package com.corwinjv.mobtotems;
  */
 
 import com.corwinjv.mobtotems.blocks.ModBlocks;
+import com.corwinjv.mobtotems.blocks.SacredLightBlock;
+import com.corwinjv.mobtotems.blocks.tiles.TotemLogic.CreeperLogic;
 import com.corwinjv.mobtotems.entities.ModEntities;
 import com.corwinjv.mobtotems.gui.OfferingBoxGuiHandler;
 import com.corwinjv.mobtotems.items.ModItems;
@@ -40,10 +42,15 @@ public class MobTotems
         ConfigurationHandler.Init(event.getSuggestedConfigurationFile());
         MinecraftForge.EVENT_BUS.register(new ConfigurationHandler());
 
-        // Blocks and Items
+        // Helper stuff
+        TotemHelper.init();
+        MinecraftForge.EVENT_BUS.register(new CreeperLogic.CreeperTotemEntityJoinWorldEvent());
+
+        // Blocks
         ModBlocks.init();
         ModBlocks.registerRecipes();
 
+        // Items
         ModItems.init();
         ModItems.registerItems();
         ModItems.registerRecipes();

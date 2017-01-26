@@ -39,7 +39,6 @@ public class SacredLightBlock extends ModBlock implements ITileEntityProvider
         this.setSoundType(SoundType.WOOD);
 
         this.isBlockContainer = true;
-        MinecraftForge.EVENT_BUS.register(new EntityJoinWorldHandler());
     }
 
     // Rendering stuff
@@ -138,29 +137,6 @@ public class SacredLightBlock extends ModBlock implements ITileEntityProvider
             return false;
         }
     }
-
-    // This block limits what entities can spawn near it, we subscribe to the EntityJoinWorldEvent in order to stop entity spawning
-    // based on proximity to TileEntities of our block's type
-    public class EntityJoinWorldHandler
-    {
-        @SubscribeEvent
-        public void onEntityJoinWorldEvent(EntityJoinWorldEvent e)
-        {
-            if(!e.getWorld().isRemote)
-            {
-                List<TileEntity> loadedTileEntityList = new ArrayList<TileEntity>((ArrayList)e.getWorld().loadedTileEntityList);
-
-                for (TileEntity tileEntity : Collections2.filter(loadedTileEntityList, SacredLightTEPredicate::test)) {
-                    if(!((SacredLightTileEntity)tileEntity).canSpawnMobHere(e.getEntity()))
-                    {
-                        e.setCanceled(true);
-                        break;
-                    }
-                }
-            }
-        }
-    }
-    public static Predicate<TileEntity> SacredLightTEPredicate = tileEntity -> tileEntity instanceof SacredLightTileEntity;
 
     @Nonnull
     @Override

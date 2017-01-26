@@ -28,9 +28,11 @@ public class OfferingBoxGuiContainer extends GuiContainer {
 
     private IChargeableTileEntity chargeableTileEntity = null;
     private IMultiblock<TotemType> multiblockTileEntity = null;
+    private IInventory inventory = null;
 
     public OfferingBoxGuiContainer(InventoryPlayer inventoryPlayer, IInventory inventory) {
         super(new OfferingBoxContainer(inventoryPlayer, inventory));
+        this.inventory = inventory;
         if(inventory instanceof IChargeableTileEntity)
         {
             chargeableTileEntity = (IChargeableTileEntity)inventory;
@@ -69,17 +71,17 @@ public class OfferingBoxGuiContainer extends GuiContainer {
         // Display charge level
         if(chargeableTileEntity != null)
         {
-            int chargeLevel = chargeableTileEntity.getChargeLevel();
+            int chargeLevel = inventory.getField(0);
             float chargeRatio = (float)(chargeLevel) / chargeableTileEntity.getMaxChargeLevel();
 
-            //FMLLog.log(Level.ERROR, "chargeLevel: " + chargeLevel + " chargeRatio: " + chargeRatio);
+            FMLLog.log(Level.ERROR, "chargeLevel: " + chargeLevel + " chargeRatio: " + chargeRatio);
 
             int chargeBottom = 65;
             int chargeLeft = 138;
             int chargeWidth = 8;
 
             // Bar
-            drawRect(chargeLeft, 15, chargeLeft + chargeWidth, chargeBottom, Reference.CHARGE_COLOR);
+            drawRect(chargeLeft, chargeBottom - (int)(50*chargeRatio), chargeLeft + chargeWidth, chargeBottom, Reference.CHARGE_COLOR);
 
             // Charge text
             GlStateManager.pushMatrix();
