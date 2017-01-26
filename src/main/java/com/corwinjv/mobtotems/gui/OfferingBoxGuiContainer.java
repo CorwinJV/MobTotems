@@ -74,7 +74,7 @@ public class OfferingBoxGuiContainer extends GuiContainer {
             int chargeLevel = inventory.getField(0);
             float chargeRatio = (float)(chargeLevel) / chargeableTileEntity.getMaxChargeLevel();
 
-            FMLLog.log(Level.ERROR, "chargeLevel: " + chargeLevel + " chargeRatio: " + chargeRatio);
+            //FMLLog.log(Level.ERROR, "chargeLevel: " + chargeLevel + " chargeRatio: " + chargeRatio);
 
             int chargeBottom = 65;
             int chargeLeft = 138;
@@ -87,7 +87,7 @@ public class OfferingBoxGuiContainer extends GuiContainer {
             GlStateManager.pushMatrix();
             GlStateManager.translate(chargeLeft - 14, chargeBottom + 2, 100F + this.zLevel);
             GlStateManager.scale(0.6, 0.6, 1.0);
-            String text = "Charge level";
+            String text = TextHelper.localizeEffect(Reference.RESOURCE_PREFIX + "gui.offering_box.chargelevel");
             fontRendererObj.drawStringWithShadow(text, 0, 0, 0xffffff);
             GlStateManager.popMatrix();
         }
@@ -100,7 +100,7 @@ public class OfferingBoxGuiContainer extends GuiContainer {
             if(multiblockTileEntity.getIsMaster())
             {
                 int totemTextTop = 20;
-                String text = "Totem Parts:";
+                String text = TextHelper.localizeEffect(Reference.RESOURCE_PREFIX + "gui.offering_box.totems");
                 GlStateManager.pushMatrix();
                 GlStateManager.scale(0.7, 0.7, 1.0);
                 fontRendererObj.drawStringWithShadow(text, 0, totemTextTop, 0xffffff);

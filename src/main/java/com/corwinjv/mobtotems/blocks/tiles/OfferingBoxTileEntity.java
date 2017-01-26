@@ -31,10 +31,10 @@ import java.util.List;
 public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<TotemType> implements IChargeableTileEntity
 {
     private static int INVENTORY_SIZE = 9;
-    private static int FUELED_INCR_AMOUNT = 100;
+    private static int FUELED_INCR_AMOUNT = 1000;
     private static int TICK_DECR_AMOUNT = 1;
 
-    private static final int MAX_CHARGE = 100;
+    private static final int MAX_CHARGE = 1000;
     private static final String CHARGE_LEVEL = "CHARGE_LEVEL";
 
     private static final int MAX_TOTEM_HEIGHT = 3;
@@ -91,7 +91,7 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
             if(getChargeLevel() >= TICK_DECR_AMOUNT)
             {
                 decrementChargeLevel(TICK_DECR_AMOUNT);
-                FMLLog.log(Level.ERROR, "OfferingBoxTE Decrementing charge, charge at: " + getChargeLevel());
+                //FMLLog.log(Level.ERROR, "OfferingBoxTE Decrementing charge, charge at: " + getChargeLevel());
 
                 // Perform charge effect
                 performChargeEffect();

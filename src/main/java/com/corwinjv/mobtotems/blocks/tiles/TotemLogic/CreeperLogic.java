@@ -10,7 +10,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -39,7 +41,8 @@ public class CreeperLogic extends TotemLogic {
     // based on proximity to TileEntities of our block's type
     public static class CreeperTotemEntityJoinWorldEvent
     {
-        private static final int DEFAULT_RADIUS = 8;
+        private static final int DEFAULT_RADIUS = 32;
+        private static final int RANGE_BOOST = 16;
 
         @SubscribeEvent
         public void onEntityJoinWorldEvent(EntityJoinWorldEvent e)
@@ -57,8 +60,10 @@ public class CreeperLogic extends TotemLogic {
                             if(TotemHelper.hasTotemType(e.getWorld(), (OfferingBoxTileEntity)tileEntity, TotemType.CREEPER))
                             {
                                 Modifiers mods = TotemHelper.getModifiers(e.getWorld(), (OfferingBoxTileEntity)tileEntity);
-                                if(!canSpawnMobHere(tileEntity.getPos(), e.getEntity(), DEFAULT_RADIUS + (int)(DEFAULT_RADIUS * mods.speed)))
+                                int radius = DEFAULT_RADIUS + (int)(RANGE_BOOST * mods.range);
+                                if(!canSpawnMobHere(tileEntity.getPos(), e.getEntity(), radius))
                                 {
+                                    FMLLog.log(Level.ERROR, "Stopped mob from spawning with radius: " + radius);
                                     e.setCanceled(true);
                                     break;
                                 }

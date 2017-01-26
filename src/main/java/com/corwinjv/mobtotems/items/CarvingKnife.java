@@ -106,7 +106,7 @@ public class CarvingKnife extends ModItem {
                 if(te != null
                         && te instanceof OfferingBoxTileEntity)
                 {
-                    ((OfferingBoxTileEntity)te).setChargeLevel(100);
+                    ((OfferingBoxTileEntity)te).setChargeLevel(1000);
                 }
             }
             else

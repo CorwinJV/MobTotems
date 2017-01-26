@@ -32,3 +32,5 @@ item.carving_knife.name=Carving Knife
 #gui
 mobtotems:gui.carving.leftclick=[Left-click to select]
 mobtotems:gui.carving.rightclick=[Right-click to close]
+mobtotems:gui.offering_box.chargelevel=Charge level
+mobtotems:gui.offering_box.totems=Totem Parts
