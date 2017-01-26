@@ -62,8 +62,8 @@ public class TotemTileEntity extends ModMultiblockTileEntity<TotemType>
     }
 
     @Override
-    public boolean verifyMultiblock() {
-        return false;
+    public void verifyMultiblock() {
+        return;
     }
 
     @Override

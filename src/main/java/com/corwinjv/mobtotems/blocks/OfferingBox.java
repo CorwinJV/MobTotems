@@ -51,20 +51,6 @@ public class OfferingBox extends ModBlockContainer
     }
 
     @Override
-    public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        super.onBlockPlacedBy(worldIn, pos, state, placer, stack);
-        TileEntity te = worldIn.getTileEntity(pos);
-
-        if(te != null &&
-                te instanceof OfferingBoxTileEntity)
-        {
-            ((OfferingBoxTileEntity)te).verifyMultiblock();
-        }
-    }
-
-
-
-    @Override
     public boolean isFullCube(IBlockState state) {
         return false;
     }
@@ -125,20 +111,21 @@ public class OfferingBox extends ModBlockContainer
         return this.canPlaceOn(worldIn, blockpos);
     }
 
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
+    public void onBlockAdded(World world, BlockPos pos, IBlockState state)
     {
-        this.checkForDrop(worldIn, pos, state);
+        this.checkForDrop(world, pos, state);
+
+        TileEntity te = world.getTileEntity(pos);
+        if(te instanceof OfferingBoxTileEntity)
+        {
+            ((OfferingBoxTileEntity)te).verifyMultiblock();
+        }
     }
 
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos p_189540_5_)
     {
         this.checkForDrop(worldIn, pos, state);
-    }
-
-    @Override
-    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
-        super.onNeighborChange(world, pos, neighbor);
     }
 
     private boolean checkForDrop(World world, BlockPos pos, IBlockState state)

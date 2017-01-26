@@ -2,6 +2,7 @@ package com.corwinjv.mobtotems.items;
 
 import com.corwinjv.mobtotems.blocks.TotemType;
 import com.corwinjv.mobtotems.blocks.TotemWoodBlock;
+import com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
 import com.corwinjv.mobtotems.gui.CarvingSelectorGui;
 import com.corwinjv.mobtotems.network.ActivateKnifeMessage;
@@ -24,6 +25,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import static com.corwinjv.mobtotems.blocks.TotemWoodBlock.MAX_MULTIBLOCK_RANGE;
 
 /**
  * Created by CorwinJV on 1/14/2017.
@@ -85,6 +88,16 @@ public class CarvingKnife extends ModItem {
                     if(te instanceof TotemTileEntity)
                     {
                         ((TotemTileEntity)te).setType(TotemType.fromMeta(getSelectedCarving(stack)));
+                        for(int i = world.loadedTileEntityList.size() - 1; i >= 0; i--)
+                        {
+                            TileEntity te2 = world.loadedTileEntityList.get(i);
+                            if(te2 instanceof OfferingBoxTileEntity
+                                    && te2.getDistanceSq(te.getPos().getX(), te.getPos().getY(), te.getPos().getZ()) < MAX_MULTIBLOCK_RANGE)
+                            {
+                                ((OfferingBoxTileEntity)te2).verifyMultiblock();
+                            }
+                        }
+
                     }
                 }
             }

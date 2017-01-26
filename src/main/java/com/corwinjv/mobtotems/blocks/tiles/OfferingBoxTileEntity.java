@@ -14,8 +14,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.FMLLog;
-import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -42,7 +40,7 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
     @Override
     public void update() {
         // Verify multiblock status
-        if(this.verifyMultiblock())
+        if(getIsMaster())
         {
             List<ItemStack> cost = new ArrayList<>();
             // Get cost for current multiblock
@@ -121,10 +119,11 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
 
     // Multiblock
     @Override
-    public boolean verifyMultiblock() {
+    public void verifyMultiblock() {
         // Check adjacent blocks for a totem wood
         TotemTileEntity firstSlave = null;
-        for(double x = getPos().getX() - 1; x <= getPos().getX() + 1; x++) {
+        for(double x = getPos().getX() - 1; x <= getPos().getX() + 1; x++)
+        {
             if(firstSlave != null) {
                 break;
             }
@@ -132,7 +131,8 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
                 BlockPos posToCheck = new BlockPos(x, getPos().getY(), z);
                 TileEntity te = world.getTileEntity(posToCheck);
 
-                if(te instanceof TotemTileEntity) {
+                if(te != null &&
+                        te instanceof TotemTileEntity) {
                     firstSlave = (TotemTileEntity)te;
                     break;
                 }
@@ -142,7 +142,7 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
         {
             this.setSlaves(new ArrayList<BlockPos>());
             this.setIsMaster(false);
-            return false;
+            return;
         }
 
         // Check above recursively...
@@ -151,13 +151,12 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
         // TODO: Validation
         this.setSlaves(tmpSlaves);
 
-        isMaster = false;
+        this.isMaster = false;
         if(this.slaves.size() > 0)
         {
-            isMaster = true;
+            this.isMaster = true;
         }
-        this.setIsMaster(isMaster);
-        return getIsMaster();
+        this.setIsMaster(this.isMaster);
     }
 
     private List<BlockPos> checkForSlaveAboveRecursively(BlockPos startPos, int height)

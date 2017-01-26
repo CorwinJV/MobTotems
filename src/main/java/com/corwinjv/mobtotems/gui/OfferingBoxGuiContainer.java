@@ -3,6 +3,7 @@ package com.corwinjv.mobtotems.gui;
 import amerifrance.guideapi.api.util.TextHelper;
 import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.blocks.TotemType;
+import com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
 import com.corwinjv.mobtotems.interfaces.IChargeableTileEntity;
 import com.corwinjv.mobtotems.interfaces.IMultiblock;
@@ -27,7 +28,6 @@ public class OfferingBoxGuiContainer extends GuiContainer {
 
     private IChargeableTileEntity chargeableTileEntity = null;
     private IMultiblock<TotemType> multiblockTileEntity = null;
-    private BlockPos multiBlockTileEntityPos = null;
 
     public OfferingBoxGuiContainer(InventoryPlayer inventoryPlayer, IInventory inventory) {
         super(new OfferingBoxContainer(inventoryPlayer, inventory));
@@ -37,11 +37,14 @@ public class OfferingBoxGuiContainer extends GuiContainer {
         }
         if(inventory instanceof IMultiblock)
         {
-            this.multiblockTileEntity = (IMultiblock)inventory;
-        }
-        if(inventory instanceof TileEntity)
-        {
-            this.multiBlockTileEntityPos = ((TileEntity) inventory).getPos();
+            try {
+                this.multiblockTileEntity = (IMultiblock<TotemType>)inventory;
+            }
+            catch(Exception e)
+            {
+                FMLLog.log(Level.ERROR, "OfferingBoxGuiContainer error in instantiation - unknown multiblock");
+                e.printStackTrace();
+            }
         }
     }
 
@@ -88,52 +91,42 @@ public class OfferingBoxGuiContainer extends GuiContainer {
         }
 
         // Display totem composition
-        TileEntity te = Minecraft.getMinecraft().world.getTileEntity(multiBlockTileEntityPos);
-        if(te instanceof IMultiblock)
+        if(multiblockTileEntity != null)
         {
-            if(((IMultiblock)te).getIsMaster())
+            // Make sure the client TE is syncd?
+            multiblockTileEntity.verifyMultiblock();
+            if(multiblockTileEntity.getIsMaster())
             {
                 int totemTextTop = 20;
-                String text = "Totem Parts: ";
+                String text = "Totem Parts:";
                 GlStateManager.pushMatrix();
                 GlStateManager.scale(0.7, 0.7, 1.0);
                 fontRendererObj.drawStringWithShadow(text, 0, totemTextTop, 0xffffff);
 
-                StringBuilder stringBuilder = new StringBuilder();
-                try
-                {
-                    List<BlockPos> slaves = ((IMultiblock)te).getSlaves();
-                    int lines = 0;
+                List<BlockPos> slaves = multiblockTileEntity.getSlaves();
+                int lines = 0;
 
-                    // I know this is super hacky and it's because I'm meddling with forces I do not comprehend, and I'm okay with that.
-                    for(BlockPos slavePos : slaves)
+                for(int i = slaves.size()-1; i >= 0; i--)
+                {
+                    BlockPos slavePos = slaves.get(i);
+                    TileEntity slaveTe = Minecraft.getMinecraft().world.getTileEntity(slavePos);
+                    if(slaveTe instanceof TotemTileEntity)
                     {
-                        TileEntity slaveTe = Minecraft.getMinecraft().world.getTileEntity(slavePos);
-                        if(slaveTe instanceof TotemTileEntity)
+                        String text2 = "";
+                        if(((TotemTileEntity) slaveTe).getType() == TotemType.NONE)
                         {
-                            String text2 = "";
-                            if(((TotemTileEntity) slaveTe).getType() == TotemType.NONE)
-                            {
-                                text2 = TextHelper.localizeEffect("tiles.mobtotems:totem_wood." + ((TotemTileEntity) slaveTe).getType().getName() + ".shortname");
-                            }
-                            else
-                            {
-                                text2 = TextHelper.localizeEffect("tiles.mobtotems:totem_wood." + ((TotemTileEntity) slaveTe).getType().getName() + ".name");
-                            }
-                            fontRendererObj.drawStringWithShadow(text2, 0, ((lines + 1)* 10) + totemTextTop, 0xffffff);
-                            lines++;
+                            text2 = TextHelper.localizeEffect("tiles.mobtotems:totem_wood." + ((TotemTileEntity) slaveTe).getType().getName() + ".shortname");
                         }
+                        else
+                        {
+                            text2 = TextHelper.localizeEffect("tiles.mobtotems:totem_wood." + ((TotemTileEntity) slaveTe).getType().getName() + ".name");
+                        }
+                        fontRendererObj.drawStringWithShadow(text2, 0, ((lines + 1)* 10) + totemTextTop, 0xffffff);
+                        lines++;
                     }
                 }
-                catch(Exception e) {
-                    FMLLog.log(Level.ERROR, "Offering box - Unknown slave types.");
-                    e.printStackTrace();
-                }
-
-                String text2 = stringBuilder.toString();
                 GlStateManager.popMatrix();
             }
-
         }
     }
 
