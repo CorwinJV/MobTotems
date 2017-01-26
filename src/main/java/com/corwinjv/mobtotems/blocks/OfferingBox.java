@@ -30,7 +30,7 @@ import java.util.Random;
  */
 public class OfferingBox extends ModBlockContainer
 {
-    private static final AxisAlignedBB boundingBox = new AxisAlignedBB(0.2D, 0.D, 0.2D, 0.8D, 0.5D, 0.8D);
+    private static final AxisAlignedBB boundingBox = new AxisAlignedBB(0.5/16.0, 0, 0.5D/16.0, 15.5D/16.0, 3.0D/16.0, 15.5D/16.0);
 
     public OfferingBox()
     {
