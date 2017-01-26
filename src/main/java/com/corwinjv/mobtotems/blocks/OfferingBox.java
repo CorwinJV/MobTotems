@@ -158,12 +158,4 @@ public class OfferingBox extends ModBlockContainer
     {
         return new OfferingBoxTileEntity();
     }
-
-    // Consumable block!
-    @Override
-    public int quantityDropped(Random random)
-    {
-        return 0;
-    }
-
 }

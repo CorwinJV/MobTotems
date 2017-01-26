@@ -10,7 +10,6 @@ import com.corwinjv.mobtotems.blocks.tiles.base.ModMultiblockInventoryTileEntity
 import com.corwinjv.mobtotems.gui.OfferingBoxContainer;
 import com.corwinjv.mobtotems.interfaces.IChargeableTileEntity;
 import com.corwinjv.mobtotems.interfaces.IMultiblock;
-import com.corwinjv.mobtotems.network.Network;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -18,8 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.FMLLog;
-import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -74,9 +71,7 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
             for(int i = 0; i < getSizeInventory(); i++) {
                 for(ItemStack stack : cost) {
                     if(stack.getItem() == getStackInSlot(i).getItem()) {
-                        // remove anything that matches in the inventory from costCopy
-
-                        //
+                        // TODO: remove anything that matches in the inventory from costCopy
                     }
                 }
             }
@@ -84,16 +79,15 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
             // If costCopy an empty list, add charge
             if(costCopy.size() == 0)
             {
+                // TODO: Remove the cost from the inventory
+
                 incrementChargeLevel(FUELED_INCR_AMOUNT);
             }
 
-            // Check charge level
-            if(getChargeLevel() >= TICK_DECR_AMOUNT)
+            // Decrement charge level
+            decrementChargeLevel(TICK_DECR_AMOUNT);
+            if(getChargeLevel() > 0)
             {
-                decrementChargeLevel(TICK_DECR_AMOUNT);
-                //FMLLog.log(Level.ERROR, "OfferingBoxTE Decrementing charge, charge at: " + getChargeLevel());
-
-                // Perform charge effect
                 performChargeEffect();
             }
         }
