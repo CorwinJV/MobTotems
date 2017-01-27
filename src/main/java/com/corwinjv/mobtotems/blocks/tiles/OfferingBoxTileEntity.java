@@ -27,11 +27,12 @@ import java.util.List;
  */
 public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<TotemType> implements IChargeableTileEntity
 {
+    public static final int MAX_CHARGE = 500;
+
     private static int INVENTORY_SIZE = 9;
-    private static int FUELED_INCR_AMOUNT = 1000;
+    private static int FUELED_INCR_AMOUNT = MAX_CHARGE;
     private static int TICK_DECR_AMOUNT = 1;
 
-    private static final int MAX_CHARGE = 1000;
     private static final String CHARGE_LEVEL = "CHARGE_LEVEL";
 
     private static final int MAX_TOTEM_HEIGHT = 3;
@@ -50,38 +51,70 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
                 && getIsMaster()
                 && worldTime % 20 == 0) {
 
-            List<ItemStack> cost = new ArrayList<>();
-
-            // Get cost for current multiblock
-            for(BlockPos slavePos : getSlaves()) {
-                TileEntity totemTe = world.getTileEntity(slavePos);
-
-                if(totemTe instanceof TotemTileEntity) {
-                    List<ItemStack> totemCost = TotemHelper.getCostForTotemType((((TotemTileEntity)totemTe).getType()));
-                    for(ItemStack stack : totemCost) {
-                        cost.add(stack);
-                    }
-                }
-            }
-
-            // TODO: Condense cost stacks? If two totems both cost 3 grass, they should turn into 1 stack of 6 grass
-
-            List<ItemStack> costCopy = new ArrayList<>(cost);
-            // Look for items that match the cost in inventory
-            for(int i = 0; i < getSizeInventory(); i++) {
-                for(ItemStack stack : cost) {
-                    if(stack.getItem() == getStackInSlot(i).getItem()) {
-                        // TODO: remove anything that matches in the inventory from costCopy
-                    }
-                }
-            }
-
-            // If costCopy an empty list, add charge
-            if(costCopy.size() == 0)
+            if(getChargeLevel() + FUELED_INCR_AMOUNT <= MAX_CHARGE)
             {
-                // TODO: Remove the cost from the inventory
+                List<ItemStack> cost = new ArrayList<>();
 
-                incrementChargeLevel(FUELED_INCR_AMOUNT);
+                // Get cost for current multiblock
+                for(BlockPos slavePos : getSlaves()) {
+                    TileEntity totemTe = world.getTileEntity(slavePos);
+
+                    if(totemTe instanceof TotemTileEntity) {
+                        List<ItemStack> totemCost = TotemHelper.getCostForTotemType((((TotemTileEntity)totemTe).getType()));
+                        for(ItemStack stack : totemCost) {
+                            cost.add(stack);
+                        }
+                    }
+                }
+
+                cost = condenseCostStacks(cost);
+                List<ItemStack> costCopy = new ArrayList<>(cost);
+
+                // Confirm that the cost can be met
+                for(int i = 0; i < getSizeInventory(); i++) {
+                    for(int j = costCopy.size()-1; j >= 0; j--) {
+                        ItemStack costStack = new ItemStack(costCopy.get(j).getItem(), costCopy.get(j).getCount(), costCopy.get(j).getMetadata());
+                        if(costStack.getItem() == getStackInSlot(i).getItem()) {
+                            if(getStackInSlot(i).getCount() >= costStack.getCount()) {
+                                costCopy.remove(j);
+                            } else if(getStackInSlot(i).getCount() < costStack.getCount()) {
+                                costStack.setCount(costStack.getCount() - getStackInSlot(i).getCount());
+                                costCopy.set(j, costStack);
+                                if(costStack.getCount() == 0) {
+                                    costCopy.remove(j);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // If costCopy an empty list, add charge
+                if(costCopy.size() == 0)
+                {
+                    // Remove the cost from the inventory
+                    costCopy = new ArrayList<>(cost);
+
+                    for(int i = getSizeInventory() - 1; i >= 0; i--) {
+                        for(int j = costCopy.size() - 1; j >= 0; j--) {
+                            ItemStack costStack = costCopy.get(j);
+                            if(costStack.getItem() == getStackInSlot(i).getItem()) {
+                                if(getStackInSlot(i).getCount() <= costStack.getCount()) {
+                                    costStack.setCount(costStack.getCount() - getStackInSlot(i).getCount());
+                                    if(costStack.getCount() == 0) {
+                                        costCopy.remove(costStack);
+                                    }
+                                    removeStackFromSlot(i);
+                                } else if(getStackInSlot(i).getCount() > costStack.getCount()) {
+                                    decrStackSize(i, costStack.getCount());
+                                    costCopy.remove(j);
+                                }
+                            }
+                        }
+                    }
+
+                    // Fill up charge
+                    incrementChargeLevel(FUELED_INCR_AMOUNT);
+                }
             }
 
             // Decrement charge level
@@ -91,6 +124,25 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
                 performChargeEffect();
             }
         }
+    }
+
+    private List<ItemStack> condenseCostStacks(List<ItemStack> costStacks)
+    {
+        List<ItemStack> ret = new ArrayList<>();
+        for(ItemStack stack : costStacks)
+        {
+            boolean containsItem = false;
+            for(ItemStack retStack : ret) {
+                if(stack.getItem().equals(retStack.getItem())) {
+                    retStack.setCount(retStack.getCount() + stack.getCount());
+                    containsItem = true;
+                }
+            }
+            if(!containsItem) {
+                ret.add(stack);
+            }
+        }
+        return ret;
     }
 
     private void performChargeEffect()

@@ -28,6 +28,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import static com.corwinjv.mobtotems.blocks.TotemWoodBlock.MAX_MULTIBLOCK_RANGE;
+import static com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity.MAX_CHARGE;
 
 /**
  * Created by CorwinJV on 1/14/2017.
@@ -100,13 +101,6 @@ public class CarvingKnife extends ModItem {
                         }
 
                     }
-                }
-                // DEBUG REMOVE
-                TileEntity te = world.getTileEntity(pos);
-                if(te != null
-                        && te instanceof OfferingBoxTileEntity)
-                {
-                    ((OfferingBoxTileEntity)te).setChargeLevel(1000);
                 }
             }
             else
