@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 /**
  * Created by CorwinJV on 7/13/2016.
  */
-public class ModTileEntity extends TileEntity implements ITickable
+public class ModTileEntity extends TileEntity
 {
     public ModTileEntity()
     {
@@ -60,11 +60,5 @@ public class ModTileEntity extends TileEntity implements ITickable
     public boolean shouldRefresh(World world, BlockPos pos, @Nonnull IBlockState oldState, @Nonnull IBlockState newState)
     {
         return (oldState.getBlock() != newState.getBlock());
-    }
-
-    @Override
-    public void update()
-    {
-
     }
 }

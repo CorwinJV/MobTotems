@@ -49,7 +49,7 @@ public class EnderLogic extends TotemLogic {
             World world = e.getEntityLiving().getEntityWorld();
             if(!world.isRemote)
             {
-                List<TileEntity> loadedTileEntityList = world.loadedTileEntityList;
+                List<TileEntity> loadedTileEntityList = new ArrayList<>(world.loadedTileEntityList);
 
                 for (TileEntity tileEntity : loadedTileEntityList)
                 {

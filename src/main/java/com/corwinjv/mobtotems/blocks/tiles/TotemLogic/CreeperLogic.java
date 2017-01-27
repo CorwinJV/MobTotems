@@ -42,7 +42,7 @@ public class CreeperLogic extends TotemLogic {
         {
             if(!e.getWorld().isRemote)
             {
-                List<TileEntity> loadedTileEntityList = e.getWorld().loadedTileEntityList;
+                List<TileEntity> loadedTileEntityList = new ArrayList<>(e.getWorld().loadedTileEntityList);
 
                 for (TileEntity tileEntity : loadedTileEntityList)
                 {

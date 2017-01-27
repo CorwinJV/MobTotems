@@ -11,6 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nonnull;
@@ -21,7 +22,7 @@ import java.util.function.Predicate;
 /**
  * Created by CorwinJV on 7/24/2016.
  */
-public class IncenseKindlingBoxTileEntity extends ModTileEntity
+public class IncenseKindlingBoxTileEntity extends ModTileEntity implements ITickable
 {
     private static final String TIME_LIVED = "TIME_LIVED";
 
