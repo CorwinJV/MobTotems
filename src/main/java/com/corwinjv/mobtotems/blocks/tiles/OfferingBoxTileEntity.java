@@ -167,7 +167,7 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
             TotemLogic logic = TotemHelper.getTotemLogic(type);
             if(logic != null)
             {
-                logic.performEffect(pos, mods);
+                logic.performEffect(world, pos, mods);
             }
         }
     }

@@ -2,9 +2,9 @@ package com.corwinjv.mobtotems.blocks.tiles.TotemLogic;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +27,7 @@ public abstract class TotemLogic {
         return modifiers;
     }
 
-    public void performEffect(BlockPos pos, Modifiers modifiers)
+    public void performEffect(World world, BlockPos pos, Modifiers modifiers)
     {
     }
 }

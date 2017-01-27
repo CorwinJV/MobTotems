@@ -18,6 +18,9 @@ import java.util.Map;
  */
 public class TotemHelper {
 
+    public static final int DEFAULT_RADIUS = 32;
+    public static final int RANGE_BOOST = 16;
+
     private static Map<TotemType,Class<? extends TotemLogic>> totemMap = new HashMap<>();
 
     public static void init()

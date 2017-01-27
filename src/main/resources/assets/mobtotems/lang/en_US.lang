@@ -23,6 +23,7 @@ tiles.mobtotems:totem_wood.llama.name=Llama Totem
 tiles.mobtotems:totem_wood.rabbit.name=Rabbit Totem
 tiles.mobtotems:sacred_light.name=Sacred Light
 tiles.mobtotems:incense_kindling_box.name=Incense Kindling Box
+tiles.mobtotems:offering_box.name=Offering Box
 
 #items
 item.wolf_totem_bauble.name=Personal Wolf Totem
