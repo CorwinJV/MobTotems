@@ -22,11 +22,9 @@ import java.util.List;
 public class CreeperLogic extends TotemLogic {
     @Override
     public List<ItemStack> getCost() {
-        {
-            List<ItemStack> cost = new ArrayList<>();
-            cost.add(new ItemStack(Items.GUNPOWDER, 2, 0));
-            return cost;
-        }
+        List<ItemStack> cost = new ArrayList<>();
+        cost.add(new ItemStack(Items.GUNPOWDER, 2, 0));
+        return cost;
     }
 
     @Nonnull

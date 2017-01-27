@@ -22,12 +22,10 @@ public abstract class TotemLogic {
     public abstract EffectType getEffectType();
 
     @Nonnull
-    public Modifiers adjustModifiers(Modifiers modifiers)
-    {
+    public Modifiers adjustModifiers(Modifiers modifiers) {
         return modifiers;
     }
 
-    public void performEffect(World world, BlockPos pos, Modifiers modifiers)
-    {
+    public void performEffect(World world, BlockPos pos, Modifiers modifiers) {
     }
 }

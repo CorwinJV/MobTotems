@@ -27,11 +27,9 @@ import java.util.List;
 public class EnderLogic extends TotemLogic {
     @Override
     public List<ItemStack> getCost() {
-        {
-            List<ItemStack> cost = new ArrayList<>();
-            cost.add(new ItemStack(Blocks.GRASS, 1, 0));
-            return cost;
-        }
+        List<ItemStack> cost = new ArrayList<>();
+        cost.add(new ItemStack(Blocks.GRASS, 1, 0));
+        return cost;
     }
 
     @Nonnull
@@ -86,8 +84,7 @@ public class EnderLogic extends TotemLogic {
             return !(mob instanceof EntityEnderman && dist < radius);
         }
 
-        private BlockPos getValidTeleportPosAround(World world, BlockPos pos)
-        {
+        private BlockPos getValidTeleportPosAround(World world, BlockPos pos) {
             BlockPos validPos = null;
             List<BlockPos> validPositions = new ArrayList<>();
             for(int x = -2; x <= 2; x++) {

@@ -9,7 +9,6 @@ public class Modifiers
     public float damage = 0;
     public float speed = 0;
 
-    public Modifiers()
-    {
+    public Modifiers() {
     }
 }

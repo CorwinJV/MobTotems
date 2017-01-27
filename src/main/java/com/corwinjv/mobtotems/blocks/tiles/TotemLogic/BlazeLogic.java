@@ -27,11 +27,9 @@ public class BlazeLogic extends TotemLogic {
 
     @Override
     public List<ItemStack> getCost() {
-        {
-            List<ItemStack> cost = new ArrayList<>();
-            cost.add(new ItemStack(Items.COAL, 2, 0));
-            return cost;
-        }
+        List<ItemStack> cost = new ArrayList<>();
+        cost.add(new ItemStack(Items.COAL, 2, 0));
+        return cost;
     }
 
     @Nonnull

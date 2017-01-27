@@ -12,10 +12,8 @@ import java.util.List;
 public class WolfLogic extends TotemLogic {
     @Override
     public List<ItemStack> getCost() {
-        {
-            List<ItemStack> cost = new ArrayList<>();
-            return cost;
-        }
+        List<ItemStack> cost = new ArrayList<>();
+        return cost;
     }
 
     @Nonnull

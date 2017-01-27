@@ -4,10 +4,8 @@ import com.corwinjv.mobtotems.TotemHelper;
 import com.corwinjv.mobtotems.blocks.TotemType;
 import com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -24,11 +22,9 @@ import java.util.List;
 public class CowLogic extends TotemLogic {
     @Override
     public List<ItemStack> getCost() {
-        {
-            List<ItemStack> cost = new ArrayList<>();
-            cost.add(new ItemStack(Blocks.TALLGRASS, 4, 1));
-            return cost;
-        }
+        List<ItemStack> cost = new ArrayList<>();
+        cost.add(new ItemStack(Blocks.TALLGRASS, 4, 1));
+        return cost;
     }
 
     @Nonnull
@@ -37,13 +33,10 @@ public class CowLogic extends TotemLogic {
         return EffectType.EFFECT;
     }
 
-    public static class CowTotemEntityJoinWorldEvent
-    {
+    public static class CowTotemEntityJoinWorldEvent {
         @SubscribeEvent
-        public void onEntityJoinWorldEvent(EntityJoinWorldEvent e)
-        {
-            if(!e.getWorld().isRemote)
-            {
+        public void onEntityJoinWorldEvent(EntityJoinWorldEvent e) {
+            if(!e.getWorld().isRemote) {
                 List<TileEntity> loadedTileEntityList = e.getWorld().loadedTileEntityList;
 
                 for (TileEntity tileEntity : loadedTileEntityList) {
@@ -70,5 +63,4 @@ public class CowLogic extends TotemLogic {
             return !(mob instanceof EntityAnimal && dist < radius);
         }
     }
-
 }
