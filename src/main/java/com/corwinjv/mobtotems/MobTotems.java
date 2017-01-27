@@ -5,6 +5,7 @@ package com.corwinjv.mobtotems;
 
 import com.corwinjv.mobtotems.blocks.ModBlocks;
 import com.corwinjv.mobtotems.blocks.SacredLightBlock;
+import com.corwinjv.mobtotems.blocks.tiles.TotemLogic.CowLogic;
 import com.corwinjv.mobtotems.blocks.tiles.TotemLogic.CreeperLogic;
 import com.corwinjv.mobtotems.blocks.tiles.TotemLogic.EnderLogic;
 import com.corwinjv.mobtotems.entities.ModEntities;
@@ -46,6 +47,7 @@ public class MobTotems
         // Helper stuff
         TotemHelper.init();
         MinecraftForge.EVENT_BUS.register(new CreeperLogic.CreeperTotemEntityJoinWorldEvent());
+        MinecraftForge.EVENT_BUS.register(new CowLogic.CowTotemEntityJoinWorldEvent());
         MinecraftForge.EVENT_BUS.register(new EnderLogic.EnderTotemEnderTeleportEvent());
 
         // Blocks
