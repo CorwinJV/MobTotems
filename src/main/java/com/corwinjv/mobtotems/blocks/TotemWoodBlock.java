@@ -48,7 +48,7 @@ public class TotemWoodBlock extends ModBlock implements ITileEntityProvider
 
     @Override
     public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
-        for(int i = 0; i < 11; i++)
+        for(int i = 0; i < TotemType.values().length; i++)
         {
             list.add(new ItemStack(itemIn, 1, i));
         }
@@ -89,8 +89,7 @@ public class TotemWoodBlock extends ModBlock implements ITileEntityProvider
         {
             TileEntity te = worldIn.loadedTileEntityList.get(i);
             if(te instanceof OfferingBoxTileEntity
-                    && te.getDistanceSq(pos.getX(), pos.getY(), pos.getZ()) < MAX_MULTIBLOCK_RANGE)
-            {
+                    && te.getDistanceSq(pos.getX(), pos.getY(), pos.getZ()) < MAX_MULTIBLOCK_RANGE) {
                 ((OfferingBoxTileEntity)te).verifyMultiblock();
             }
         }
@@ -102,8 +101,7 @@ public class TotemWoodBlock extends ModBlock implements ITileEntityProvider
         {
             TileEntity te = worldIn.loadedTileEntityList.get(i);
             if(te instanceof OfferingBoxTileEntity
-                && te.getDistanceSq(pos.getX(), pos.getY(), pos.getZ()) < MAX_MULTIBLOCK_RANGE)
-            {
+                    && te.getDistanceSq(pos.getX(), pos.getY(), pos.getZ()) < MAX_MULTIBLOCK_RANGE) {
                 ((OfferingBoxTileEntity)te).verifyMultiblock();
             }
         }
@@ -116,8 +114,7 @@ public class TotemWoodBlock extends ModBlock implements ITileEntityProvider
         {
             TileEntity te = worldIn.loadedTileEntityList.get(i);
             if(te instanceof OfferingBoxTileEntity
-                    && te.getDistanceSq(pos.getX(), pos.getY(), pos.getZ()) < MAX_MULTIBLOCK_RANGE)
-            {
+                    && te.getDistanceSq(pos.getX(), pos.getY(), pos.getZ()) < MAX_MULTIBLOCK_RANGE) {
                 ((OfferingBoxTileEntity)te).verifyMultiblock();
             }
         }

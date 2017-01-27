@@ -34,10 +34,12 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
     private static int TICK_DECR_AMOUNT = 1;
 
     private static final String CHARGE_LEVEL = "CHARGE_LEVEL";
+    private static final String SLAVE_TYPES_COPY = "SLAVE_TYPES_COPY";
 
     private static final int MAX_TOTEM_HEIGHT = 3;
 
     private int chargeLevel = 0;
+    private List<TotemType> slaveTypesCopy = new ArrayList<>();
 
     public OfferingBoxTileEntity() {
         super();
@@ -175,6 +177,13 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
         nbt = super.writeToNBT(nbt);
         nbt.setInteger(CHARGE_LEVEL, chargeLevel);
+
+        int[] slaveTypesArr = new int[slaveTypesCopy.size()];
+        for(int i = 0; i < slaveTypesCopy.size(); i++) {
+            slaveTypesArr[i] = slaveTypesCopy.get(i).ordinal();
+        }
+
+        nbt.setIntArray(SLAVE_TYPES_COPY, slaveTypesArr);
         return nbt;
     }
 
@@ -182,6 +191,12 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
     public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         chargeLevel = nbt.getInteger(CHARGE_LEVEL);
+
+        int[] slaveTypesArr = nbt.getIntArray(SLAVE_TYPES_COPY);
+        slaveTypesCopy.clear();
+        for(int i = 0; i < slaveTypesArr.length; i++) {
+            slaveTypesCopy.add(TotemType.fromMeta(slaveTypesArr[i]));
+        }
     }
 
     // Charge
@@ -206,7 +221,6 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
         chargeLevel -= amount;
         if(chargeLevel < 0)
             chargeLevel = 0;
-
         markDirty();
     }
 
@@ -222,6 +236,7 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
     // Multiblock
     @Override
     public void verifyMultiblock() {
+
         // Check adjacent blocks for a totem wood
         TotemTileEntity firstSlave = null;
         for(double x = getPos().getX() - 1; x <= getPos().getX() + 1; x++) {
@@ -240,24 +255,33 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
             }
         }
 
-        if(firstSlave == null) {
-            this.setSlaves(new ArrayList<BlockPos>());
-            this.setIsMaster(false);
-            return;
+        // Check above recursively...
+        List<BlockPos> tmpSlaves = new ArrayList<>();
+
+        if(firstSlave != null) {
+            tmpSlaves = checkForSlaveAboveRecursively(firstSlave.getPos(), MAX_TOTEM_HEIGHT);
         }
 
-        // Check above recursively...
-        List<BlockPos> tmpSlaves = checkForSlaveAboveRecursively(firstSlave.getPos(), MAX_TOTEM_HEIGHT);
-
-        // TODO: Validation
-        this.setSlaves(tmpSlaves);
-
-        // Only want to markDirty() once
+        // Validation
+        // only want to markDirty() once
         this.isMaster = false;
-        if(this.slaves.size() > 0) {
+        if(tmpSlaves.size() >= 2) {
+            this.setSlaves(tmpSlaves);
             this.isMaster = true;
         }
+        else {
+            this.setSlaves(new ArrayList<>());
+        }
         this.setIsMaster(this.isMaster);
+
+        // If we've changed status, reset the charge pool
+        if(!slaveTypesCopy.equals(getSlaveTypes()) || !getIsMaster()) {
+            this.setChargeLevel(0);
+            slaveTypesCopy.clear();
+            for(TotemType type : getSlaveTypes()) {
+                slaveTypesCopy.add(type);
+            }
+        }
     }
 
     private List<BlockPos> checkForSlaveAboveRecursively(BlockPos startPos, int height)
@@ -297,6 +321,17 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
             }
         }
         return slaveTypes;
+    }
+
+    public List<TotemType> getSlaveTypesCopy()
+    {
+        return slaveTypesCopy;
+    }
+
+    public void setSlaveTypesCopy(List<TotemType> slaveTypesCopy)
+    {
+        this.slaveTypesCopy = slaveTypesCopy;
+        markDirty();
     }
 
     @Override
