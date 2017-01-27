@@ -26,7 +26,7 @@ public class CreeperLogic extends TotemLogic {
     public List<ItemStack> getCost() {
         {
             List<ItemStack> cost = new ArrayList<>();
-            cost.add(new ItemStack(Items.GUNPOWDER, 4, 0));
+            cost.add(new ItemStack(Items.GUNPOWDER, 2, 0));
             return cost;
         }
     }
@@ -63,7 +63,7 @@ public class CreeperLogic extends TotemLogic {
                                 int radius = DEFAULT_RADIUS + (int)(RANGE_BOOST * mods.range);
                                 if(!canSpawnMobHere(tileEntity.getPos(), e.getEntity(), radius))
                                 {
-                                    FMLLog.log(Level.ERROR, "Stopped mob from spawning with radius: " + radius);
+                                    //FMLLog.log(Level.ERROR, "Stopped mob from spawning with radius: " + radius);
                                     e.setCanceled(true);
                                     break;
                                 }

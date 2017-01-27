@@ -99,7 +99,6 @@ public class CarvingKnife extends ModItem {
                                 ((OfferingBoxTileEntity)te2).verifyMultiblock();
                             }
                         }
-
                     }
                 }
             }
