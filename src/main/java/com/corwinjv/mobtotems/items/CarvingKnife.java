@@ -1,34 +1,39 @@
 package com.corwinjv.mobtotems.items;
 
-import com.corwinjv.mobtotems.blocks.OfferingBox;
 import com.corwinjv.mobtotems.blocks.TotemType;
 import com.corwinjv.mobtotems.blocks.TotemWoodBlock;
-import com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity;
-import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
 import com.corwinjv.mobtotems.gui.CarvingSelectorGui;
 import com.corwinjv.mobtotems.network.ActivateKnifeMessage;
 import com.corwinjv.mobtotems.network.Network;
 import com.corwinjv.mobtotems.network.OpenKnifeGuiMessage;
+import com.corwinjv.mobtotems.particles.ModParticles;
 import com.corwinjv.mobtotems.utils.BlockUtils;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.IParticleFactory;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleBlockDust;
+import net.minecraft.client.particle.ParticleDigging;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import static com.corwinjv.mobtotems.blocks.TotemWoodBlock.MAX_MULTIBLOCK_RANGE;
-import static com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity.MAX_CHARGE;
+import org.apache.logging.log4j.Level;
 
 /**
  * Created by CorwinJV on 1/14/2017.
@@ -36,6 +41,8 @@ import static com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity.MAX_CHAR
 public class CarvingKnife extends ModItem {
     private final String COMPOUND_TAG = "carving_knife";
     private final String SELECTED_CARVING_TAG = "selected_carving";
+
+    boolean spawnParticles = false;
 
     public CarvingKnife()
     {
@@ -63,10 +70,68 @@ public class CarvingKnife extends ModItem {
         FMLClientHandler.instance().displayGuiScreen(player, new CarvingSelectorGui(meta));
     }
 
+    @Override
+    public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
+        super.onUpdate(stack, world, entity, itemSlot, isSelected);
+        if(world.isRemote
+                && entity instanceof EntityPlayer) {
+            spawnParticles(stack, world, (EntityPlayer)entity);
+        }
+    }
+
+    @SideOnly(Side.CLIENT)
+    private void spawnParticles(ItemStack stack, World world, EntityPlayer player) {
+        long worldTime = world.getWorldTime();
+        if(spawnParticles) {
+            IParticleFactory particleFactory = new ParticleBlockDust.Factory();
+
+            Vec3d posEyes = player.getPositionEyes(1.0f);
+            RayTraceResult rayTraceResult = world.rayTraceBlocks(posEyes, posEyes.add(player.getLookVec().scale(3f)));
+
+            if (rayTraceResult != null) {
+                BlockPos pos = rayTraceResult.getBlockPos();
+                Block targetBlock = BlockUtils.getBlock(world, pos);
+
+                if (targetBlock != null
+                        && targetBlock instanceof TotemWoodBlock) {
+                    IBlockState state = world.getBlockState(pos);
+                    int i = 4;
+
+                    for (int j = 0; j < 4; ++j) {
+                        for (int k = 0; k < 4; ++k) {
+                            for (int l = 0; l < 4; ++l) {
+                                double d0 = ((double)j + 0.5D) / 4.0D;
+                                double d1 = ((double)k + 0.5D) / 4.0D;
+                                double d2 = ((double)l + 0.5D) / 4.0D;
+
+                                double speedX = d0 - 0.5D;
+                                double speedY = d1 - 0.5D;
+                                double speedZ = d2 - 0.5D;
+                                speedX *= 0.2;
+                                speedY *= 0.2;
+                                speedZ *= 0.2;
+                                Minecraft.getMinecraft().effectRenderer.addEffect(
+                                        particleFactory.createParticle(EnumParticleTypes.BLOCK_DUST.getParticleID(),
+                                                world,
+                                                (double)pos.getX() + d0,
+                                                (double)pos.getY() + d1,
+                                                (double)pos.getZ() + d2,
+                                                speedX,
+                                                speedY,
+                                                speedZ,
+                                        new int[] { Block.getStateId(state) }));
+                            }
+                        }
+                    }
+                }
+            }
+            spawnParticles = false;
+        }
+    }
+
     public void onKnifeActivated(EntityPlayer player, EnumHand hand)
     {
-        if(player.world.isRemote)
-        {
+        if(player.world.isRemote) {
             return;
         }
 
@@ -75,25 +140,34 @@ public class CarvingKnife extends ModItem {
         Vec3d posEyes = player.getPositionEyes(1.0f);
         RayTraceResult rayTraceResult = world.rayTraceBlocks(posEyes, posEyes.add(player.getLookVec().scale(3f)));
 
-        if(stack.getItem() instanceof CarvingKnife)
-        {
-            if(rayTraceResult != null)
-            {
+        if(stack.getItem() instanceof CarvingKnife) {
+            if(rayTraceResult != null) {
                 BlockPos pos = rayTraceResult.getBlockPos();
                 Block targetBlock = BlockUtils.getBlock(world, pos);
 
                 if (targetBlock != null
-                        && targetBlock instanceof TotemWoodBlock)
-                {
-                    world.setBlockState(pos, targetBlock.getDefaultState().withProperty(TotemWoodBlock.TOTEM_TYPE, TotemType.fromMeta(getSelectedCarving(stack))));
+                        && targetBlock instanceof TotemWoodBlock) {
+                    if(world.setBlockState(pos, targetBlock.getDefaultState().withProperty(TotemWoodBlock.TOTEM_TYPE, TotemType.fromMeta(getSelectedCarving(stack))))) {
+                        player.setActiveHand(hand);
+                        spawnParticles = true;
+                    }
                 }
             }
-            else
-            {
+            else {
                 Network.sendTo(new OpenKnifeGuiMessage().setMeta(getSelectedCarving(stack)), (EntityPlayerMP)player);
             }
         }
     }
+
+    @Override
+    public int getMaxItemUseDuration(ItemStack stack) {
+        return 2;
+    }
+
+    //    @Override
+//    public EnumAction getItemUseAction(ItemStack stack) {
+//        return super.getItemUseAction(stack);
+//    }
 
     public void setSelectedCarving(ItemStack stack, int selectedCarving)
     {
