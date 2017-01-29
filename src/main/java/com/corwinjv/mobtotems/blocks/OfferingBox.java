@@ -2,6 +2,7 @@ package com.corwinjv.mobtotems.blocks;
 
 import com.corwinjv.mobtotems.MobTotems;
 import com.corwinjv.mobtotems.Reference;
+import com.corwinjv.mobtotems.TotemHelper;
 import com.corwinjv.mobtotems.blocks.tiles.IncenseKindlingBoxTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
@@ -18,8 +19,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLLog;
+import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -86,12 +90,37 @@ public class OfferingBox extends ModBlockContainer
     }
 
     // Can only place on the tops of solid things
-    private boolean canPlaceOn(World worldIn, BlockPos pos)
-    {
+    private boolean canPlaceOn(World worldIn, BlockPos pos) {
+
         IBlockState state = worldIn.getBlockState(pos);
-        return (state.getBlock().isBlockSolid(worldIn, pos, EnumFacing.UP)
+        boolean canPlaceAt = (state.getBlock().isBlockSolid(worldIn, pos, EnumFacing.UP)
                 || state.getBlock().canPlaceTorchOnTop(state, worldIn, pos))
                 && state.getBlock().isFullBlock(state);
+
+        BlockPos adjustedPos = new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ());
+
+        // Can't place if there is already an offering box who has claimed this
+        if (canPlaceAt) {
+            // Check for adjacent totem
+            for (EnumFacing direction : EnumFacing.HORIZONTALS) {
+                Vec3i dirVec = direction.getDirectionVec();
+                BlockPos posToCheck = new BlockPos(adjustedPos.getX() + dirVec.getX(), adjustedPos.getY(), adjustedPos.getZ() + dirVec.getZ());
+                TileEntity te = worldIn.getTileEntity(posToCheck);
+
+                if (te != null
+                        && te instanceof TotemTileEntity
+                        && ((TotemTileEntity) te).getMaster() != null) {
+
+                    TileEntity master = (TileEntity)((TotemTileEntity) te).getMaster();
+                    FMLLog.log(Level.ERROR, "masterPos: " + master.getPos() + " adjustedPos: " + adjustedPos);
+                    if(!master.getPos().equals(adjustedPos)) {
+                        canPlaceAt = false;
+                        break;
+                    }
+                }
+            }
+        }
+        return canPlaceAt;
     }
 
     @Override
@@ -123,12 +152,27 @@ public class OfferingBox extends ModBlockContainer
     }
 
     @Override
+    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+        TileEntity te = world.getTileEntity(pos);
+        if(te != null
+                && te instanceof OfferingBoxTileEntity) {
+            for(BlockPos slavePos : ((OfferingBoxTileEntity) te).getSlaves()) {
+                TileEntity te2 = world.getTileEntity(slavePos);
+                if(te2 instanceof TotemTileEntity) {
+                    ((TotemTileEntity) te2).setMaster(null);
+                }
+            }
+        }
+        return super.removedByPlayer(state, world, pos, player, willHarvest);
+    }
+
+    @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos p_189540_5_)
     {
         this.checkForDrop(worldIn, pos, state);
     }
 
-    private boolean checkForDrop(World world, BlockPos pos, IBlockState state)
+    public boolean checkForDrop(World world, BlockPos pos, IBlockState state)
     {
         if (this.canPlaceAt(world, pos, EnumFacing.UP))
         {

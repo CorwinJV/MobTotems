@@ -22,6 +22,9 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.FMLLog;
+import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -79,20 +82,12 @@ public class TotemWoodBlock extends ModBlock implements ITileEntityProvider
     @Override
     public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
         super.onNeighborChange(world, pos, neighbor);
+        //FMLLog.log(Level.ERROR, "onNeighborChange at pos" + pos);
     }
 
     @Override
     public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
-
-        for(int i = worldIn.loadedTileEntityList.size() - 1; i >= 0; i--)
-        {
-            TileEntity te = worldIn.loadedTileEntityList.get(i);
-            if(te instanceof OfferingBoxTileEntity
-                    && te.getDistanceSq(pos.getX(), pos.getY(), pos.getZ()) < MAX_MULTIBLOCK_RANGE) {
-                ((OfferingBoxTileEntity)te).verifyMultiblock();
-            }
-        }
     }
 
     @Override
@@ -101,8 +96,14 @@ public class TotemWoodBlock extends ModBlock implements ITileEntityProvider
         {
             TileEntity te = worldIn.loadedTileEntityList.get(i);
             if(te instanceof OfferingBoxTileEntity
-                    && te.getDistanceSq(pos.getX(), pos.getY(), pos.getZ()) < MAX_MULTIBLOCK_RANGE) {
+                    && te.getPos().getDistance(pos.getX(), pos.getY(), pos.getZ()) < MAX_MULTIBLOCK_RANGE) {
                 ((OfferingBoxTileEntity)te).verifyMultiblock();
+
+                BlockPos offeringBoxPos = te.getPos();
+                Block offeringBoxBlock = worldIn.getBlockState(offeringBoxPos).getBlock();
+                if(offeringBoxBlock instanceof OfferingBox) {
+                    ((OfferingBox) offeringBoxBlock).checkForDrop(worldIn, offeringBoxPos, worldIn.getBlockState(offeringBoxPos));
+                }
             }
         }
     }
@@ -114,7 +115,8 @@ public class TotemWoodBlock extends ModBlock implements ITileEntityProvider
         {
             TileEntity te = worldIn.loadedTileEntityList.get(i);
             if(te instanceof OfferingBoxTileEntity
-                    && te.getDistanceSq(pos.getX(), pos.getY(), pos.getZ()) < MAX_MULTIBLOCK_RANGE) {
+                    && te.getPos().getDistance(pos.getX(), pos.getY(), pos.getZ()) < MAX_MULTIBLOCK_RANGE) {
+                ((OfferingBoxTileEntity)te).invalidateSlaves();
                 ((OfferingBoxTileEntity)te).verifyMultiblock();
             }
         }

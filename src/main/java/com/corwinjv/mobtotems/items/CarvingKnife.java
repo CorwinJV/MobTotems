@@ -86,20 +86,6 @@ public class CarvingKnife extends ModItem {
                         && targetBlock instanceof TotemWoodBlock)
                 {
                     world.setBlockState(pos, targetBlock.getDefaultState().withProperty(TotemWoodBlock.TOTEM_TYPE, TotemType.fromMeta(getSelectedCarving(stack))));
-                    TileEntity te = world.getTileEntity(pos);
-                    if(te instanceof TotemTileEntity)
-                    {
-                        ((TotemTileEntity)te).setType(TotemType.fromMeta(getSelectedCarving(stack)));
-                        for(int i = world.loadedTileEntityList.size() - 1; i >= 0; i--)
-                        {
-                            TileEntity te2 = world.loadedTileEntityList.get(i);
-                            if(te2 instanceof OfferingBoxTileEntity
-                                    && te2.getDistanceSq(te.getPos().getX(), te.getPos().getY(), te.getPos().getZ()) < MAX_MULTIBLOCK_RANGE)
-                            {
-                                ((OfferingBoxTileEntity)te2).verifyMultiblock();
-                            }
-                        }
-                    }
                 }
             }
             else

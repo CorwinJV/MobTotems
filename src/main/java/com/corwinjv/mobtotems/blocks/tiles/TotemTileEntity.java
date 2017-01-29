@@ -67,6 +67,10 @@ public class TotemTileEntity extends ModMultiblockTileEntity<TotemType>
     }
 
     @Override
+    public void invalidateSlaves() {
+    }
+
+    @Override
     public List<BlockPos> getSlaves() {
         return null;
     }

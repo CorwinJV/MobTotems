@@ -61,4 +61,13 @@ public class ModTileEntity extends TileEntity
     {
         return (oldState.getBlock() != newState.getBlock());
     }
+
+    @Override
+    public void markDirty() {
+        super.markDirty();
+        if(world != null)
+        {
+            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+        }
+    }
 }

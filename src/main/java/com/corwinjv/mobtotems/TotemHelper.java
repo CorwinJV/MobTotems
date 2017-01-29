@@ -3,7 +3,10 @@ package com.corwinjv.mobtotems;
 import com.corwinjv.mobtotems.blocks.TotemType;
 import com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.TotemLogic.*;
+import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
@@ -20,6 +23,7 @@ public class TotemHelper {
 
     public static final int DEFAULT_RADIUS = 32;
     public static final int RANGE_BOOST = 16;
+    public static final int MAX_TOTEM_HEIGHT = 3;
 
     private static Map<TotemType,Class<? extends TotemLogic>> totemMap = new HashMap<>();
 
@@ -103,5 +107,23 @@ public class TotemHelper {
             }
         }
         return mods;
+    }
+
+    public static List<BlockPos> checkForSlaveAboveRecursively(World world, BlockPos startPos, int height)
+    {
+        List<BlockPos> totemTileList = new ArrayList<>();
+
+        if(height > 0) {
+            TileEntity totemTileEntity = world.getTileEntity(startPos);
+            if(totemTileEntity instanceof TotemTileEntity) {
+                totemTileList.add(startPos);
+
+                List<BlockPos> tmpList = checkForSlaveAboveRecursively(world, startPos.add(0, 1, 0), height-1);
+                for(BlockPos te : tmpList) {
+                    totemTileList.add(te);
+                }
+            }
+        }
+        return totemTileList;
     }
 }

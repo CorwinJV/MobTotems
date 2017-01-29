@@ -16,7 +16,9 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -35,8 +37,6 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
 
     private static final String CHARGE_LEVEL = "CHARGE_LEVEL";
     private static final String SLAVE_TYPES_COPY = "SLAVE_TYPES_COPY";
-
-    private static final int MAX_TOTEM_HEIGHT = 3;
 
     private int chargeLevel = 0;
     private List<TotemType> slaveTypesCopy = new ArrayList<>();
@@ -123,7 +123,7 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
             decrementChargeLevel(TICK_DECR_AMOUNT);
             if(getChargeLevel() > 0)
             {
-                performChargeEffect();
+                performChargeEffect(worldTime);
             }
         }
     }
@@ -147,7 +147,7 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
         return ret;
     }
 
-    private void performChargeEffect()
+    private void performChargeEffect(long tick)
     {
         List<TotemType> slaveTypes = getSlaveTypes();
         List<TotemType> effects = new ArrayList<>();
@@ -239,19 +239,16 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
 
         // Check adjacent blocks for a totem wood
         TotemTileEntity firstSlave = null;
-        for(double x = getPos().getX() - 1; x <= getPos().getX() + 1; x++) {
-            if(firstSlave != null) {
-                break;
-            }
-            for (double z = getPos().getZ() - 1; z <= getPos().getZ() + 1; z++) {
-                BlockPos posToCheck = new BlockPos(x, getPos().getY(), z);
-                TileEntity te = world.getTileEntity(posToCheck);
 
-                if(te != null &&
-                        te instanceof TotemTileEntity) {
-                    firstSlave = (TotemTileEntity)te;
-                    break;
-                }
+        for(EnumFacing direction : EnumFacing.HORIZONTALS) {
+            Vec3i dirVec = direction.getDirectionVec();
+            BlockPos posToCheck = new BlockPos(getPos().getX() + dirVec.getX(), getPos().getY() + dirVec.getY(), getPos().getZ() + dirVec.getZ());
+            TileEntity te = world.getTileEntity(posToCheck);
+
+            if(te != null &&
+                    te instanceof TotemTileEntity) {
+                firstSlave = (TotemTileEntity)te;
+                break;
             }
         }
 
@@ -259,13 +256,13 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
         List<BlockPos> tmpSlaves = new ArrayList<>();
 
         if(firstSlave != null) {
-            tmpSlaves = checkForSlaveAboveRecursively(firstSlave.getPos(), MAX_TOTEM_HEIGHT);
+            tmpSlaves = TotemHelper.checkForSlaveAboveRecursively(world, firstSlave.getPos(), TotemHelper.MAX_TOTEM_HEIGHT);
         }
 
         // Validation
         // only want to markDirty() once
         this.isMaster = false;
-        if(tmpSlaves.size() >= 2) {
+        if(areSlavesValid(tmpSlaves)) {
             this.setSlaves(tmpSlaves);
             this.isMaster = true;
         }
@@ -273,6 +270,16 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
             this.setSlaves(new ArrayList<>());
         }
         this.setIsMaster(this.isMaster);
+
+        // Iterate over new slaves and set master to this
+        // invalidated by invalidateSlaves()
+        for(BlockPos slavePos : getSlaves()) {
+            TileEntity te = world.getTileEntity(slavePos);
+            if(te != null
+                    && te instanceof TotemTileEntity) {
+                ((TotemTileEntity) te).setMaster(this);
+            }
+        }
 
         // If we've changed status, reset the charge pool
         if(!slaveTypesCopy.equals(getSlaveTypes()) || !getIsMaster()) {
@@ -284,24 +291,27 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
         }
     }
 
-    private List<BlockPos> checkForSlaveAboveRecursively(BlockPos startPos, int height)
-    {
-        List<BlockPos> totemTileList = new ArrayList<>();
-
-        if(height > 0) {
-            TileEntity totemTileEntity = world.getTileEntity(startPos);
-            if(totemTileEntity instanceof TotemTileEntity) {
-                totemTileList.add(startPos);
-            }
-
-            List<BlockPos> tmpList = checkForSlaveAboveRecursively(startPos.add(0, 1, 0), height-1);
-            for(BlockPos te : tmpList) {
-                totemTileList.add(te);
+    private boolean areSlavesValid(List<BlockPos> tmpSlaves) {
+        boolean slavesAreValid = true;
+        if(tmpSlaves.size() < 2) {
+            return false;
+        }
+        for(BlockPos slavePos : tmpSlaves) {
+            TileEntity te = world.getTileEntity(slavePos);
+            if(te != null
+                    && te instanceof TotemTileEntity) {
+                TileEntity master = (TileEntity)((TotemTileEntity) te).getMaster();
+                if(master != null
+                        && master.getPos() != this.getPos()) {
+                    slavesAreValid = false;
+                    break;
+                }
             }
         }
-
-        return totemTileList;
+        return slavesAreValid;
     }
+
+
 
     @Override
     public List<BlockPos> getSlaves()

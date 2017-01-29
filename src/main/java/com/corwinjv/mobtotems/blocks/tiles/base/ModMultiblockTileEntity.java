@@ -78,11 +78,13 @@ public abstract class ModMultiblockTileEntity<T> extends ModTileEntity implement
 
     @Override
     public void setMaster(IMultiblock<T> master) {
-        if(master instanceof TileEntity)
-        {
+        if(master instanceof TileEntity) {
             masterPos = ((TileEntity) master).getPos();
-            markDirty();
         }
+        else {
+            masterPos = null;
+        }
+        markDirty();
     }
 
     @Override

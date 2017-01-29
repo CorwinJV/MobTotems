@@ -61,6 +61,7 @@ public class EnderLogic extends TotemLogic {
                             {
                                 Modifiers mods = TotemHelper.getModifiers(world, (OfferingBoxTileEntity)tileEntity);
                                 int radius = DEFAULT_RADIUS + (int)(RANGE_BOOST * mods.range);
+
                                 if(!isMobAffected(tileEntity.getPos(), e.getEntity(), radius))
                                 {
                                     BlockPos validPos = getValidTeleportPosAround(world, tileEntity.getPos());

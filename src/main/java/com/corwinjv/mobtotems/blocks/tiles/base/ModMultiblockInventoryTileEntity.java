@@ -1,7 +1,9 @@
 package com.corwinjv.mobtotems.blocks.tiles.base;
 
+import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
 import com.corwinjv.mobtotems.interfaces.IMultiblock;
 import net.minecraft.nbt.*;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 
@@ -63,5 +65,18 @@ public abstract class ModMultiblockInventoryTileEntity<T> extends ModInventoryTi
     {
         this.slaves = slaves;
         markDirty();
+    }
+
+    public void invalidateSlaves()
+    {
+        for(BlockPos slavePos : getSlaves()) {
+            TileEntity te = world.getTileEntity(slavePos);
+            if(te != null
+                    && te instanceof TotemTileEntity) {
+                ((TotemTileEntity) te).setMaster(null);
+            }
+        }
+        setSlaves(new ArrayList<>());
+        setIsMaster(false);
     }
 }

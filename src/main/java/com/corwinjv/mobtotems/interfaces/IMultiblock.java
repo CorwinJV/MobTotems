@@ -16,6 +16,7 @@ public interface IMultiblock<T> {
     void setIsMaster(boolean isMaster);
     void verifyMultiblock();
     void setSlaves(List<BlockPos> slaves);
+    void invalidateSlaves();
     List<BlockPos> getSlaves();
     List<T> getSlaveTypes();
     T getType();
