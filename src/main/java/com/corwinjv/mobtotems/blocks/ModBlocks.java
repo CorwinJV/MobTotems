@@ -87,12 +87,12 @@ public class ModBlocks
         Block item = SACRED_LIGHT;
         GameRegistry.addRecipe(new ItemStack(item, 1),
                 "GRG",
-                "XOX",
+                "XNX",
                 "GTG",
                 'G', Items.GUNPOWDER,
                 'R', Items.BLAZE_ROD,
                 'X', Items.ROTTEN_FLESH,
-                'O', Blocks.TORCH,
+                'N', Items.NETHER_STAR,
                 'T', TOTEM_WOOD_NAME);
 
         item = INCENSE_KINDLING_BOX;

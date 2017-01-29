@@ -1,6 +1,8 @@
 package com.corwinjv.mobtotems.blocks;
 
+import com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.SacredLightTileEntity;
+import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
 import com.google.common.collect.Collections2;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
@@ -26,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
+
+import static com.corwinjv.mobtotems.blocks.TotemWoodBlock.MAX_MULTIBLOCK_RANGE;
 
 /**
  * Created by CorwinJV on 7/13/2016.
@@ -87,6 +91,22 @@ public class SacredLightBlock extends ModBlock implements ITileEntityProvider
         else
         {
             return state.getBlock().canPlaceTorchOnTop(state, worldIn, pos);
+        }
+    }
+
+    // If block below is a totem that is a slave to an offering box, invalidate the multiblock
+    @Override
+    public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
+        super.onBlockDestroyedByPlayer(worldIn, pos, state);
+        TileEntity te = worldIn.getTileEntity(new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ()));
+        if(te != null
+                && te instanceof TotemTileEntity) {
+            TileEntity master = (TileEntity) ((TotemTileEntity) te).getMaster();
+            if (master != null
+                    && master instanceof OfferingBoxTileEntity) {
+                ((OfferingBoxTileEntity) master).invalidateSlaves();
+                ((OfferingBoxTileEntity) master).verifyMultiblock();
+            }
         }
     }
 

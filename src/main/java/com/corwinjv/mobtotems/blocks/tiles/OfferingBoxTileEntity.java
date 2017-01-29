@@ -3,6 +3,7 @@ package com.corwinjv.mobtotems.blocks.tiles;
 import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.TotemHelper;
 import com.corwinjv.mobtotems.blocks.ModBlocks;
+import com.corwinjv.mobtotems.blocks.SacredLightBlock;
 import com.corwinjv.mobtotems.blocks.TotemType;
 import com.corwinjv.mobtotems.blocks.tiles.TotemLogic.Modifiers;
 import com.corwinjv.mobtotems.blocks.tiles.TotemLogic.TotemLogic;
@@ -10,6 +11,7 @@ import com.corwinjv.mobtotems.blocks.tiles.base.ModMultiblockInventoryTileEntity
 import com.corwinjv.mobtotems.gui.OfferingBoxContainer;
 import com.corwinjv.mobtotems.interfaces.IChargeableTileEntity;
 import com.corwinjv.mobtotems.interfaces.IMultiblock;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -29,7 +31,7 @@ import java.util.List;
  */
 public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<TotemType> implements IChargeableTileEntity
 {
-    public static final int MAX_CHARGE = 500;
+    public static final int MAX_CHARGE = 1000;
 
     private static int INVENTORY_SIZE = 9;
     private static int FUELED_INCR_AMOUNT = MAX_CHARGE;
@@ -90,6 +92,17 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
                     }
                 }
 
+                // Adjust cost for sacred light
+                boolean hasSacredLight = false;
+                List<BlockPos> slaves = getSlaves();
+                if(slaves.size() > 0) {
+                    BlockPos lastSlave = getSlaves().get(getSlaves().size()-1);
+                    Block blockToCheck = world.getBlockState(new BlockPos(lastSlave.getX(), lastSlave.getY() + 1, lastSlave.getZ())).getBlock();
+                    if(blockToCheck instanceof SacredLightBlock) {
+                        hasSacredLight = true;
+                    }
+                }
+
                 // If costCopy an empty list, add charge
                 if(costCopy.size() == 0)
                 {
@@ -114,7 +127,19 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
                         }
                     }
 
-                    // Fill up charge
+                    // Don't give charge for using TotemType.NONE
+                    int blankTotemCount = 0;
+                    for(TotemType type : getSlaveTypes()) {
+                        if(type.equals(TotemType.NONE)) {
+                            blankTotemCount++;
+                        }
+                    }
+                    if(blankTotemCount < getSlaveTypes().size()) {
+                        // Fill up charge
+                        incrementChargeLevel(FUELED_INCR_AMOUNT);
+                    }
+                }
+                if(hasSacredLight) {
                     incrementChargeLevel(FUELED_INCR_AMOUNT);
                 }
             }
@@ -311,7 +336,11 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
         return slavesAreValid;
     }
 
-
+    @Override
+    public void invalidateSlaves() {
+        super.invalidateSlaves();
+        this.setChargeLevel(0);
+    }
 
     @Override
     public List<BlockPos> getSlaves()
