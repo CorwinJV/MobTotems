@@ -2,17 +2,12 @@ package com.corwinjv.mobtotems.blocks;
 
 import com.corwinjv.mobtotems.MobTotems;
 import com.corwinjv.mobtotems.Reference;
-import com.corwinjv.mobtotems.TotemHelper;
-import com.corwinjv.mobtotems.blocks.tiles.IncenseKindlingBoxTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
 import net.minecraft.block.Block;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
@@ -27,7 +22,6 @@ import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Random;
 
 /**
  * Created by CorwinJV on 7/24/2016.
@@ -39,9 +33,15 @@ public class OfferingBox extends ModBlockContainer
     public OfferingBox()
     {
         super();
-        this.setHardness(2.0F);
+        this.setHardness(1.0f);
         this.isBlockContainer = true;
         this.setLightOpacity(0);
+    }
+
+    @Nullable
+    @Override
+    public String getHarvestTool(IBlockState state) {
+        return null;
     }
 
     @Override
@@ -193,6 +193,16 @@ public class OfferingBox extends ModBlockContainer
 
             return false;
         }
+    }
+
+
+    @Override
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        TileEntity te = world.getTileEntity(pos);
+        if(te instanceof OfferingBoxTileEntity) {
+            InventoryHelper.dropInventoryItems(world, pos, (OfferingBoxTileEntity)te);
+        }
+        world.removeTileEntity(pos);
     }
 
     // TE
