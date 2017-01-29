@@ -103,5 +103,13 @@ public class ModBlocks
                 'W', Blocks.PLANKS,
                 'I', Blocks.TALLGRASS,
                 'F', Items.FLINT);
+
+        item = OFFERING_BOX;
+        GameRegistry.addRecipe(new ItemStack(item, 1),
+                "   ",
+                "SIS",
+                "SSS",
+                'S', Blocks.STONE,
+                'I', Blocks.TALLGRASS);
     }
 }

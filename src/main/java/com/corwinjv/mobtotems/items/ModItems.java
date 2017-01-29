@@ -26,7 +26,6 @@ public class ModItems
     public static final String WOLF_TOTEM_BAUBLE = "wolf_totem_bauble";
     public static final String TOTEMIC_FOCUS = "totemic_focus";
     public static final String CARVING_KNIFE = "carving_knife";
-    //public static final String RESIN_BALL = "resin_ball";
 
     // We're going to use the TotemicFocus for the CreativeTab:
     public static Item TOTEMIC_FOCUS_ITEM = new TotemicFocus().setUnlocalizedName(TOTEMIC_FOCUS);
@@ -108,5 +107,13 @@ public class ModItems
                 'C', Blocks.CLAY,
                 'P', Items.BLAZE_POWDER,
                 'S', Items.STRING);
+
+        item = mItems.get(CARVING_KNIFE);
+        GameRegistry.addRecipe(new ItemStack(item),
+                "   ",
+                " F ",
+                "S  ",
+                'F', Items.FLINT,
+                'S', Items.STICK);
     }
 }
