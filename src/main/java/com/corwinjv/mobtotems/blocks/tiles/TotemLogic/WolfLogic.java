@@ -1,5 +1,6 @@
 package com.corwinjv.mobtotems.blocks.tiles.TotemLogic;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -13,6 +14,7 @@ public class WolfLogic extends TotemLogic {
     @Override
     public List<ItemStack> getCost() {
         List<ItemStack> cost = new ArrayList<>();
+        cost.add(new ItemStack(Items.BONE, 4, 0));
         return cost;
     }
 
