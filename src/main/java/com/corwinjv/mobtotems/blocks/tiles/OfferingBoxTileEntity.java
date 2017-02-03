@@ -146,10 +146,10 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
 
             // Decrement charge level
             decrementChargeLevel(TICK_DECR_AMOUNT);
-            if(getChargeLevel() > 0)
-            {
-                performChargeEffect(worldTime);
-            }
+        }
+        if(getChargeLevel() > 0)
+        {
+            performChargeEffect(worldTime);
         }
     }
 
@@ -172,8 +172,7 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
         return ret;
     }
 
-    private void performChargeEffect(long tick)
-    {
+    private void performChargeEffect(long tick) {
         List<TotemType> slaveTypes = getSlaveTypes();
         List<TotemType> effects = new ArrayList<>();
         List<TotemType> modifiers = new ArrayList<>();
@@ -189,10 +188,13 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
                 }
             }
 
-            TotemLogic logic = TotemHelper.getTotemLogic(type);
-            if(logic != null)
-            {
-                logic.performEffect(world, pos, mods);
+            int baseEffectTick = 40;
+            int baseSpeedEffect = -10;
+            if(tick % (baseEffectTick + (baseSpeedEffect * mods.speed)) == 0) {
+                TotemLogic logic = TotemHelper.getTotemLogic(type);
+                if(logic != null) {
+                    logic.performEffect(world, pos, mods);
+                }
             }
         }
     }
