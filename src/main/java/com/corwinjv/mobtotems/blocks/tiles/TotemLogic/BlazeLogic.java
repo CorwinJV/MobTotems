@@ -8,6 +8,7 @@ import net.minecraft.entity.monster.IMob;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -47,7 +48,8 @@ public class BlazeLogic extends TotemLogic {
         for(Entity entity : teList) {
             if(entity instanceof IMob) {
                 if(entity.getPosition().getDistance(pos.getX(), pos.getY(), pos.getZ()) <= radius) {
-                    entity.setFire(FIRE_DURATION + (int)(FIRE_DURATION * modifiers.damage));
+                    entity.setFire(FIRE_DURATION);
+                    entity.attackEntityFrom(DamageSource.ON_FIRE, LlamaLogic.DAMAGE_MODIFIER * modifiers.damage);
                 }
             }
         }

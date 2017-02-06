@@ -11,6 +11,8 @@ import java.util.List;
  * Created by CorwinJV on 1/25/2017.
  */
 public class LlamaLogic extends TotemLogic {
+    public static final int DAMAGE_MODIFIER = 2;
+
     @Override
     public List<ItemStack> getCost() {
         List<ItemStack> cost = new ArrayList<>();

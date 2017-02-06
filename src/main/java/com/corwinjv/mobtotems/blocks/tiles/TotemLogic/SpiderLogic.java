@@ -6,6 +6,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -46,7 +47,8 @@ public class SpiderLogic extends TotemLogic {
         for(EntityLivingBase entity : teList) {
             if(entity instanceof IMob) {
                 if(entity.getPosition().getDistance(pos.getX(), pos.getY(), pos.getZ()) <= radius) {
-                    entity.addPotionEffect(new PotionEffect(MobEffects.POISON, POISON_DURATION, POTION_AMPLIFIER + (int)(POTION_AMPLIFIER * modifiers.damage)));
+                    entity.addPotionEffect(new PotionEffect(MobEffects.POISON, POISON_DURATION, POTION_AMPLIFIER));
+                    entity.attackEntityFrom(DamageSource.MAGIC, LlamaLogic.DAMAGE_MODIFIER * modifiers.damage);
                 }
             }
         }
