@@ -2,7 +2,9 @@ package com.corwinjv.mobtotems.blocks.tiles.TotemLogic;
 
 import com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity;
 import com.corwinjv.mobtotems.utils.BlockUtils;
+import net.minecraft.enchantment.EnchantmentProtection;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.init.Items;
@@ -48,8 +50,10 @@ public class BlazeLogic extends TotemLogic {
         for(Entity entity : teList) {
             if(entity instanceof IMob) {
                 if(entity.getPosition().getDistance(pos.getX(), pos.getY(), pos.getZ()) <= radius) {
-                    entity.setFire(FIRE_DURATION);
-                    entity.attackEntityFrom(DamageSource.ON_FIRE, LlamaLogic.DAMAGE_MODIFIER * modifiers.damage);
+                    if(!entity.isImmuneToFire()) {
+                        entity.setFire(FIRE_DURATION);
+                        entity.attackEntityFrom(DamageSource.ON_FIRE, LlamaLogic.DAMAGE_MODIFIER * modifiers.damage);
+                    }
                 }
             }
         }

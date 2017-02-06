@@ -22,8 +22,8 @@ import static com.corwinjv.mobtotems.TotemHelper.RANGE_BOOST;
  * Created by CorwinJV on 1/25/2017.
  */
 public class SpiderLogic extends TotemLogic {
-    public static final int POISON_DURATION = 5;
-    public static final int POTION_AMPLIFIER = 2;
+    public static final int POISON_DURATION = 300;
+    public static final int POTION_AMPLIFIER = 1;
 
     @Override
     public List<ItemStack> getCost() {
@@ -47,8 +47,11 @@ public class SpiderLogic extends TotemLogic {
         for(EntityLivingBase entity : teList) {
             if(entity instanceof IMob) {
                 if(entity.getPosition().getDistance(pos.getX(), pos.getY(), pos.getZ()) <= radius) {
-                    entity.addPotionEffect(new PotionEffect(MobEffects.POISON, POISON_DURATION, POTION_AMPLIFIER));
-                    entity.attackEntityFrom(DamageSource.MAGIC, LlamaLogic.DAMAGE_MODIFIER * modifiers.damage);
+                    PotionEffect potionEffect =  new PotionEffect(MobEffects.POISON, POISON_DURATION, POTION_AMPLIFIER);
+                    if(entity.isPotionApplicable(potionEffect)) {
+                        entity.attackEntityFrom(DamageSource.MAGIC, LlamaLogic.DAMAGE_MODIFIER * modifiers.damage);
+                        entity.addPotionEffect(potionEffect);
+                    }
                 }
             }
         }
