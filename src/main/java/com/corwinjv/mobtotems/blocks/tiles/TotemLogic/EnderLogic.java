@@ -59,8 +59,8 @@ public class EnderLogic extends TotemLogic {
                         {
                             if(TotemHelper.hasTotemType(world, (OfferingBoxTileEntity)tileEntity, TotemType.ENDER))
                             {
-                                Modifiers mods = TotemHelper.getModifiers(world, (OfferingBoxTileEntity)tileEntity);
-                                int radius = DEFAULT_RADIUS + (int)(RANGE_BOOST * mods.range);
+                                Modifiers modifiers = TotemHelper.getModifiers(world, (OfferingBoxTileEntity)tileEntity);
+                                int radius = DEFAULT_RADIUS + (int)(RANGE_BOOST * modifiers.range);
 
                                 if(!isMobAffected(tileEntity.getPos(), e.getEntity(), radius))
                                 {
