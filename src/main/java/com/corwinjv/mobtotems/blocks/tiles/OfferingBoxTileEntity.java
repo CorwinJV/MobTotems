@@ -55,8 +55,7 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
                 && getIsMaster()
                 && worldTime % 20 == 0) {
 
-            if(getChargeLevel() + FUELED_INCR_AMOUNT <= MAX_CHARGE)
-            {
+            if(getChargeLevel() + FUELED_INCR_AMOUNT <= MAX_CHARGE) {
                 List<ItemStack> cost = new ArrayList<>();
 
                 // Get cost for current multiblock
@@ -147,8 +146,10 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
             // Decrement charge level
             decrementChargeLevel(TICK_DECR_AMOUNT);
         }
-        if(getChargeLevel() > 0)
-        {
+
+        if(!world.isRemote
+                && getIsMaster()
+                && getChargeLevel() > 0) {
             performChargeEffect(worldTime);
         }
     }
