@@ -4,6 +4,7 @@ import amerifrance.guideapi.api.util.TextHelper;
 import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.items.baubles.BaubleItem;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.translation.I18n;
 
 import javax.annotation.Nonnull;
 
@@ -29,7 +30,7 @@ public class util {
 
     public static String getLocalizedGuideText(String text)
     {
-        return TextHelper.localizeEffect(Reference.MOD_ID + ".text.guide." + text);
+        return I18n.translateToLocalFormatted(Reference.MOD_ID + ".text.guide." + text);
     }
 
     public static String getUnlocalizedGuideText(String text)

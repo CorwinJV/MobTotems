@@ -15,6 +15,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
@@ -87,7 +88,7 @@ public class OfferingBoxGuiContainer extends GuiContainer {
             GlStateManager.pushMatrix();
             GlStateManager.translate(chargeLeft - 14, chargeBottom + 2, 100F + this.zLevel);
             GlStateManager.scale(0.6, 0.6, 1.0);
-            String text = TextHelper.localizeEffect(Reference.RESOURCE_PREFIX + "gui.offering_box.chargelevel");
+            String text = I18n.translateToLocalFormatted(Reference.RESOURCE_PREFIX + "gui.offering_box.chargelevel");
             fontRendererObj.drawStringWithShadow(text, 0, 0, 0xffffff);
             GlStateManager.popMatrix();
         }
@@ -100,7 +101,7 @@ public class OfferingBoxGuiContainer extends GuiContainer {
             if(multiblockTileEntity.getIsMaster())
             {
                 int totemTextTop = 20;
-                String text = TextHelper.localizeEffect(Reference.RESOURCE_PREFIX + "gui.offering_box.totems");
+                String text = I18n.translateToLocalFormatted(Reference.RESOURCE_PREFIX + "gui.offering_box.totems");
                 GlStateManager.pushMatrix();
                 GlStateManager.scale(0.7, 0.7, 1.0);
                 fontRendererObj.drawStringWithShadow(text, 0, totemTextTop, 0xffffff);
@@ -117,11 +118,11 @@ public class OfferingBoxGuiContainer extends GuiContainer {
                         String text2 = "";
                         if(((TotemTileEntity) slaveTe).getType() == TotemType.NONE)
                         {
-                            text2 = TextHelper.localizeEffect("tiles.mobtotems:totem_wood." + ((TotemTileEntity) slaveTe).getType().getName() + ".shortname");
+                            text2 = I18n.translateToLocalFormatted("tiles.mobtotems:totem_wood." + ((TotemTileEntity) slaveTe).getType().getName() + ".shortname");
                         }
                         else
                         {
-                            text2 = TextHelper.localizeEffect("tiles.mobtotems:totem_wood." + ((TotemTileEntity) slaveTe).getType().getName() + ".name");
+                            text2 = I18n.translateToLocalFormatted("tiles.mobtotems:totem_wood." + ((TotemTileEntity) slaveTe).getType().getName() + ".name");
                         }
                         fontRendererObj.drawStringWithShadow(text2, 0, ((lines + 1)* 10) + totemTextTop, 0xffffff);
                         lines++;

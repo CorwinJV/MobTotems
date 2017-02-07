@@ -15,6 +15,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.Vec2f;
+import net.minecraft.util.text.translation.I18n;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
@@ -117,7 +118,7 @@ public class CarvingSelectorGui extends GuiScreen
             GlStateManager.pushMatrix();
             GlStateManager.translate(x-25, y+13, 100F + this.zLevel);
             GlStateManager.scale(0.85, 0.85, 1.0);
-            String text = TextHelper.localizeEffect(stack.getItem().getUnlocalizedName(stack) + ".name");
+            String text = I18n.translateToLocalFormatted(stack.getItem().getUnlocalizedName(stack) + ".name");
 
             // is text selected
             int colorToPrint = unselectedColor;
@@ -137,8 +138,8 @@ public class CarvingSelectorGui extends GuiScreen
 
         if(updates >= INTRO_UPDATES)
         {
-            fontRendererObj.drawStringWithShadow(TextHelper.localizeEffect(Reference.RESOURCE_PREFIX + "gui.carving.leftclick"), centerX - 50, centerY - 5, 0xFFFFFF);
-            fontRendererObj.drawStringWithShadow(TextHelper.localizeEffect(Reference.RESOURCE_PREFIX + "gui.carving.rightclick"), centerX - 50, 15 + centerY, 0xFFFFFF);
+            fontRendererObj.drawStringWithShadow(I18n.translateToLocalFormatted(Reference.RESOURCE_PREFIX + "gui.carving.leftclick"), centerX - 50, centerY - 5, 0xFFFFFF);
+            fontRendererObj.drawStringWithShadow(I18n.translateToLocalFormatted(Reference.RESOURCE_PREFIX + "gui.carving.rightclick"), centerX - 50, 15 + centerY, 0xFFFFFF);
         }
 
         GlStateManager.popMatrix();

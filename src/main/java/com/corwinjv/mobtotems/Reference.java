@@ -14,7 +14,7 @@ import static com.corwinjv.mobtotems.blocks.ModBlocks.OFFERING_BOX;
 public class Reference {
     public static final String MOD_ID = "mobtotems";
     public static final String MOD_NAME = "Mob Totems";
-    public static final String MOD_VERSION = "1.11.2-0.2.2";
+    public static final String MOD_VERSION = "1.11.2-0.3.0";
     public static final String RESOURCE_PREFIX = MOD_ID + ":";
 
     public static final String GUI_FACTORY_CLASS = "com.corwinjv.mobtotems.gui.GuiFactoryMT";
