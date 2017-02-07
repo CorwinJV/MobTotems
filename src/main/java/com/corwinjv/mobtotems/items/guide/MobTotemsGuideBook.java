@@ -74,6 +74,16 @@ public class MobTotemsGuideBook implements IGuideBook {
                 'S', Items.STICK)));
         entries.put(new ResourceLocation(Reference.MOD_ID, ModItems.CARVING_KNIFE), new EntryItemStack(pages, util.getLocalizedGuideText("carving_knife_entry_name"), new ItemStack(ModItems.getItem(ModItems.CARVING_KNIFE))));
 
+        // Offering Box Entry
+        pages = new ArrayList<>();
+        pages.add(new PageText(util.getLocalizedGuideText("offering_box_page_1")));
+        pages.add(new PageText(util.getLocalizedGuideText("offering_box_page_2")));
+        pages.add(new PageText(util.getLocalizedGuideText("offering_box_page_3")));
+        pages.add(new PageTextImage(util.getLocalizedGuideText("offering_box_page_4"), util.getGuideResourceLocation("finished_totem_example_3.png"), false));
+        pages.add(new PageTextImage(util.getLocalizedGuideText("offering_box_page_5"), util.getGuideResourceLocation("finished_totem_example_4.png"), false));
+
+        entries.put(new ResourceLocation(Reference.MOD_ID, ModBlocks.OFFERING_BOX_NAME), new EntryItemStack(pages, util.getLocalizedGuideText("offering_box_entry_name"), new ItemStack(ModBlocks.OFFERING_BOX)));
+
         // Sacred Light Entry
         pages = new ArrayList<>();
         pages.add(new PageText(util.getLocalizedGuideText("sacred_light_page_1")));

@@ -11,6 +11,11 @@ mobtotems.text.guide.carving_knife_entry_name=Carving Knife
 mobtotems.text.guide.carving_knife_page_1=In order to transform your blessed logs into totems, you'll need another tool. The Carving Knife.\n\nOnce crafted, right-click the air to open it's radial menu and select your carving.\n\nThen right-click a totem wood block to carve it.
 
 mobtotems.text.guide.offering_box_entry_name=Offering Box
+mobtotems.text.guide.offering_box_page_1=For any totem to work, you need an offering box.\n\nPlace your offerings in the offering box to have them converted into charge and allow the totem to perform it's effects.
+mobtotems.text.guide.offering_box_page_2=Check the costs for each totem block in the Totem Types section of this book.\n\nYou can use hoppers to input offerings into the Offering Box.\n\nMake sure you have enough to cover the cost of all blocks in your totem!
+mobtotems.text.guide.offering_box_page_3=The Offering Box must be placed beside the bottom most block of your totem.\n\nTotems can be a minimum of 2 and a maximum of 3 totem blocks tall.\n\nYou may only have one offering box for any totem.
+mobtotems.text.guide.offering_box_page_4=A completed 3 tall totem
+mobtotems.text.guide.offering_box_page_5=Offerings are converted to Charge
 
 mobtotems.text.guide.cost_label=Cost
 mobtotems.text.guide.totem_types_category_name=Totem Types
