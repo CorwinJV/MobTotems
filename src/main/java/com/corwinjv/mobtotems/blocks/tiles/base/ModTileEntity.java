@@ -1,4 +1,4 @@
-package com.corwinjv.mobtotems.blocks.tiles;
+package com.corwinjv.mobtotems.blocks.tiles.base;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 /**
  * Created by CorwinJV on 7/13/2016.
  */
-public class ModTileEntity extends TileEntity implements ITickable
+public class ModTileEntity extends TileEntity
 {
     public ModTileEntity()
     {
@@ -63,13 +63,11 @@ public class ModTileEntity extends TileEntity implements ITickable
     }
 
     @Override
-    public void update()
-    {
-
-    }
-
-    public void markForUpdate()
-    {
-        markDirty();
+    public void markDirty() {
+        super.markDirty();
+        if(world != null)
+        {
+            world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 3);
+        }
     }
 }

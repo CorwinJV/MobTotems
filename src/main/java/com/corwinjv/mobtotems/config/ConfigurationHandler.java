@@ -15,7 +15,7 @@ public class ConfigurationHandler
     public static Configuration configuration;
 
     /** Config Properties **/
-    public static boolean isHardMode = false;
+    public static boolean hardSacredLightRecipe = true;
 
     public static void Init(File aConfigFile)
     {
@@ -37,7 +37,7 @@ public class ConfigurationHandler
 
     private static void loadConfiguration()
     {
-        isHardMode = configuration.getBoolean("HardModeOn", Configuration.CATEGORY_GENERAL, false, "Do you want to play in hard mode?");
+        hardSacredLightRecipe = configuration.getBoolean("HardSacredLightRecipe", Configuration.CATEGORY_GENERAL, true, "Hard Sacred Light recipe");
 
         if(configuration.hasChanged())
         {

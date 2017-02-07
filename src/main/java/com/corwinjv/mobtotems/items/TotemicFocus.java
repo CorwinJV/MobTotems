@@ -6,7 +6,6 @@ import com.corwinjv.mobtotems.utils.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLog;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -32,7 +31,7 @@ public class TotemicFocus extends ModItem
                     && targetBlock instanceof BlockLog)
             {
                 world.destroyBlock(pos, false);
-                ModBlock blockToPlace = ModBlocks.getBlock(ModBlocks.TOTEM_WOOD);
+                Block blockToPlace = ModBlocks.TOTEM_WOOD;
                 if(blockToPlace != null)
                 {
                     world.setBlockState(pos, blockToPlace.getDefaultState());

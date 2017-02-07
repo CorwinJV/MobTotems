@@ -2,7 +2,7 @@ package com.corwinjv.mobtotems.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.IThreadListener;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
@@ -41,7 +41,7 @@ public class Message<REQ extends IMessage> implements IMessage, IMessageHandler<
         return null;
     }
 
-    protected void handleClient(REQ Message, EntityPlayerSP player)
+    protected void handleClient(REQ Message, EntityPlayer player)
     {
 
     }

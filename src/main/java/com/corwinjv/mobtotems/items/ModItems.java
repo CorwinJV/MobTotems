@@ -25,24 +25,26 @@ public class ModItems
 {
     public static final String WOLF_TOTEM_BAUBLE = "wolf_totem_bauble";
     public static final String TOTEMIC_FOCUS = "totemic_focus";
-    //public static final String RESIN_BALL = "resin_ball";
+    public static final String CARVING_KNIFE = "carving_knife";
 
     // We're going to use the TotemicFocus for the CreativeTab:
     public static Item TOTEMIC_FOCUS_ITEM = new TotemicFocus().setUnlocalizedName(TOTEMIC_FOCUS);
-    private static Map<String,ModItem> mItems = Collections.emptyMap();
+    private static Map<String,Item> mItems = Collections.emptyMap();
 
     public static void init()
     {
-        mItems = new HashMap<String,ModItem>();
+        mItems = new HashMap<String,Item>();
 
-        ModItem wolf_totem_bauble = new WolfTotemBauble();
-        wolf_totem_bauble.setUnlocalizedName(WOLF_TOTEM_BAUBLE);
-        mItems.put(WOLF_TOTEM_BAUBLE, wolf_totem_bauble);
+        Item item = new WolfTotemBauble().setUnlocalizedName(WOLF_TOTEM_BAUBLE);
+        mItems.put(WOLF_TOTEM_BAUBLE, item);
 
-        mItems.put(TOTEMIC_FOCUS, (ModItem)TOTEMIC_FOCUS_ITEM);
+        mItems.put(TOTEMIC_FOCUS, TOTEMIC_FOCUS_ITEM);
+
+        item = new CarvingKnife().setUnlocalizedName(CARVING_KNIFE);
+        mItems.put(CARVING_KNIFE, item);
     }
 
-    public static ModItem getItem(String key)
+    public static Item getItem(String key)
     {
         if(mItems.containsKey(key))
         {
@@ -56,7 +58,7 @@ public class ModItems
     {
         for (String key : mItems.keySet())
         {
-            ModItem item = mItems.get(key);
+            Item item = mItems.get(key);
             if(item != null)
             {
                 GameRegistry.register(mItems.get(key), new ResourceLocation(Reference.MOD_ID, key));
@@ -68,7 +70,7 @@ public class ModItems
     {
         for (String key : mItems.keySet())
         {
-            ModItem item = mItems.get(key);
+            Item item = mItems.get(key);
             if(item != null)
             {
                 registerRender(item, 0, key);
@@ -76,7 +78,7 @@ public class ModItems
         }
     }
 
-    private static void registerRender(ModItem item, int meta, String key)
+    private static void registerRender(Item item, int meta, String key)
     {
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher()
                 .register(item,
@@ -105,5 +107,13 @@ public class ModItems
                 'C', Blocks.CLAY,
                 'P', Items.BLAZE_POWDER,
                 'S', Items.STRING);
+
+        item = mItems.get(CARVING_KNIFE);
+        GameRegistry.addRecipe(new ItemStack(item),
+                "   ",
+                " F ",
+                "S  ",
+                'F', Items.FLINT,
+                'S', Items.STICK);
     }
 }

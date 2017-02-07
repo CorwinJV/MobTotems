@@ -27,7 +27,6 @@ public class BaublesChargeGui extends Gui
     private static final int BG_BORDER = 1;
     private static final int BG_WIDTH = 18;
     private static final int BG_HEIGHT = 18;
-    private static final int CHARGE_COLOR = 0xFF00FF00;
 
     private Minecraft minecraft = null;
     public BaublesChargeGui(Minecraft mc)
@@ -58,14 +57,14 @@ public class BaublesChargeGui extends Gui
                 GL11.glDisable(GL11.GL_LIGHTING);
 
                 // Draw the background for the chargeable item
-                minecraft.renderEngine.bindTexture(getGuiResourceLocation("chargeable_bg.png"));
+                minecraft.renderEngine.bindTexture(util.getGuiResourceLocation("chargeable_bg.png"));
                 drawTexturedModalRect(BG_BORDER, (i * (ICON_HEIGHT + ICON_BORDER)) + BG_BORDER, 0, 0, BG_WIDTH, BG_HEIGHT);
 
 
                 // TODO: Draw is currently activated
 
                 // Draw the icon of the chargeable item
-                minecraft.renderEngine.bindTexture(getGuiResourceLocation(baubleItem));
+                minecraft.renderEngine.bindTexture(util.getGuiResourceLocation(baubleItem));
                 drawTexturedModalRect(ICON_BORDER, (i * (ICON_HEIGHT + ICON_BORDER)) + ICON_BORDER, 0, 0, ICON_WIDTH, ICON_HEIGHT);
 
                 // Draw the charge level beneath the icon
@@ -75,22 +74,12 @@ public class BaublesChargeGui extends Gui
 
                 int chargeWidth = (int)Math.floor(chargeRatio * ICON_WIDTH);
                 int chargeTop = (i * (ICON_HEIGHT + ICON_BORDER)) + ICON_HEIGHT + ICON_BORDER;
-                drawRect(ICON_BORDER, chargeTop, ICON_BORDER + chargeWidth, chargeTop + 2, CHARGE_COLOR);
+                drawRect(ICON_BORDER, chargeTop, ICON_BORDER + chargeWidth, chargeTop + 2, Reference.CHARGE_COLOR);
 
                 // TODO: (Maybe) Draw is on cooldown
             }
         }
     }
 
-    public ResourceLocation getGuiResourceLocation(@Nonnull BaubleItem baubleItem)
-    {
-        String resourceName = baubleItem.getRegistryName().toString().substring(Reference.RESOURCE_PREFIX.length());
-        return new ResourceLocation(Reference.RESOURCE_PREFIX + "textures/gui/" + resourceName + ".png");
-    }
-
-    public ResourceLocation getGuiResourceLocation(@Nonnull String guiFileName)
-    {
-        return new ResourceLocation(Reference.RESOURCE_PREFIX + "textures/gui/" + guiFileName);
-    }
 
 }

@@ -1,6 +1,7 @@
 package com.corwinjv.mobtotems.network;
 
 import com.corwinjv.mobtotems.Reference;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.relauncher.Side;
@@ -17,6 +18,10 @@ public class Network {
         instance = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID);
 
         instance.registerMessage(ActivateBaubleMessage.class, ActivateBaubleMessage.class, getDiscriminatorId(), Side.SERVER);
+        instance.registerMessage(ActivateKnifeMessage.class, ActivateKnifeMessage.class, getDiscriminatorId(), Side.SERVER);
+        instance.registerMessage(SetKnifeMetaMessage.class, SetKnifeMetaMessage.class, getDiscriminatorId(), Side.SERVER);
+
+        instance.registerMessage(OpenKnifeGuiMessage.class, OpenKnifeGuiMessage.class, getDiscriminatorId(), Side.CLIENT);
     }
 
     private static int getDiscriminatorId()
@@ -33,4 +38,6 @@ public class Network {
     {
         instance.sendToAll(message);
     }
+
+    public static void sendTo(Message message, EntityPlayerMP player) { instance.sendTo(message, player); }
 }

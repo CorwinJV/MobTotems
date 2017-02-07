@@ -7,7 +7,6 @@ import amerifrance.guideapi.api.IPage;
 import amerifrance.guideapi.api.impl.Book;
 import amerifrance.guideapi.api.impl.abstraction.CategoryAbstract;
 import amerifrance.guideapi.api.impl.abstraction.EntryAbstract;
-import amerifrance.guideapi.api.util.TextHelper;
 import amerifrance.guideapi.category.CategoryItemStack;
 import amerifrance.guideapi.entry.EntryItemStack;
 import amerifrance.guideapi.page.PageIRecipe;
@@ -15,6 +14,9 @@ import amerifrance.guideapi.page.PageText;
 import amerifrance.guideapi.page.PageTextImage;
 import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.blocks.ModBlocks;
+import com.corwinjv.mobtotems.blocks.TotemType;
+import com.corwinjv.mobtotems.config.ConfigurationHandler;
+import com.corwinjv.mobtotems.gui.util;
 import com.corwinjv.mobtotems.items.ModItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -32,6 +34,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.corwinjv.mobtotems.blocks.ModBlocks.TOTEM_WOOD;
+import static com.corwinjv.mobtotems.blocks.ModBlocks.TOTEM_WOOD_NAME;
+
 @GuideBook
 public class MobTotemsGuideBook implements IGuideBook {
 
@@ -42,41 +47,95 @@ public class MobTotemsGuideBook implements IGuideBook {
     public Book buildBook() {
         // Create the map of entries. A LinkedHashMap is used to retain the order of entries.
         Map<ResourceLocation, EntryAbstract> entries = new LinkedHashMap<ResourceLocation, EntryAbstract>();
+        List<CategoryAbstract> categories = new ArrayList<>();
 
-        // Creation of our first entry.
+        // =====================================
+        // Totems Category
+
+        // Totemic Focus Entry
         List<IPage> pages = new ArrayList<IPage>();
-        pages.add(new PageText(getLocalizedGuideText("totemic_focus_page_1")));
+        pages.add(new PageText(util.getLocalizedGuideText("totemic_focus_page_1")));
         pages.add(new PageIRecipe(new ShapedOreRecipe(ModItems.getItem(ModItems.TOTEMIC_FOCUS), "GXF",
                 " X ",
                 " X ",
                 'X', Items.STICK,
                 'G', Items.GUNPOWDER,
                 'F', Items.FEATHER)));
-        entries.put(new ResourceLocation(Reference.MOD_ID, "totemic_focus"), new EntryItemStack(pages, getLocalizedGuideText("totemic_focus_entry_name"), new ItemStack(ModItems.getItem(ModItems.TOTEMIC_FOCUS))));
+        entries.put(new ResourceLocation(Reference.MOD_ID, ModItems.TOTEMIC_FOCUS), new EntryItemStack(pages, util.getLocalizedGuideText("totemic_focus_entry_name"), new ItemStack(ModItems.getItem(ModItems.TOTEMIC_FOCUS))));
 
+        // Carving Knife Entry
         pages = new ArrayList<>();
-        pages.add(new PageText(getLocalizedGuideText("sacred_light_page_1")));
-        pages.add(new PageIRecipe(new ShapedOreRecipe(ModBlocks.getBlock(ModBlocks.SACRED_LIGHT),
-                "GRG",
-                "XOX",
-                "GTG",
-                'G', Items.GUNPOWDER,
-                'R', Items.BLAZE_ROD,
-                'X', Items.ROTTEN_FLESH,
-                'O', Blocks.TORCH,
-                'T', ModBlocks.getBlock(ModBlocks.TOTEM_WOOD))));
-        pages.add(new PageTextImage(getLocalizedGuideText("sacred_light_example"), getGuideResourceLocation("finished_totem_example.png"), false));
-        entries.put(new ResourceLocation(Reference.MOD_ID, "sacred_light"), new EntryItemStack(pages, getLocalizedGuideText("sacred_light_entry_name"), new ItemStack(ModBlocks.getBlock(ModBlocks.SACRED_LIGHT))));
+        pages.add(new PageText(util.getLocalizedGuideText("carving_knife_page_1")));
+        pages.add(new PageIRecipe(new ShapedOreRecipe(ModItems.getItem(ModItems.CARVING_KNIFE),
+                "   ",
+                " F ",
+                "S  ",
+                'F', Items.FLINT,
+                'S', Items.STICK)));
+        entries.put(new ResourceLocation(Reference.MOD_ID, ModItems.CARVING_KNIFE), new EntryItemStack(pages, util.getLocalizedGuideText("carving_knife_entry_name"), new ItemStack(ModItems.getItem(ModItems.CARVING_KNIFE))));
 
-        // Setup the list of categories and add our entries to it.
-        List<CategoryAbstract> categories = new ArrayList<CategoryAbstract>();
-        categories.add(new CategoryItemStack(entries, getLocalizedGuideText("totems_category_name"), new ItemStack(ModBlocks.getBlock(ModBlocks.SACRED_LIGHT))));
+        // Offering Box Entry
+        pages = new ArrayList<>();
+        pages.add(new PageText(util.getLocalizedGuideText("offering_box_page_1")));
+        pages.add(new PageText(util.getLocalizedGuideText("offering_box_page_2")));
+        pages.add(new PageText(util.getLocalizedGuideText("offering_box_page_3")));
+        pages.add(new PageTextImage(util.getLocalizedGuideText("offering_box_page_4"), util.getGuideResourceLocation("finished_totem_example_3.png"), false));
+        pages.add(new PageTextImage(util.getLocalizedGuideText("offering_box_page_5"), util.getGuideResourceLocation("finished_totem_example_4.png"), false));
+        entries.put(new ResourceLocation(Reference.MOD_ID, ModBlocks.OFFERING_BOX_NAME), new EntryItemStack(pages, util.getLocalizedGuideText("offering_box_entry_name"), new ItemStack(ModBlocks.OFFERING_BOX)));
 
+        // Sacred Light Entry
+        pages = new ArrayList<>();
+        pages.add(new PageText(util.getLocalizedGuideText("sacred_light_page_1")));
+        if(ConfigurationHandler.hardSacredLightRecipe) {
+            pages.add(new PageIRecipe(new ShapedOreRecipe(ModBlocks.SACRED_LIGHT,
+                    "GRG",
+                    "XNX",
+                    "GTG",
+                    'G', Items.GUNPOWDER,
+                    'R', Items.BLAZE_ROD,
+                    'X', Items.ROTTEN_FLESH,
+                    'N', Items.NETHER_STAR,
+                    'T', TOTEM_WOOD)));
+        } else {
+            pages.add(new PageIRecipe(new ShapedOreRecipe(ModBlocks.SACRED_LIGHT,
+                    "GRG",
+                    "XOX",
+                    "GTG",
+                    'G', Items.GUNPOWDER,
+                    'R', Items.BLAZE_ROD,
+                    'X', Items.ROTTEN_FLESH,
+                    'O', Blocks.TORCH,
+                    'T', TOTEM_WOOD)));
+        }
 
+        pages.add(new PageTextImage(util.getLocalizedGuideText("sacred_light_example"), util.getGuideResourceLocation("finished_totem_example.png"), false));
+        entries.put(new ResourceLocation(Reference.MOD_ID, "sacred_light"), new EntryItemStack(pages, util.getLocalizedGuideText("sacred_light_entry_name"), new ItemStack(ModBlocks.SACRED_LIGHT)));
+
+        categories.add(new CategoryItemStack(entries, util.getLocalizedGuideText("totems_category_name"), new ItemStack(ModItems.getItem(ModItems.TOTEMIC_FOCUS), 1, 0)));
+
+        // =====================================
+        // Totem Types Category
+        entries = new LinkedHashMap<>();
+        for(int i = 1; i < TotemType.values().length; i++) {
+            pages = new ArrayList<>();
+            pages.add(new PageText(util.getLocalizedGuideText("totem_types_page_" + i)));
+            // TODO: add cost
+            pages.add(new PageOfferingBoxCost(TotemType.fromMeta(i)));
+
+            entries.put(new ResourceLocation(Reference.MOD_ID, TOTEM_WOOD_NAME + "_totem_type=" + TotemType.fromMeta(i).getName()),
+                    new EntryItemStack(pages,
+                            util.getLocalizedGuideText("totem_type_page_name_" + i),
+                            new ItemStack(ModBlocks.TOTEM_WOOD, 1, i)));
+        }
+
+        categories.add(new CategoryItemStack(entries, util.getLocalizedGuideText("totem_types_category_name"), new ItemStack(ModBlocks.TOTEM_WOOD, 1, TotemType.CREEPER.getMeta())));
+
+        // =====================================
+        // Baubles category
         entries = new LinkedHashMap<>();
 
         pages = new ArrayList<IPage>();
-        pages.add(new PageText(getLocalizedGuideText("wolf_bauble_page_1")));
+        pages.add(new PageText(util.getLocalizedGuideText("wolf_bauble_page_1")));
         pages.add(new PageIRecipe(new ShapedOreRecipe(ModItems.getItem(ModItems.WOLF_TOTEM_BAUBLE),
                 "SSS",
                 "CPC",
@@ -84,22 +143,22 @@ public class MobTotemsGuideBook implements IGuideBook {
                 'C', Blocks.CLAY,
                 'P', Items.BLAZE_POWDER,
                 'S', Items.STRING)));
-        pages.add(new PageText(getLocalizedGuideText("wolf_bauble_page_2")));
-        pages.add(new PageIRecipe(new ShapedOreRecipe(ModBlocks.getBlock(ModBlocks.INCENSE_KINDLING_BOX), "WWW",
+        pages.add(new PageText(util.getLocalizedGuideText("wolf_bauble_page_2")));
+        pages.add(new PageIRecipe(new ShapedOreRecipe(ModBlocks.INCENSE_KINDLING_BOX, "WWW",
                 "WIW",
                 "WFW",
                 'W', Blocks.PLANKS,
                 'I', Blocks.TALLGRASS,
                 'F', Items.FLINT)));
-        pages.add(new PageText(getLocalizedGuideText("wolf_bauble_page_3")));
-        entries.put(new ResourceLocation(Reference.MOD_ID, "wolf_totem_bauble"), new EntryItemStack(pages, getLocalizedGuideText("wolf_bauble_entry_name"), new ItemStack(ModItems.getItem(ModItems.WOLF_TOTEM_BAUBLE))));
-        categories.add(new CategoryItemStack(entries, getLocalizedGuideText("baubles_category_name"), new ItemStack(ModItems.getItem(ModItems.WOLF_TOTEM_BAUBLE))));
+        pages.add(new PageText(util.getLocalizedGuideText("wolf_bauble_page_3")));
+        entries.put(new ResourceLocation(Reference.MOD_ID, "wolf_totem_bauble"), new EntryItemStack(pages, util.getLocalizedGuideText("wolf_bauble_entry_name"), new ItemStack(ModItems.getItem(ModItems.WOLF_TOTEM_BAUBLE))));
+        categories.add(new CategoryItemStack(entries, util.getLocalizedGuideText("baubles_category_name"), new ItemStack(ModItems.getItem(ModItems.WOLF_TOTEM_BAUBLE))));
 
         // Setup the book's base information
         myGuide = new Book();
         myGuide.setTitle("mobtotems.GuideBook.title");
-        myGuide.setDisplayName(getLocalizedGuideText("name"));
-        myGuide.setWelcomeMessage(getLocalizedGuideText("welcome"));
+        myGuide.setDisplayName(util.getLocalizedGuideText("name"));
+        myGuide.setWelcomeMessage(util.getLocalizedGuideText("welcome"));
         myGuide.setAuthor("CorwinJV");
         myGuide.setColor(Color.DARK_GRAY);
         myGuide.setCategoryList(categories);
@@ -120,18 +179,4 @@ public class MobTotemsGuideBook implements IGuideBook {
         GameRegistry.addShapelessRecipe(bookStack, Items.BOOK, Items.BONE);
     }
 
-    public static ResourceLocation getGuideResourceLocation(String fileName)
-    {
-        return new ResourceLocation(Reference.MOD_ID, "textures/guide/" + fileName);
-    }
-
-    public static String getLocalizedGuideText(String text)
-    {
-        return TextHelper.localizeEffect(Reference.MOD_ID + ".text.guide." + text);
-    }
-
-    public static String getUnlocalizedGuideText(String text)
-    {
-        return Reference.MOD_ID + ".text.guide." + text;
-    }
 }
