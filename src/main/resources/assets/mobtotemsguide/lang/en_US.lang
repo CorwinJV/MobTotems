@@ -5,7 +5,7 @@ mobtotems.text.guide.welcome=MobTotems
 
 mobtotems.text.guide.totems_category_name=Totems
 mobtotems.text.guide.totemic_focus_entry_name=Totemic Focus
-mobtotems.text.guide.totemic_focus_page_1=To make totems, you will need to craft a totemic focus.\n\nWith your totemic focus in hand, right click logs to carve it into a totem wood block.
+mobtotems.text.guide.totemic_focus_page_1=To make totems, you will need to craft a totemic focus.\n\nWith your totemic focus in hand, right click logs to transform it into a totem wood block.
 
 mobtotems.text.guide.carving_knife_entry_name=Carving Knife
 mobtotems.text.guide.carving_knife_page_1=In order to transform your blessed logs into totems, you'll need another tool. The Carving Knife.\n\nOnce crafted, right-click the air to open it's radial menu and select your carving.\n\nThen right-click a totem wood block to carve it.
