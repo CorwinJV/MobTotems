@@ -1,5 +1,6 @@
 package com.corwinjv.mobtotems.gui;
 
+import amerifrance.guideapi.api.util.TextHelper;
 import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.items.baubles.BaubleItem;
 import net.minecraft.util.ResourceLocation;
@@ -19,5 +20,20 @@ public class util {
     public static ResourceLocation getGuiResourceLocation(@Nonnull String guiFileName)
     {
         return new ResourceLocation(Reference.RESOURCE_PREFIX + "textures/gui/" + guiFileName);
+    }
+
+    public static ResourceLocation getGuideResourceLocation(String fileName)
+    {
+        return new ResourceLocation(Reference.MOD_ID, "textures/guide/" + fileName);
+    }
+
+    public static String getLocalizedGuideText(String text)
+    {
+        return TextHelper.localizeEffect(Reference.MOD_ID + ".text.guide." + text);
+    }
+
+    public static String getUnlocalizedGuideText(String text)
+    {
+        return Reference.MOD_ID + ".text.guide." + text;
     }
 }

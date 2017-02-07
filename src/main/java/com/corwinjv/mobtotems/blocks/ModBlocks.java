@@ -6,6 +6,7 @@ import com.corwinjv.mobtotems.blocks.tiles.IncenseKindlingBoxTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.SacredLightTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
+import com.corwinjv.mobtotems.config.ConfigurationHandler;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
@@ -69,7 +70,7 @@ public class ModBlocks
         for(int i = 0; i < TotemType.values().length; i++)
         {
             Item item = Item.getItemFromBlock(TOTEM_WOOD);
-            ModelResourceLocation modelResourceLocation = new ModelResourceLocation(Reference.RESOURCE_PREFIX + TOTEM_WOOD_NAME, "totem_type=" + TotemType.fromMeta(i).getName()) ;
+            ModelResourceLocation modelResourceLocation = new ModelResourceLocation(Reference.RESOURCE_PREFIX + TOTEM_WOOD_NAME, "totem_type=" + TotemType.fromMeta(i).getName());
             ModelLoader.setCustomModelResourceLocation(item, i, modelResourceLocation);
         }
 
@@ -85,15 +86,27 @@ public class ModBlocks
 
     public static void registerRecipes() {
         Block item = SACRED_LIGHT;
-        GameRegistry.addRecipe(new ItemStack(item, 1),
-                "GRG",
-                "XNX",
-                "GTG",
-                'G', Items.GUNPOWDER,
-                'R', Items.BLAZE_ROD,
-                'X', Items.ROTTEN_FLESH,
-                'N', Items.NETHER_STAR,
-                'T', TOTEM_WOOD_NAME);
+        if(ConfigurationHandler.hardSacredLightRecipe) {
+            GameRegistry.addRecipe(new ItemStack(item, 1),
+                    "GRG",
+                    "XNX",
+                    "GTG",
+                    'G', Items.GUNPOWDER,
+                    'R', Items.BLAZE_ROD,
+                    'X', Items.ROTTEN_FLESH,
+                    'N', Items.NETHER_STAR,
+                    'T', TOTEM_WOOD);
+        } else {
+            GameRegistry.addRecipe(new ItemStack(item, 1),
+                    "GRG",
+                    "XOX",
+                    "GTG",
+                    'G', Items.GUNPOWDER,
+                    'R', Items.BLAZE_ROD,
+                    'X', Items.ROTTEN_FLESH,
+                    'O', Blocks.TORCH,
+                    'T', TOTEM_WOOD);
+        }
 
         item = INCENSE_KINDLING_BOX;
         GameRegistry.addRecipe(new ItemStack(item, 4),
