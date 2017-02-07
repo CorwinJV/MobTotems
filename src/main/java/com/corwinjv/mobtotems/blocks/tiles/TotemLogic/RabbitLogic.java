@@ -14,7 +14,7 @@ public class RabbitLogic extends TotemLogic {
     @Override
     public List<ItemStack> getCost() {
         List<ItemStack> cost = new ArrayList<>();
-        cost.add(new ItemStack(Items.CARROT, 8));
+        cost.add(new ItemStack(Items.CARROT, 4));
         return cost;
     }
 

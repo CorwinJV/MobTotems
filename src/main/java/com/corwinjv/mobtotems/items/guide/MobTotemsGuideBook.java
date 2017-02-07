@@ -81,7 +81,6 @@ public class MobTotemsGuideBook implements IGuideBook {
         pages.add(new PageText(util.getLocalizedGuideText("offering_box_page_3")));
         pages.add(new PageTextImage(util.getLocalizedGuideText("offering_box_page_4"), util.getGuideResourceLocation("finished_totem_example_3.png"), false));
         pages.add(new PageTextImage(util.getLocalizedGuideText("offering_box_page_5"), util.getGuideResourceLocation("finished_totem_example_4.png"), false));
-
         entries.put(new ResourceLocation(Reference.MOD_ID, ModBlocks.OFFERING_BOX_NAME), new EntryItemStack(pages, util.getLocalizedGuideText("offering_box_entry_name"), new ItemStack(ModBlocks.OFFERING_BOX)));
 
         // Sacred Light Entry
