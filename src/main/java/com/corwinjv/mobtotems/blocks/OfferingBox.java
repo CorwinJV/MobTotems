@@ -46,8 +46,7 @@ public class OfferingBox extends ModBlockContainer
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        boolean retVal = false;
-
+        boolean retVal = true;
         if(!worldIn.isRemote) {
             playerIn.openGui(MobTotems.instance, Reference.GUI_ID.OFFERING_BOX.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
         }
@@ -72,8 +71,6 @@ public class OfferingBox extends ModBlockContainer
     }
 
     // Rendering stuff
-
-
     @Override
     public EnumBlockRenderType getRenderType(IBlockState state) {
         return EnumBlockRenderType.MODEL;
@@ -84,8 +81,7 @@ public class OfferingBox extends ModBlockContainer
         return false;
     }
 
-    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face)
-    {
+    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
         return false;
     }
 
@@ -112,7 +108,7 @@ public class OfferingBox extends ModBlockContainer
                         && ((TotemTileEntity) te).getMaster() != null) {
 
                     TileEntity master = (TileEntity)((TotemTileEntity) te).getMaster();
-                    FMLLog.log(Level.ERROR, "masterPos: " + master.getPos() + " adjustedPos: " + adjustedPos);
+                    //FMLLog.log(Level.ERROR, "masterPos: " + master.getPos() + " adjustedPos: " + adjustedPos);
                     if(!master.getPos().equals(adjustedPos)) {
                         canPlaceAt = false;
                         break;
@@ -129,26 +125,27 @@ public class OfferingBox extends ModBlockContainer
     }
 
     @Override
-    public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos)
-    {
+    public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos) {
         return this.canPlaceAt(worldIn, pos, EnumFacing.UP);
     }
 
-    private boolean canPlaceAt(World worldIn, BlockPos pos, EnumFacing facing)
-    {
+    private boolean canPlaceAt(World worldIn, BlockPos pos, EnumFacing facing) {
         BlockPos blockpos = pos.offset(facing.getOpposite());
         return this.canPlaceOn(worldIn, blockpos);
     }
 
-    public void onBlockAdded(World world, BlockPos pos, IBlockState state)
-    {
+    public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
         this.checkForDrop(world, pos, state);
 
         TileEntity te = world.getTileEntity(pos);
-        if(te instanceof OfferingBoxTileEntity)
-        {
+        if(te instanceof OfferingBoxTileEntity) {
             ((OfferingBoxTileEntity)te).verifyMultiblock();
         }
+    }
+
+    @Override
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+        return false;
     }
 
     @Override
