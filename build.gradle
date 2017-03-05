@@ -86,7 +86,6 @@ dependencies {
     testCompile "com.google.dagger:dagger:2.8"
     apt "com.google.dagger:dagger-compiler:2.8"
     testApt "com.google.dagger:dagger-compiler:2.8"
-    //provided "javax.annotation:jsr250-api:1.0"
 
 }
 
