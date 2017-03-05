@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.RenderItem;
         MinecraftModule.class
 })
 public interface MinecraftComponent {
-
     RenderItem renderItem();
     ItemModelMesher itemModelMesher();
 }

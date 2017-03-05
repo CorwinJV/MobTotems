@@ -9,7 +9,7 @@ import dagger.Component;
 }, dependencies = {
     MinecraftComponent.class
 })
-public interface MobTotemsComponent {
+public interface MobTotemsComponent extends MinecraftComponent {
 
     MobTotems mobTotems();
 }
