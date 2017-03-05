@@ -1,12 +1,12 @@
 package com.corwinjv.mobtotems.proxy;
 
 import com.corwinjv.mobtotems.KeyBindings;
+import com.corwinjv.mobtotems.MobTotems;
 import com.corwinjv.mobtotems.blocks.ModBlocks;
 import com.corwinjv.mobtotems.entities.ModEntities;
 import com.corwinjv.mobtotems.gui.BaublesChargeGui;
 import com.corwinjv.mobtotems.items.ModItems;
 import com.corwinjv.mobtotems.particles.ParticleRenderer;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 
 /**
@@ -35,7 +35,7 @@ public class ClientProxy extends CommonProxy
     @Override
     public void registerGui()
     {
-        MinecraftForge.EVENT_BUS.register(new BaublesChargeGui(Minecraft.getMinecraft()));
+        MinecraftForge.EVENT_BUS.register(new BaublesChargeGui(MobTotems.component().minecraft()));
     }
 
     @Override

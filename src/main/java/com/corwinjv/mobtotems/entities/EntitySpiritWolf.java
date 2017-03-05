@@ -1,5 +1,6 @@
 package com.corwinjv.mobtotems.entities;
 
+import com.corwinjv.mobtotems.MobTotems;
 import com.corwinjv.mobtotems.particles.ModParticles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.IParticleFactory;
@@ -92,6 +93,7 @@ public class EntitySpiritWolf extends EntityWolf
     private void spawnParticles()
     {
         IParticleFactory particleFactory = new ModParticles.Factory();
+        Minecraft minecraft = MobTotems.component().minecraft();
 
         long worldTime = getEntityWorld().getTotalWorldTime();
         if(worldTime % 8 == 0)
@@ -107,7 +109,7 @@ public class EntitySpiritWolf extends EntityWolf
                 float xPos = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
                 float zPos = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
                 Particle particle = particleFactory.createParticle(ModParticles.WOLF_IDLE_SMOKE, getEntityWorld(), this.posX + (double)xPos, (double)(yPos + 0.1F), this.posZ + (double)zPos, speedVec.xCoord, speedVec.yCoord, speedVec.zCoord);
-                Minecraft.getMinecraft().effectRenderer.addEffect(particle);
+                minecraft.effectRenderer.addEffect(particle);
             }
         }
     }

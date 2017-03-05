@@ -1,5 +1,6 @@
 package com.corwinjv.mobtotems.items;
 
+import com.corwinjv.mobtotems.MobTotems;
 import com.corwinjv.mobtotems.blocks.TotemType;
 import com.corwinjv.mobtotems.blocks.TotemWoodBlock;
 import com.corwinjv.mobtotems.gui.CarvingSelectorGui;
@@ -82,6 +83,8 @@ public class CarvingKnife extends ModItem {
     @SideOnly(Side.CLIENT)
     private void spawnParticles(ItemStack stack, World world, EntityPlayer player) {
         long worldTime = world.getWorldTime();
+        Minecraft minecraft = MobTotems.component().minecraft();
+
         if(spawnParticles) {
             IParticleFactory particleFactory = new ParticleBlockDust.Factory();
 
@@ -110,7 +113,7 @@ public class CarvingKnife extends ModItem {
                                 speedX *= 0.2;
                                 speedY *= 0.2;
                                 speedZ *= 0.2;
-                                Minecraft.getMinecraft().effectRenderer.addEffect(
+                                minecraft.effectRenderer.addEffect(
                                         particleFactory.createParticle(EnumParticleTypes.BLOCK_DUST.getParticleID(),
                                                 world,
                                                 (double)pos.getX() + d0,
