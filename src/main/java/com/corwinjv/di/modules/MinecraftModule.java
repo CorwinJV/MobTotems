@@ -5,6 +5,7 @@ import dagger.Provides;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.texture.TextureManager;
 
 @Module
 public class MinecraftModule {
@@ -13,6 +14,16 @@ public class MinecraftModule {
 
     public MinecraftModule(Minecraft minecraft) {
         this.minecraft = minecraft;
+    }
+
+    @Provides
+    Minecraft provideMinecraft() {
+        return minecraft;
+    }
+
+    @Provides
+    TextureManager provideTextureManager() {
+        return minecraft.getTextureManager();
     }
 
     @Provides
