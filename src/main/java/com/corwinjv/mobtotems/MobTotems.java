@@ -8,6 +8,7 @@ import com.corwinjv.di.DaggerMobTotemsComponent;
 import com.corwinjv.di.MinecraftComponent;
 import com.corwinjv.di.MobTotemsComponent;
 import com.corwinjv.di.modules.MinecraftModule;
+import com.corwinjv.di.modules.MobTotemsModule;
 import com.corwinjv.mobtotems.blocks.ModBlocks;
 import com.corwinjv.mobtotems.blocks.SacredLightBlock;
 import com.corwinjv.mobtotems.blocks.tiles.TotemLogic.CowLogic;
@@ -34,12 +35,12 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 public class MobTotems
 {
     @Mod.Instance
-    public static MobTotems instance;
+    private static MobTotems instance;
 
     @SidedProxy(clientSide = Reference.CLIENT_SIDE_PROXY_CLASS, serverSide = Reference.SERVER_SIDE_PROXY_CLASS)
     public static CommonProxy proxy;
 
-    MobTotemsComponent mobTotemsComponent;
+    private static MobTotemsComponent mobTotemsComponent;
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
@@ -49,7 +50,7 @@ public class MobTotems
 
         // Network & Messages
         Network.init();
-        NetworkRegistry.INSTANCE.registerGuiHandler(MobTotems.instance, new OfferingBoxGuiHandler());
+        NetworkRegistry.INSTANCE.registerGuiHandler(mobTotemsComponent.mobTotems(), new OfferingBoxGuiHandler());
 
         // Config
         ConfigurationHandler.Init(event.getSuggestedConfigurationFile());
@@ -79,12 +80,17 @@ public class MobTotems
         proxy.registerKeys();
     }
 
+    public static MobTotemsComponent component() {
+        return mobTotemsComponent;
+    }
+
     private void initializeDagger() {
         MinecraftComponent minecraftComponent = DaggerMinecraftComponent.builder()
                 .minecraftModule(new MinecraftModule(Minecraft.getMinecraft()))
                 .build();
 
         mobTotemsComponent = DaggerMobTotemsComponent.builder()
+                .mobTotemsModule(new MobTotemsModule(instance))
                 .minecraftComponent(minecraftComponent)
                 .build();
     }
