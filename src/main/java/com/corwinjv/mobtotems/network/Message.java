@@ -1,5 +1,6 @@
 package com.corwinjv.mobtotems.network;
 
+import com.corwinjv.mobtotems.MobTotems;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,10 +32,12 @@ public class Message<REQ extends IMessage> implements IMessage, IMessageHandler<
         }
         else if(ctx.side == Side.CLIENT)
         {
-            Minecraft.getMinecraft().addScheduledTask(new Runnable() {
+            Minecraft minecraft = MobTotems.component().minecraft();
+
+            minecraft.addScheduledTask(new Runnable() {
                 @Override
                 public void run() {
-                    handleClient(message, Minecraft.getMinecraft().player);
+                    handleClient(message, minecraft.player);
                 }
             });
         }

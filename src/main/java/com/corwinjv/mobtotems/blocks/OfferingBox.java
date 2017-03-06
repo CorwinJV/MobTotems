@@ -48,7 +48,7 @@ public class OfferingBox extends ModBlockContainer
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         boolean retVal = true;
         if(!worldIn.isRemote) {
-            playerIn.openGui(MobTotems.instance, Reference.GUI_ID.OFFERING_BOX.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
+            playerIn.openGui(MobTotems.component().mobTotems(), Reference.GUI_ID.OFFERING_BOX.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
         }
         return retVal;
     }

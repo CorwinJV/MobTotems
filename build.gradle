@@ -10,6 +10,25 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
 
+//https://plugins.gradle.org/plugin/net.ltgt.apt
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "net.ltgt.gradle:gradle-apt-plugin:0.9"
+    }
+}
+apply plugin: "net.ltgt.apt"
+
+//https://docs.gradle.org/current/userguide/java_plugin.html
+apply plugin: 'java'
+
+//https://docs.gradle.org/current/userguide/idea_plugin.html
+apply plugin: 'idea'
+
 version = "1.11.2-0.3.0"
 group= "com.corwinjv.mobtotems" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "mobtotems"
@@ -61,6 +80,12 @@ dependencies {
     // for more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
+
+    //Dagger 2
+    compile "com.google.dagger:dagger:2.8"
+    testCompile "com.google.dagger:dagger:2.8"
+    apt "com.google.dagger:dagger-compiler:2.8"
+    testApt "com.google.dagger:dagger-compiler:2.8"
 
 }
 

@@ -1,8 +1,8 @@
 package com.corwinjv.mobtotems.items;
 
+import com.corwinjv.mobtotems.MobTotems;
 import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.items.baubles.WolfTotemBauble;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -80,8 +80,7 @@ public class ModItems
 
     private static void registerRender(Item item, int meta, String key)
     {
-        Minecraft.getMinecraft().getRenderItem().getItemModelMesher()
-                .register(item,
+        MobTotems.component().itemModelMesher().register(item,
                         meta,
                         new ModelResourceLocation(Reference.RESOURCE_PREFIX + key, "inventory"));
     }
