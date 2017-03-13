@@ -3,12 +3,7 @@ package com.corwinjv.mobtotems;
  * Created by corwinjv on 8/30/14.
  */
 
-import com.corwinjv.di.DaggerMinecraftComponent;
-import com.corwinjv.di.DaggerMobTotemsComponent;
-import com.corwinjv.di.MinecraftComponent;
 import com.corwinjv.di.MobTotemsComponent;
-import com.corwinjv.di.modules.MinecraftModule;
-import com.corwinjv.di.modules.MobTotemsModule;
 import com.corwinjv.mobtotems.blocks.ModBlocks;
 import com.corwinjv.mobtotems.blocks.tiles.TotemLogic.CowLogic;
 import com.corwinjv.mobtotems.blocks.tiles.TotemLogic.CreeperLogic;
@@ -18,7 +13,6 @@ import com.corwinjv.mobtotems.gui.OfferingBoxGuiHandler;
 import com.corwinjv.mobtotems.items.ModItems;
 import com.corwinjv.mobtotems.network.Network;
 import com.corwinjv.mobtotems.proxy.CommonProxy;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -28,7 +22,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import com.corwinjv.mobtotems.config.ConfigurationHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid=Reference.MOD_ID, name=Reference.MOD_NAME, version=Reference.MOD_VERSION, guiFactory = Reference.GUI_FACTORY_CLASS,
         dependencies = "before:guideapi")
@@ -46,7 +39,7 @@ public class MobTotems
     public void preInit(FMLPreInitializationEvent event)
     {
         //Dagger 2 implementation
-        mobTotemsComponent = proxy.initializeDagger();
+        mobTotemsComponent = proxy.initializeDagger(instance);
 
         // Network & Messages
         Network.init();

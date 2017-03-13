@@ -30,10 +30,10 @@ public class CommonProxy
     public void registerParticleRenderer() {
     }
 
-    public MobTotemsComponent initializeDagger() {
+    public MobTotemsComponent initializeDagger(MobTotems instance) {
         MinecraftComponent minecraftComponent = initializeMinecraftComponent();
         return DaggerMobTotemsComponent.builder()
-                .mobTotemsModule(new MobTotemsModule(MobTotems.instance))
+                .mobTotemsModule(new MobTotemsModule(instance))
                 .minecraftComponent(minecraftComponent)
                 .build();
     }
