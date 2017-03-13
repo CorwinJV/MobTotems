@@ -38,7 +38,7 @@ public class CommonProxy
                 .build();
     }
 
-    public MinecraftComponent initializeMinecraftComponent() {
+    protected MinecraftComponent initializeMinecraftComponent() {
         return DaggerMinecraftComponent.builder()
                 .minecraftModule(new MinecraftModule(null, FMLCommonHandler.instance().getMinecraftServerInstance()))
                 .build();

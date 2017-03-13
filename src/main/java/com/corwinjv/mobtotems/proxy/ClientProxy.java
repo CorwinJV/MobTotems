@@ -45,7 +45,7 @@ public class ClientProxy extends CommonProxy
     }
 
     @Override
-    public MinecraftComponent initializeMinecraftComponent() {
+    protected MinecraftComponent initializeMinecraftComponent() {
         return DaggerMinecraftComponent.builder()
                 .minecraftModule(new MinecraftModule(Minecraft.getMinecraft(), null))
                 .build();
