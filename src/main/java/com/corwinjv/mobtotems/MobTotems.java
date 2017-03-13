@@ -10,7 +10,6 @@ import com.corwinjv.di.MobTotemsComponent;
 import com.corwinjv.di.modules.MinecraftModule;
 import com.corwinjv.di.modules.MobTotemsModule;
 import com.corwinjv.mobtotems.blocks.ModBlocks;
-import com.corwinjv.mobtotems.blocks.SacredLightBlock;
 import com.corwinjv.mobtotems.blocks.tiles.TotemLogic.CowLogic;
 import com.corwinjv.mobtotems.blocks.tiles.TotemLogic.CreeperLogic;
 import com.corwinjv.mobtotems.blocks.tiles.TotemLogic.EnderLogic;
@@ -29,13 +28,14 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 import com.corwinjv.mobtotems.config.ConfigurationHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid=Reference.MOD_ID, name=Reference.MOD_NAME, version=Reference.MOD_VERSION, guiFactory = Reference.GUI_FACTORY_CLASS,
         dependencies = "before:guideapi")
 public class MobTotems
 {
     @Mod.Instance
-    private static MobTotems instance;
+    public static MobTotems instance;
 
     @SidedProxy(clientSide = Reference.CLIENT_SIDE_PROXY_CLASS, serverSide = Reference.SERVER_SIDE_PROXY_CLASS)
     public static CommonProxy proxy;
@@ -46,11 +46,13 @@ public class MobTotems
     public void preInit(FMLPreInitializationEvent event)
     {
         //Dagger 2 implementation
-        initializeDagger();
+        if(event.getSide() == Side.CLIENT) {
+            initializeDagger();
+        }
 
         // Network & Messages
         Network.init();
-        NetworkRegistry.INSTANCE.registerGuiHandler(mobTotemsComponent.mobTotems(), new OfferingBoxGuiHandler());
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new OfferingBoxGuiHandler());
 
         // Config
         ConfigurationHandler.Init(event.getSuggestedConfigurationFile());

@@ -2,6 +2,8 @@
 out/
 build/
 run/
+classes/
+.idea/
 eclipse/
 javadoc/
 gradle/
