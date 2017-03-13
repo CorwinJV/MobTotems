@@ -1,5 +1,6 @@
 package com.corwinjv.mobtotems.gui;
 
+import com.corwinjv.mobtotems.MobTotems;
 import com.corwinjv.mobtotems.blocks.OfferingBox;
 import com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -76,7 +77,7 @@ public class OfferingBoxContainer extends Container {
         for (int i = 0; i < this.listeners.size(); ++i) {
             IContainerListener icontainerlistener = this.listeners.get(i);
 
-            TileEntity te = FMLCommonHandler.instance().getMinecraftServerInstance().getEntityWorld().getTileEntity(offeringBoxPos);
+            TileEntity te = MobTotems.component().minecraftServer().getEntityWorld().getTileEntity(offeringBoxPos);
             if (te instanceof OfferingBoxTileEntity) {
                 if (this.chargeLevel != inventory.getField(0)) {
                     icontainerlistener.sendProgressBarUpdate(this, 0, inventory.getField(0));

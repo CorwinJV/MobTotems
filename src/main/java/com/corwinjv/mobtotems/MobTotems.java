@@ -46,9 +46,7 @@ public class MobTotems
     public void preInit(FMLPreInitializationEvent event)
     {
         //Dagger 2 implementation
-        if(event.getSide() == Side.CLIENT) {
-            initializeDagger();
-        }
+        mobTotemsComponent = proxy.initializeDagger();
 
         // Network & Messages
         Network.init();
@@ -84,17 +82,6 @@ public class MobTotems
 
     public static MobTotemsComponent component() {
         return mobTotemsComponent;
-    }
-
-    private void initializeDagger() {
-        MinecraftComponent minecraftComponent = DaggerMinecraftComponent.builder()
-                .minecraftModule(new MinecraftModule(Minecraft.getMinecraft()))
-                .build();
-
-        mobTotemsComponent = DaggerMobTotemsComponent.builder()
-                .mobTotemsModule(new MobTotemsModule(instance))
-                .minecraftComponent(minecraftComponent)
-                .build();
     }
 
     @Mod.EventHandler

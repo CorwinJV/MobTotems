@@ -1,14 +1,11 @@
 package com.corwinjv.mobtotems.gui;
 
-import amerifrance.guideapi.api.util.TextHelper;
 import com.corwinjv.mobtotems.MobTotems;
 import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.blocks.TotemType;
-import com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
 import com.corwinjv.mobtotems.interfaces.IChargeableTileEntity;
 import com.corwinjv.mobtotems.interfaces.IMultiblock;
-import com.sun.org.apache.bcel.internal.generic.IMUL;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -16,7 +13,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.translation.I18n;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.common.FMLLog;
 import org.apache.logging.log4j.Level;
 
