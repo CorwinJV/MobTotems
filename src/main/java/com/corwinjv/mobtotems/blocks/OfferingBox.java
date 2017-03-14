@@ -17,8 +17,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLLog;
-import org.apache.logging.log4j.Level;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -26,12 +24,10 @@ import javax.annotation.Nullable;
 /**
  * Created by CorwinJV on 7/24/2016.
  */
-public class OfferingBox extends ModBlockContainer
-{
-    private static final AxisAlignedBB boundingBox = new AxisAlignedBB(0.5/16.0, 0, 0.5D/16.0, 15.5D/16.0, 3.0D/16.0, 15.5D/16.0);
+public class OfferingBox extends ModBlockContainer {
+    private static final AxisAlignedBB boundingBox = new AxisAlignedBB(0.5 / 16.0, 0, 0.5D / 16.0, 15.5D / 16.0, 3.0D / 16.0, 15.5D / 16.0);
 
-    public OfferingBox()
-    {
+    public OfferingBox() {
         super();
         this.setHardness(1.0f);
         this.isBlockContainer = true;
@@ -47,7 +43,7 @@ public class OfferingBox extends ModBlockContainer
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         boolean retVal = true;
-        if(!worldIn.isRemote) {
+        if (!worldIn.isRemote) {
             playerIn.openGui(MobTotems.component().mobTotems(), Reference.GUI_ID.OFFERING_BOX.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
         }
         return retVal;
@@ -76,8 +72,7 @@ public class OfferingBox extends ModBlockContainer
         return EnumBlockRenderType.MODEL;
     }
 
-    public boolean isVisuallyOpaque()
-    {
+    public boolean isVisuallyOpaque() {
         return false;
     }
 
@@ -107,9 +102,9 @@ public class OfferingBox extends ModBlockContainer
                         && te instanceof TotemTileEntity
                         && ((TotemTileEntity) te).getMaster() != null) {
 
-                    TileEntity master = (TileEntity)((TotemTileEntity) te).getMaster();
+                    TileEntity master = (TileEntity) ((TotemTileEntity) te).getMaster();
                     //FMLLog.log(Level.ERROR, "masterPos: " + master.getPos() + " adjustedPos: " + adjustedPos);
-                    if(!master.getPos().equals(adjustedPos)) {
+                    if (!master.getPos().equals(adjustedPos)) {
                         canPlaceAt = false;
                         break;
                     }
@@ -138,8 +133,8 @@ public class OfferingBox extends ModBlockContainer
         this.checkForDrop(world, pos, state);
 
         TileEntity te = world.getTileEntity(pos);
-        if(te instanceof OfferingBoxTileEntity) {
-            ((OfferingBoxTileEntity)te).verifyMultiblock();
+        if (te instanceof OfferingBoxTileEntity) {
+            ((OfferingBoxTileEntity) te).verifyMultiblock();
         }
     }
 
@@ -151,11 +146,11 @@ public class OfferingBox extends ModBlockContainer
     @Override
     public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
         TileEntity te = world.getTileEntity(pos);
-        if(te != null
+        if (te != null
                 && te instanceof OfferingBoxTileEntity) {
-            for(BlockPos slavePos : ((OfferingBoxTileEntity) te).getSlaves()) {
+            for (BlockPos slavePos : ((OfferingBoxTileEntity) te).getSlaves()) {
                 TileEntity te2 = world.getTileEntity(slavePos);
-                if(te2 instanceof TotemTileEntity) {
+                if (te2 instanceof TotemTileEntity) {
                     ((TotemTileEntity) te2).setMaster(null);
                 }
             }
@@ -164,25 +159,18 @@ public class OfferingBox extends ModBlockContainer
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos p_189540_5_)
-    {
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos p_189540_5_) {
         this.checkForDrop(worldIn, pos, state);
     }
 
-    public boolean checkForDrop(World world, BlockPos pos, IBlockState state)
-    {
-        if (this.canPlaceAt(world, pos, EnumFacing.UP))
-        {
+    public boolean checkForDrop(World world, BlockPos pos, IBlockState state) {
+        if (this.canPlaceAt(world, pos, EnumFacing.UP)) {
             return true;
-        }
-        else
-        {
-            if (world.getBlockState(pos).getBlock() == this)
-            {
+        } else {
+            if (world.getBlockState(pos).getBlock() == this) {
                 TileEntity te = world.getTileEntity(pos);
-                if(te instanceof OfferingBoxTileEntity)
-                {
-                    InventoryHelper.dropInventoryItems(world, pos, (OfferingBoxTileEntity)te);
+                if (te instanceof OfferingBoxTileEntity) {
+                    InventoryHelper.dropInventoryItems(world, pos, (OfferingBoxTileEntity) te);
                 }
                 this.dropBlockAsItem(world, pos, state, 0);
                 world.setBlockToAir(pos);
@@ -196,8 +184,8 @@ public class OfferingBox extends ModBlockContainer
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileEntity te = world.getTileEntity(pos);
-        if(te instanceof OfferingBoxTileEntity) {
-            InventoryHelper.dropInventoryItems(world, pos, (OfferingBoxTileEntity)te);
+        if (te instanceof OfferingBoxTileEntity) {
+            InventoryHelper.dropInventoryItems(world, pos, (OfferingBoxTileEntity) te);
         }
         world.removeTileEntity(pos);
     }
@@ -205,8 +193,7 @@ public class OfferingBox extends ModBlockContainer
     // TE
     @Nonnull
     @Override
-    public TileEntity createNewTileEntity(@Nullable World worldIn, int meta)
-    {
+    public TileEntity createNewTileEntity(@Nullable World worldIn, int meta) {
         return new OfferingBoxTileEntity();
     }
 }

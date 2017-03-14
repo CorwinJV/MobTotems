@@ -15,9 +15,15 @@ import javax.annotation.Nullable;
         MinecraftModule.class
 })
 public interface MinecraftComponent {
-    @Nullable MinecraftServer minecraftServer();
-    @Nullable Minecraft minecraft();
+    @Nullable
+    MinecraftServer minecraftServer();
+
+    @Nullable
+    Minecraft minecraft();
+
     TextureManager textureManager();
+
     RenderItem renderItem();
+
     ItemModelMesher itemModelMesher();
 }

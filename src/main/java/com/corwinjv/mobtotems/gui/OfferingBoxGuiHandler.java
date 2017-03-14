@@ -19,9 +19,8 @@ public class OfferingBoxGuiHandler implements IGuiHandler {
     public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         OfferingBoxContainer ret = null;
         TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
-        if(tileEntity instanceof OfferingBoxTileEntity)
-        {
-            ret = new OfferingBoxContainer(player.inventory, (IInventory)tileEntity);
+        if (tileEntity instanceof OfferingBoxTileEntity) {
+            ret = new OfferingBoxContainer(player.inventory, (IInventory) tileEntity);
         }
         return ret;
     }
@@ -31,9 +30,8 @@ public class OfferingBoxGuiHandler implements IGuiHandler {
     public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
         OfferingBoxGuiContainer ret = null;
         TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
-        if(tileEntity instanceof  OfferingBoxTileEntity)
-        {
-            ret = new OfferingBoxGuiContainer(player.inventory, (IInventory)tileEntity);
+        if (tileEntity instanceof OfferingBoxTileEntity) {
+            ret = new OfferingBoxGuiContainer(player.inventory, (IInventory) tileEntity);
         }
         return ret;
     }

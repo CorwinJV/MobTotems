@@ -16,20 +16,17 @@ public class OpenKnifeGuiMessage extends Message<OpenKnifeGuiMessage> {
     @Override
     protected void handleClient(OpenKnifeGuiMessage message, EntityPlayer player) {
         ItemStack stack = player.getHeldItem(message.hand);
-        if(stack.getItem() instanceof CarvingKnife)
-        {
-            ((CarvingKnife)stack.getItem()).openGui(player, message.meta);
+        if (stack.getItem() instanceof CarvingKnife) {
+            ((CarvingKnife) stack.getItem()).openGui(player, message.meta);
         }
     }
 
-    public OpenKnifeGuiMessage setHand(EnumHand hand)
-    {
+    public OpenKnifeGuiMessage setHand(EnumHand hand) {
         this.hand = hand;
         return this;
     }
 
-    public OpenKnifeGuiMessage setMeta(int meta)
-    {
+    public OpenKnifeGuiMessage setMeta(int meta) {
         this.meta = meta;
         return this;
     }
@@ -37,15 +34,12 @@ public class OpenKnifeGuiMessage extends Message<OpenKnifeGuiMessage> {
     @Override
     public void toBytes(ByteBuf buf) {
         buf.writeInt(meta);
-        switch(hand)
-        {
-            case MAIN_HAND:
-            {
+        switch (hand) {
+            case MAIN_HAND: {
                 buf.writeInt(0);
                 break;
             }
-            case OFF_HAND:
-            {
+            case OFF_HAND: {
                 buf.writeInt(1);
                 break;
             }
@@ -56,15 +50,12 @@ public class OpenKnifeGuiMessage extends Message<OpenKnifeGuiMessage> {
     public void fromBytes(ByteBuf buf) {
         meta = buf.readInt();
         int handInt = buf.readInt();
-        switch(handInt)
-        {
-            case 0:
-            {
+        switch (handInt) {
+            case 0: {
                 hand = EnumHand.MAIN_HAND;
                 break;
             }
-            case 1:
-            {
+            case 1: {
                 hand = EnumHand.OFF_HAND;
                 break;
             }

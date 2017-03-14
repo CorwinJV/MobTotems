@@ -19,21 +19,17 @@ import java.util.Map;
  * Created by CorwinJV on 9/1/14.
  */
 
-// Testing git integration
-
-public class ModItems
-{
+public class ModItems {
     public static final String WOLF_TOTEM_BAUBLE = "wolf_totem_bauble";
     public static final String TOTEMIC_FOCUS = "totemic_focus";
     public static final String CARVING_KNIFE = "carving_knife";
 
     // We're going to use the TotemicFocus for the CreativeTab:
     public static Item TOTEMIC_FOCUS_ITEM = new TotemicFocus().setUnlocalizedName(TOTEMIC_FOCUS);
-    private static Map<String,Item> mItems = Collections.emptyMap();
+    private static Map<String, Item> mItems = Collections.emptyMap();
 
-    public static void init()
-    {
-        mItems = new HashMap<String,Item>();
+    public static void init() {
+        mItems = new HashMap<String, Item>();
 
         Item item = new WolfTotemBauble().setUnlocalizedName(WOLF_TOTEM_BAUBLE);
         mItems.put(WOLF_TOTEM_BAUBLE, item);
@@ -44,49 +40,39 @@ public class ModItems
         mItems.put(CARVING_KNIFE, item);
     }
 
-    public static Item getItem(String key)
-    {
-        if(mItems.containsKey(key))
-        {
+    public static Item getItem(String key) {
+        if (mItems.containsKey(key)) {
             return mItems.get(key);
         }
         return null;
     }
 
 
-    public static void registerItems()
-    {
-        for (String key : mItems.keySet())
-        {
+    public static void registerItems() {
+        for (String key : mItems.keySet()) {
             Item item = mItems.get(key);
-            if(item != null)
-            {
+            if (item != null) {
                 GameRegistry.register(mItems.get(key), new ResourceLocation(Reference.MOD_ID, key));
             }
         }
     }
 
-    public static void registerRenders()
-    {
-        for (String key : mItems.keySet())
-        {
+    public static void registerRenders() {
+        for (String key : mItems.keySet()) {
             Item item = mItems.get(key);
-            if(item != null)
-            {
+            if (item != null) {
                 registerRender(item, 0, key);
             }
         }
     }
 
-    private static void registerRender(Item item, int meta, String key)
-    {
+    private static void registerRender(Item item, int meta, String key) {
         MobTotems.component().itemModelMesher().register(item,
-                        meta,
-                        new ModelResourceLocation(Reference.RESOURCE_PREFIX + key, "inventory"));
+                meta,
+                new ModelResourceLocation(Reference.RESOURCE_PREFIX + key, "inventory"));
     }
 
-    public static void registerRecipes()
-    {
+    public static void registerRecipes() {
         Item item = mItems.get(TOTEMIC_FOCUS);
         GameRegistry.addRecipe(new ItemStack(item),
                 "GXF",

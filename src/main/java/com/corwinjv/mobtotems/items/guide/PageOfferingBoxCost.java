@@ -16,8 +16,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.FMLLog;
-import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,10 +41,10 @@ public class PageOfferingBoxCost implements IPage {
 
         fontRendererObj.drawString(util.getLocalizedGuideText("cost_label"), guiLeft + 85, guiTop + 85, 0);
 
-        for(int xSlot = 0; xSlot < 3; xSlot++) {
-            for(int ySlot = 0; ySlot < 3; ySlot++) {
+        for (int xSlot = 0; xSlot < 3; xSlot++) {
+            for (int ySlot = 0; ySlot < 3; ySlot++) {
                 int index = ySlot * 3 + xSlot;
-                if(index < itemStacks.size()) {
+                if (index < itemStacks.size()) {
                     // Render item stack in grid
                     int left = (guiLeft + 70) + xSlot * ICON_WIDTH;
                     int top = (guiTop + 20) + ySlot * ICON_WIDTH;
@@ -56,10 +54,10 @@ public class PageOfferingBoxCost implements IPage {
 
                     // Check if mouse is over this stack
                     //FMLLog.log(Level.ERROR, "mouseX: " + mouseX + "mouseY: " + mouseY + "top: " + top + "left")
-                    if(GuiHelper.isMouseBetween(mouseX, mouseY, left, top, ICON_WIDTH, ICON_WIDTH)) {
+                    if (GuiHelper.isMouseBetween(mouseX, mouseY, left, top, ICON_WIDTH, ICON_WIDTH)) {
                         // render tooltip
                         List<String> tooltip = GuiHelper.getTooltip(stack);
-                        if(tooltip != null) {
+                        if (tooltip != null) {
                             guiBase.drawHoveringText(tooltip, mouseX, mouseY);
                         }
                     }

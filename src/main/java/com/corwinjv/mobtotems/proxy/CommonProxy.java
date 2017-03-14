@@ -7,14 +7,12 @@ import com.corwinjv.di.MobTotemsComponent;
 import com.corwinjv.di.modules.MinecraftModule;
 import com.corwinjv.di.modules.MobTotemsModule;
 import com.corwinjv.mobtotems.MobTotems;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 
 /**
  * Created by CorwinJV on 1/23/2016.
  */
-public class CommonProxy
-{
+public class CommonProxy {
     public void registerRenders() {
     }
 

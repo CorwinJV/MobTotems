@@ -18,12 +18,10 @@ import java.util.Random;
 /**
  * Created by CorwinJV on 7/24/2016.
  */
-public class IncenseKindlingBox extends ModBlock implements ITileEntityProvider
-{
+public class IncenseKindlingBox extends ModBlock implements ITileEntityProvider {
     private static final AxisAlignedBB boundingBox = new AxisAlignedBB(0.2D, 0.D, 0.2D, 0.8D, 0.5D, 0.8D);
 
-    public IncenseKindlingBox()
-    {
+    public IncenseKindlingBox() {
         super();
         this.setHardness(2.0F);
         this.isBlockContainer = true;
@@ -42,19 +40,16 @@ public class IncenseKindlingBox extends ModBlock implements ITileEntityProvider
     }
 
     // Rendering stuff
-    public boolean isVisuallyOpaque()
-    {
+    public boolean isVisuallyOpaque() {
         return false;
     }
 
-    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face)
-    {
+    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
         return false;
     }
 
     // Can only place on the tops of solid things
-    private boolean canPlaceOn(World worldIn, BlockPos pos)
-    {
+    private boolean canPlaceOn(World worldIn, BlockPos pos) {
         IBlockState state = worldIn.getBlockState(pos);
         return (state.getBlock().isBlockSolid(worldIn, pos, EnumFacing.UP)
                 || state.getBlock().canPlaceTorchOnTop(state, worldIn, pos))
@@ -67,25 +62,21 @@ public class IncenseKindlingBox extends ModBlock implements ITileEntityProvider
     }
 
     @Override
-    public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos)
-    {
+    public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos) {
         return this.canPlaceAt(worldIn, pos, EnumFacing.UP);
     }
 
-    private boolean canPlaceAt(World worldIn, BlockPos pos, EnumFacing facing)
-    {
+    private boolean canPlaceAt(World worldIn, BlockPos pos, EnumFacing facing) {
         BlockPos blockpos = pos.offset(facing.getOpposite());
         return this.canPlaceOn(worldIn, blockpos);
     }
 
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
-    {
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         this.checkForDrop(worldIn, pos, state);
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos p_189540_5_)
-    {
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos p_189540_5_) {
         this.checkForDrop(worldIn, pos, state);
     }
 
@@ -94,16 +85,11 @@ public class IncenseKindlingBox extends ModBlock implements ITileEntityProvider
         super.onNeighborChange(world, pos, neighbor);
     }
 
-    private boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state)
-    {
-        if (this.canPlaceAt(worldIn, pos, EnumFacing.UP))
-        {
+    private boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state) {
+        if (this.canPlaceAt(worldIn, pos, EnumFacing.UP)) {
             return true;
-        }
-        else
-        {
-            if (worldIn.getBlockState(pos).getBlock() == this)
-            {
+        } else {
+            if (worldIn.getBlockState(pos).getBlock() == this) {
                 this.dropBlockAsItem(worldIn, pos, state, 0);
                 worldIn.setBlockToAir(pos);
             }
@@ -115,15 +101,13 @@ public class IncenseKindlingBox extends ModBlock implements ITileEntityProvider
     // TE
     @Nonnull
     @Override
-    public TileEntity createNewTileEntity(@Nullable World worldIn, int meta)
-    {
+    public TileEntity createNewTileEntity(@Nullable World worldIn, int meta) {
         return new IncenseKindlingBoxTileEntity();
     }
 
     // Consumable block!
     @Override
-    public int quantityDropped(Random random)
-    {
+    public int quantityDropped(Random random) {
         return 0;
     }
 

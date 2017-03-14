@@ -2,7 +2,10 @@ package com.corwinjv.mobtotems.blocks.tiles.base;
 
 import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
 import com.corwinjv.mobtotems.interfaces.IMultiblock;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
@@ -24,8 +27,7 @@ public abstract class ModMultiblockInventoryTileEntity<T> extends ModInventoryTi
         tagCompound.setBoolean(IS_MASTER, isMaster);
 
         NBTTagList slaveList = new NBTTagList();
-        for(BlockPos slavePos : slaves)
-        {
+        for (BlockPos slavePos : slaves) {
             slaveList.appendTag(new NBTTagLong(slavePos.toLong()));
         }
         tagCompound.setTag(SLAVES, slaveList);
@@ -39,11 +41,9 @@ public abstract class ModMultiblockInventoryTileEntity<T> extends ModInventoryTi
 
         slaves.clear();
         NBTTagList tagList = tagCompound.getTagList(SLAVES, Constants.NBT.TAG_LONG);
-        for(int i = 0; i < tagList.tagCount(); i++)
-        {
+        for (int i = 0; i < tagList.tagCount(); i++) {
             NBTBase tag = tagList.get(i);
-            if(tag instanceof NBTTagLong)
-            {
+            if (tag instanceof NBTTagLong) {
                 BlockPos blockPos = BlockPos.fromLong(((NBTTagLong) tag).getLong());
                 slaves.add(blockPos);
             }
@@ -61,17 +61,15 @@ public abstract class ModMultiblockInventoryTileEntity<T> extends ModInventoryTi
         markDirty();
     }
 
-    public void setSlaves(List<BlockPos> slaves)
-    {
+    public void setSlaves(List<BlockPos> slaves) {
         this.slaves = slaves;
         markDirty();
     }
 
-    public void invalidateSlaves()
-    {
-        for(BlockPos slavePos : getSlaves()) {
+    public void invalidateSlaves() {
+        for (BlockPos slavePos : getSlaves()) {
             TileEntity te = world.getTileEntity(slavePos);
-            if(te != null
+            if (te != null
                     && te instanceof TotemTileEntity) {
                 ((TotemTileEntity) te).setMaster(null);
             }

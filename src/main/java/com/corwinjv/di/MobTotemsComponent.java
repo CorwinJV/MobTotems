@@ -4,10 +4,10 @@ import com.corwinjv.di.modules.MobTotemsModule;
 import com.corwinjv.mobtotems.MobTotems;
 import dagger.Component;
 
-@Component( modules = {
+@Component(modules = {
         MobTotemsModule.class
 }, dependencies = {
-    MinecraftComponent.class
+        MinecraftComponent.class
 })
 public interface MobTotemsComponent extends MinecraftComponent {
 

@@ -28,8 +28,7 @@ import java.util.function.Predicate;
 /**
  * Created by CorwinJV on 1/31/2016.
  */
-public class WolfTotemBauble extends BaubleItem
-{
+public class WolfTotemBauble extends BaubleItem {
     private static final String WOLF_ID = "WOLF_ID";
     private static final String WOLF_TOTEM_COMPOUND = "WOLF_TOTEM_COMPOUND";
     private static final int SPAWN_DISTANCE = 3;
@@ -37,14 +36,12 @@ public class WolfTotemBauble extends BaubleItem
 
     private static final int CHARGE_COST_PER_TICK = 1;
 
-    public WolfTotemBauble()
-    {
+    public WolfTotemBauble() {
         super();
     }
 
     @Override
-    public BaubleType getBaubleType(ItemStack itemStack)
-    {
+    public BaubleType getBaubleType(ItemStack itemStack) {
         return BaubleType.AMULET;
     }
 
@@ -54,19 +51,16 @@ public class WolfTotemBauble extends BaubleItem
     }
 
     @Override
-    public void onCreated(ItemStack stack, World world, EntityPlayer player)
-    {
+    public void onCreated(ItemStack stack, World world, EntityPlayer player) {
         super.onCreated(stack, world, player);
     }
 
     @Override
-    protected NBTTagCompound initNbtData(ItemStack stack)
-    {
+    protected NBTTagCompound initNbtData(ItemStack stack) {
         super.initNbtData(stack);
         NBTTagCompound tagCompound = stack.getTagCompound();
 
-        if(tagCompound == null)
-        {
+        if (tagCompound == null) {
             tagCompound = new NBTTagCompound();
         }
 
@@ -78,22 +72,18 @@ public class WolfTotemBauble extends BaubleItem
         return tagCompound;
     }
 
-    private boolean hasValidNbt(ItemStack stack)
-    {
+    private boolean hasValidNbt(ItemStack stack) {
         NBTTagCompound tagCompound = stack.getTagCompound();
-        if(tagCompound == null)
-        {
+        if (tagCompound == null) {
             FMLLog.log(Level.WARN, "WolfTotemBauble onBaubleActivated() no tagCompound");
             return false;
         }
         return true;
     }
 
-    private void setWolfId(@Nonnull ItemStack stack, @Nonnull String wolfId)
-    {
+    private void setWolfId(@Nonnull ItemStack stack, @Nonnull String wolfId) {
         NBTTagCompound tagCompound = stack.getTagCompound();
-        if(tagCompound == null)
-        {
+        if (tagCompound == null) {
             tagCompound = new NBTTagCompound();
         }
         NBTTagCompound wolfTotemCompound = tagCompound.getCompoundTag(WOLF_TOTEM_COMPOUND);
@@ -101,21 +91,17 @@ public class WolfTotemBauble extends BaubleItem
     }
 
     @Nullable
-    private EntitySpiritWolf getWolf(@Nonnull ItemStack stack, @Nonnull World world)
-    {
+    private EntitySpiritWolf getWolf(@Nonnull ItemStack stack, @Nonnull World world) {
         NBTTagCompound tagCompound = stack.getTagCompound();
-        if(tagCompound != null)
-        {
+        if (tagCompound != null) {
             NBTTagCompound wolfTotemCompound = tagCompound.getCompoundTag(WOLF_TOTEM_COMPOUND);
             String wolfId = wolfTotemCompound.getString(WOLF_ID);
-            if (!StringUtils.isNullOrEmpty(wolfId))
-            {
+            if (!StringUtils.isNullOrEmpty(wolfId)) {
                 final UUID wolfUUID = UUID.fromString(wolfId);
                 Predicate<EntitySpiritWolf> spiritWolfForUUID = input -> (input != null && input.getUniqueID().equals(wolfUUID));
 
                 List<EntitySpiritWolf> entities = new ArrayList<EntitySpiritWolf>(world.getEntities(EntitySpiritWolf.class, spiritWolfForUUID::test));
-                if(entities.size() > 0)
-                {
+                if (entities.size() > 0) {
                     return entities.get(0);
                 }
             }
@@ -124,12 +110,9 @@ public class WolfTotemBauble extends BaubleItem
     }
 
     @Override
-    public void onBaubleActivated(ItemStack stack, EntityPlayer player)
-    {
-        if(!player.world.isRemote)
-        {
-            if(!hasValidNbt(stack))
-            {
+    public void onBaubleActivated(ItemStack stack, EntityPlayer player) {
+        if (!player.world.isRemote) {
+            if (!hasValidNbt(stack)) {
                 return;
             }
 
@@ -137,9 +120,8 @@ public class WolfTotemBauble extends BaubleItem
             NBTTagCompound wolfTotemCompound = tagCompound.getCompoundTag(WOLF_TOTEM_COMPOUND);
 
             EntitySpiritWolf spiritWolf = getWolf(stack, player.world);
-            if(spiritWolf == null
-                    && tagCompound.getInteger(CHARGE_LEVEL) > 0)
-            {
+            if (spiritWolf == null
+                    && tagCompound.getInteger(CHARGE_LEVEL) > 0) {
                 //FMLLog.log(Level.INFO, "spiritWolf is null and charge is greater than zero");
                 Vec3i facingVec = player.getHorizontalFacing().getDirectionVec();
                 double posX = player.posX + (facingVec.getX() * SPAWN_DISTANCE);
@@ -147,17 +129,14 @@ public class WolfTotemBauble extends BaubleItem
                 double posZ = player.posZ + (facingVec.getZ() * SPAWN_DISTANCE);
 
                 // Check if spawn location is occupied by a solid block
-                BlockPos blockPos = new BlockPos((int)posX, (int)posY, (int)posZ);
-                if(!BlockUtils.isAreaSolid(player, blockPos))
-                {
+                BlockPos blockPos = new BlockPos((int) posX, (int) posY, (int) posZ);
+                if (!BlockUtils.isAreaSolid(player, blockPos)) {
                     spiritWolf = spawnSpiritWolf(player.world, posX, posY, posZ);
                     spiritWolf.tame(player);
 
                     wolfTotemCompound.setString(WOLF_ID, spiritWolf.getPersistentID().toString());
                 }
-            }
-            else if(spiritWolf != null)
-            {
+            } else if (spiritWolf != null) {
                 //FMLLog.log(Level.INFO, "spiritWolf ain't dead. Killing and saving now.");
                 spiritWolf.setDead();
                 wolfTotemCompound.setString(WOLF_ID, "");
@@ -167,44 +146,38 @@ public class WolfTotemBauble extends BaubleItem
     }
 
     // Spirit Wolf Spawning
-    private EntitySpiritWolf spawnSpiritWolf(World worldIn, double x, double y, double z)
-    {
+    private EntitySpiritWolf spawnSpiritWolf(World worldIn, double x, double y, double z) {
         EntityLiving entityliving = new EntitySpiritWolf(worldIn);
         entityliving.setLocationAndAngles(x, y, z, MathHelper.wrapDegrees(worldIn.rand.nextFloat() * 360.0F), 0.0F);
         entityliving.rotationYawHead = entityliving.rotationYaw;
         entityliving.renderYawOffset = entityliving.rotationYaw;
-        entityliving.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(entityliving)), (IEntityLivingData)null);
+        entityliving.onInitialSpawn(worldIn.getDifficultyForLocation(new BlockPos(entityliving)), (IEntityLivingData) null);
         worldIn.spawnEntity(entityliving);
         entityliving.playLivingSound();
 
-        return (EntitySpiritWolf)entityliving;
+        return (EntitySpiritWolf) entityliving;
     }
 
 
     /**
      * This method is called once per tick if the bauble is being worn by a player
      */
-    public void onWornTick(ItemStack stack, EntityLivingBase player)
-    {
+    public void onWornTick(ItemStack stack, EntityLivingBase player) {
         super.onWornTick(stack, player);
         World world = player.getEntityWorld();
-        if(!world.isRemote)
-        {
+        if (!world.isRemote) {
             long worldTime = world.getWorldInfo().getWorldTime();
             EntitySpiritWolf spiritWolf = getWolf(stack, world);
 
-            if(worldTime % UPDATE_TICKS == 0)
-            {
-                if(spiritWolf != null)
-                {
+            if (worldTime % UPDATE_TICKS == 0) {
+                if (spiritWolf != null) {
                     decrementChargeLevel(stack, CHARGE_COST_PER_TICK);
                 }
             }
 
             // Should wolf still be summoned? This should happen every tick
-            if(spiritWolf != null
-                    && getChargeLevel(stack) == 0)
-            {
+            if (spiritWolf != null
+                    && getChargeLevel(stack) == 0) {
                 spiritWolf.setDead();
                 setWolfId(stack, "");
             }
@@ -214,13 +187,10 @@ public class WolfTotemBauble extends BaubleItem
     /**
      * This method is called when the bauble is unequipped by a player
      */
-    public void onUnequipped(ItemStack stack, EntityLivingBase player)
-    {
-        if(!player.getEntityWorld().isRemote)
-        {
+    public void onUnequipped(ItemStack stack, EntityLivingBase player) {
+        if (!player.getEntityWorld().isRemote) {
             EntitySpiritWolf spiritWolf = getWolf(stack, player.getEntityWorld());
-            if(spiritWolf != null)
-            {
+            if (spiritWolf != null) {
                 spiritWolf.setDead();
             }
             setWolfId(stack, "");

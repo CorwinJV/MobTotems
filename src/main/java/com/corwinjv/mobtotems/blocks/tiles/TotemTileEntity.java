@@ -3,25 +3,18 @@ package com.corwinjv.mobtotems.blocks.tiles;
 import com.corwinjv.mobtotems.blocks.TotemType;
 import com.corwinjv.mobtotems.blocks.TotemWoodBlock;
 import com.corwinjv.mobtotems.blocks.tiles.base.ModMultiblockTileEntity;
-import com.corwinjv.mobtotems.interfaces.IMultiblock;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by CorwinJV on 2/18/2016.
  */
-public class TotemTileEntity extends ModMultiblockTileEntity<TotemType>
-{
+public class TotemTileEntity extends ModMultiblockTileEntity<TotemType> {
     private static final String TOTEM_TYPE = "totem_type";
     private TotemType type = TotemType.NONE;
 
@@ -50,7 +43,7 @@ public class TotemTileEntity extends ModMultiblockTileEntity<TotemType>
 
     @Override
     public boolean shouldRefresh(World world, BlockPos pos, @Nonnull IBlockState oldState, @Nonnull IBlockState newState) {
-        if(newState.getProperties().containsKey(TotemWoodBlock.TOTEM_TYPE)) {
+        if (newState.getProperties().containsKey(TotemWoodBlock.TOTEM_TYPE)) {
             return !newState.getValue(TotemWoodBlock.TOTEM_TYPE).equals(oldState.getValue(TotemWoodBlock.TOTEM_TYPE));
         }
         return (oldState.getBlock() != newState.getBlock());

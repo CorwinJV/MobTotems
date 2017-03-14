@@ -15,8 +15,7 @@ import org.lwjgl.input.Keyboard;
 /**
  * Created by CorwinJV on 1/31/2016.
  */
-public class KeyBindings
-{
+public class KeyBindings {
 
     public static final int ACTIVATE_BAUBLE_KEY = 0;
 
@@ -24,25 +23,19 @@ public class KeyBindings
 
     public static boolean ACTIVATE_BAUBLE_KEY_PRESSED = false;
 
-    public KeyBindings()
-    {
+    public KeyBindings() {
         keys[ACTIVATE_BAUBLE_KEY] = new KeyBinding("key.mobtotems.activateBaubleDescription", Keyboard.KEY_H, "key.mobtotems.category");
         ClientRegistry.registerKeyBinding(keys[ACTIVATE_BAUBLE_KEY]);
     }
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
-    public void onKeyInput(InputEvent.KeyInputEvent event)
-    {
-        if(!FMLClientHandler.instance().isGUIOpen(GuiChat.class))
-        {
-            if(keys[ACTIVATE_BAUBLE_KEY].isKeyDown() && !ACTIVATE_BAUBLE_KEY_PRESSED)
-            {
+    public void onKeyInput(InputEvent.KeyInputEvent event) {
+        if (!FMLClientHandler.instance().isGUIOpen(GuiChat.class)) {
+            if (keys[ACTIVATE_BAUBLE_KEY].isKeyDown() && !ACTIVATE_BAUBLE_KEY_PRESSED) {
                 Network.sendToServer(new ActivateBaubleMessage());
                 ACTIVATE_BAUBLE_KEY_PRESSED = true;
-            }
-            else if(!keys[ACTIVATE_BAUBLE_KEY].isKeyDown() && ACTIVATE_BAUBLE_KEY_PRESSED)
-            {
+            } else if (!keys[ACTIVATE_BAUBLE_KEY].isKeyDown() && ACTIVATE_BAUBLE_KEY_PRESSED) {
                 ACTIVATE_BAUBLE_KEY_PRESSED = false;
             }
         }

@@ -86,7 +86,7 @@ public class MobTotemsGuideBook implements IGuideBook {
         // Sacred Light Entry
         pages = new ArrayList<>();
         pages.add(new PageText(util.getLocalizedGuideText("sacred_light_page_1")));
-        if(ConfigurationHandler.hardSacredLightRecipe) {
+        if (ConfigurationHandler.hardSacredLightRecipe) {
             pages.add(new PageIRecipe(new ShapedOreRecipe(ModBlocks.SACRED_LIGHT,
                     "GRG",
                     "XNX",
@@ -116,7 +116,7 @@ public class MobTotemsGuideBook implements IGuideBook {
         // =====================================
         // Totem Types Category
         entries = new LinkedHashMap<>();
-        for(int i = 1; i < TotemType.values().length; i++) {
+        for (int i = 1; i < TotemType.values().length; i++) {
             pages = new ArrayList<>();
             pages.add(new PageText(util.getLocalizedGuideText("totem_types_page_" + i)));
             // TODO: add cost

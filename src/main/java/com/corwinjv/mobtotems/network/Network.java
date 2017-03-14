@@ -13,8 +13,7 @@ public class Network {
     private static SimpleNetworkWrapper instance = null;
     private static int DISCRIMINATOR_ID = 0;
 
-    public static void init()
-    {
+    public static void init() {
         instance = NetworkRegistry.INSTANCE.newSimpleChannel(Reference.MOD_ID);
 
         instance.registerMessage(ActivateBaubleMessage.class, ActivateBaubleMessage.class, getDiscriminatorId(), Side.SERVER);
@@ -24,20 +23,19 @@ public class Network {
         instance.registerMessage(OpenKnifeGuiMessage.class, OpenKnifeGuiMessage.class, getDiscriminatorId(), Side.CLIENT);
     }
 
-    private static int getDiscriminatorId()
-    {
+    private static int getDiscriminatorId() {
         return DISCRIMINATOR_ID++;
     }
 
-    public static void sendToServer(Message message)
-    {
+    public static void sendToServer(Message message) {
         instance.sendToServer(message);
     }
 
-    public static void sendToAll(Message message)
-    {
+    public static void sendToAll(Message message) {
         instance.sendToAll(message);
     }
 
-    public static void sendTo(Message message, EntityPlayerMP player) { instance.sendTo(message, player); }
+    public static void sendTo(Message message, EntityPlayerMP player) {
+        instance.sendTo(message, player);
+    }
 }

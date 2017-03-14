@@ -19,26 +19,21 @@ import java.util.List;
  * Created by CorwinJV on 1/31/2016.
  */
 @Optional.Interface(modid = "baubles", iface = "baubles.api.IBauble")
-public class BaubleItem extends ModItem implements IBauble, IChargeable
-{
+public class BaubleItem extends ModItem implements IBauble, IChargeable {
     protected static final String CHARGE_LEVEL = "CHARGE_LEVEL";
 
-    public BaubleItem()
-    {
+    public BaubleItem() {
         super();
     }
 
     @Override
-    public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn)
-    {
+    public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
         initNbtData(stack);
     }
 
-    protected NBTTagCompound initNbtData(ItemStack stack)
-    {
+    protected NBTTagCompound initNbtData(ItemStack stack) {
         NBTTagCompound nbtTagCompound = stack.getTagCompound();
-        if(nbtTagCompound == null)
-        {
+        if (nbtTagCompound == null) {
             nbtTagCompound = new NBTTagCompound();
         }
         nbtTagCompound.setInteger(CHARGE_LEVEL, 0);
@@ -49,34 +44,28 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
 
     @SuppressWarnings("all")
     @Override
-    public int getChargeLevel(ItemStack stack)
-    {
+    public int getChargeLevel(ItemStack stack) {
         NBTTagCompound tagCompound = stack.getTagCompound();
-        if(tagCompound == null)
-        {
+        if (tagCompound == null) {
             tagCompound = initNbtData(stack);
         }
         return tagCompound.getInteger(CHARGE_LEVEL);
     }
 
     @Override
-    public void setChargeLevel(ItemStack stack, int chargeLevel)
-    {
+    public void setChargeLevel(ItemStack stack, int chargeLevel) {
         NBTTagCompound tagCompound = stack.getTagCompound();
-        if(tagCompound == null)
-        {
+        if (tagCompound == null) {
             tagCompound = initNbtData(stack);
         }
         tagCompound.setInteger(CHARGE_LEVEL, chargeLevel);
     }
 
     @Override
-    public void decrementChargeLevel(ItemStack stack, int amount)
-    {
+    public void decrementChargeLevel(ItemStack stack, int amount) {
         int chargeLevel = getChargeLevel(stack);
         chargeLevel -= amount;
-        if(chargeLevel < 0)
-        {
+        if (chargeLevel < 0) {
             chargeLevel = 0;
         }
 
@@ -84,12 +73,10 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
     }
 
     @Override
-    public void incrementChargeLevel(ItemStack stack, int amount)
-    {
+    public void incrementChargeLevel(ItemStack stack, int amount) {
         int chargeLevel = getChargeLevel(stack);
         chargeLevel += amount;
-        if(chargeLevel > getMaxChargeLevel())
-        {
+        if (chargeLevel > getMaxChargeLevel()) {
             chargeLevel = getMaxChargeLevel();
         }
         setChargeLevel(stack, chargeLevel);
@@ -100,14 +87,12 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable
         return 16;
     }
 
-    public void onBaubleActivated(ItemStack stack, EntityPlayer player)
-    {
+    public void onBaubleActivated(ItemStack stack, EntityPlayer player) {
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced)
-    {
+    public void addInformation(ItemStack stack, EntityPlayer playerIn, List<String> tooltip, boolean advanced) {
         super.addInformation(stack, playerIn, tooltip, advanced);
     }
 

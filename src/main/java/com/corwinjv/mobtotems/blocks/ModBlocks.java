@@ -27,8 +27,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
  */
 
 @Mod.EventBusSubscriber
-public class ModBlocks
-{
+public class ModBlocks {
     public static final String TOTEM_WOOD_NAME = "totem_wood";
     public static final String SACRED_LIGHT_NAME = "sacred_light";
     public static final String INCENSE_KINDLING_BOX_NAME = "incense_kindling_box";
@@ -39,8 +38,7 @@ public class ModBlocks
     public static final Block INCENSE_KINDLING_BOX = new IncenseKindlingBox().setUnlocalizedName(INCENSE_KINDLING_BOX_NAME);
     public static final Block OFFERING_BOX = new OfferingBox().setUnlocalizedName(OFFERING_BOX_NAME);
 
-    public static void init()
-    {
+    public static void init() {
         GameRegistry.registerTileEntity(TotemTileEntity.class, TOTEM_WOOD_NAME);
         GameRegistry.registerTileEntity(SacredLightTileEntity.class, SACRED_LIGHT_NAME);
         GameRegistry.registerTileEntity(IncenseKindlingBoxTileEntity.class, INCENSE_KINDLING_BOX_NAME);
@@ -48,9 +46,8 @@ public class ModBlocks
     }
 
     @SubscribeEvent
-    public static void registerBlocks(RegistryEvent.Register<Block> e)
-    {
-        GameRegistry.register(TOTEM_WOOD.setRegistryName(new ResourceLocation(Reference.MOD_ID,  TOTEM_WOOD_NAME)));
+    public static void registerBlocks(RegistryEvent.Register<Block> e) {
+        GameRegistry.register(TOTEM_WOOD.setRegistryName(new ResourceLocation(Reference.MOD_ID, TOTEM_WOOD_NAME)));
         GameRegistry.register(new TotemWoodItemBlock(TOTEM_WOOD), TOTEM_WOOD.getRegistryName());
 
         GameRegistry.register(SACRED_LIGHT.setRegistryName(new ResourceLocation(Reference.MOD_ID, SACRED_LIGHT_NAME)));
@@ -65,10 +62,8 @@ public class ModBlocks
 
 
     @SubscribeEvent
-    public static void registerRenders(ModelRegistryEvent e)
-    {
-        for(int i = 0; i < TotemType.values().length; i++)
-        {
+    public static void registerRenders(ModelRegistryEvent e) {
+        for (int i = 0; i < TotemType.values().length; i++) {
             Item item = Item.getItemFromBlock(TOTEM_WOOD);
             ModelResourceLocation modelResourceLocation = new ModelResourceLocation(Reference.RESOURCE_PREFIX + TOTEM_WOOD_NAME, "totem_type=" + TotemType.fromMeta(i).getName());
             ModelLoader.setCustomModelResourceLocation(item, i, modelResourceLocation);
@@ -86,7 +81,7 @@ public class ModBlocks
 
     public static void registerRecipes() {
         Block item = SACRED_LIGHT;
-        if(ConfigurationHandler.hardSacredLightRecipe) {
+        if (ConfigurationHandler.hardSacredLightRecipe) {
             GameRegistry.addRecipe(new ItemStack(item, 1),
                     "GRG",
                     "XNX",

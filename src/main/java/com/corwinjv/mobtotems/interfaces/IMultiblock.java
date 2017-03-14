@@ -13,15 +13,24 @@ public interface IMultiblock<T> {
     String MASTER_POS = "masterPos";
 
     boolean getIsMaster();
+
     void setIsMaster(boolean isMaster);
+
     void verifyMultiblock();
+
     void setSlaves(List<BlockPos> slaves);
+
     void invalidateSlaves();
+
     List<BlockPos> getSlaves();
+
     List<T> getSlaveTypes();
+
     T getType();
+
     void setType(T type);
 
     void setMaster(IMultiblock<T> master);
+
     IMultiblock<T> getMaster();
 }

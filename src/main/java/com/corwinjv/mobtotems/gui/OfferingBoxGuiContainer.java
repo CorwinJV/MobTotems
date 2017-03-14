@@ -30,17 +30,13 @@ public class OfferingBoxGuiContainer extends GuiContainer {
     public OfferingBoxGuiContainer(InventoryPlayer inventoryPlayer, IInventory inventory) {
         super(new OfferingBoxContainer(inventoryPlayer, inventory));
         this.inventory = inventory;
-        if(inventory instanceof IChargeableTileEntity)
-        {
-            chargeableTileEntity = (IChargeableTileEntity)inventory;
+        if (inventory instanceof IChargeableTileEntity) {
+            chargeableTileEntity = (IChargeableTileEntity) inventory;
         }
-        if(inventory instanceof IMultiblock)
-        {
+        if (inventory instanceof IMultiblock) {
             try {
-                this.multiblockTileEntity = (IMultiblock<TotemType>)inventory;
-            }
-            catch(Exception e)
-            {
+                this.multiblockTileEntity = (IMultiblock<TotemType>) inventory;
+            } catch (Exception e) {
                 FMLLog.log(Level.ERROR, "OfferingBoxGuiContainer error in instantiation - unknown multiblock");
                 e.printStackTrace();
             }
@@ -66,10 +62,9 @@ public class OfferingBoxGuiContainer extends GuiContainer {
         super.drawGuiContainerForegroundLayer(mouseX, mouseY);
 
         // Display charge level
-        if(chargeableTileEntity != null)
-        {
+        if (chargeableTileEntity != null) {
             int chargeLevel = inventory.getField(0);
-            float chargeRatio = (float)(chargeLevel) / chargeableTileEntity.getMaxChargeLevel();
+            float chargeRatio = (float) (chargeLevel) / chargeableTileEntity.getMaxChargeLevel();
 
             //FMLLog.log(Level.ERROR, "chargeLevel: " + chargeLevel + " chargeRatio: " + chargeRatio);
 
@@ -78,7 +73,7 @@ public class OfferingBoxGuiContainer extends GuiContainer {
             int chargeWidth = 8;
 
             // Bar
-            drawRect(chargeLeft, chargeBottom - (int)(50*chargeRatio), chargeLeft + chargeWidth, chargeBottom, Reference.CHARGE_COLOR);
+            drawRect(chargeLeft, chargeBottom - (int) (50 * chargeRatio), chargeLeft + chargeWidth, chargeBottom, Reference.CHARGE_COLOR);
 
             // Charge text
             GlStateManager.pushMatrix();
@@ -90,12 +85,10 @@ public class OfferingBoxGuiContainer extends GuiContainer {
         }
 
         // Display totem composition
-        if(multiblockTileEntity != null)
-        {
+        if (multiblockTileEntity != null) {
             // Make sure the client TE is syncd?
             multiblockTileEntity.verifyMultiblock();
-            if(multiblockTileEntity.getIsMaster())
-            {
+            if (multiblockTileEntity.getIsMaster()) {
                 int totemTextTop = 20;
                 String text = I18n.translateToLocalFormatted(Reference.RESOURCE_PREFIX + "gui.offering_box.totems");
                 GlStateManager.pushMatrix();
@@ -105,22 +98,17 @@ public class OfferingBoxGuiContainer extends GuiContainer {
                 List<BlockPos> slaves = multiblockTileEntity.getSlaves();
                 int lines = 0;
 
-                for(int i = slaves.size()-1; i >= 0; i--)
-                {
+                for (int i = slaves.size() - 1; i >= 0; i--) {
                     BlockPos slavePos = slaves.get(i);
                     TileEntity slaveTe = MobTotems.component().minecraft().world.getTileEntity(slavePos);
-                    if(slaveTe instanceof TotemTileEntity)
-                    {
+                    if (slaveTe instanceof TotemTileEntity) {
                         String text2 = "";
-                        if(((TotemTileEntity) slaveTe).getType() == TotemType.NONE)
-                        {
+                        if (((TotemTileEntity) slaveTe).getType() == TotemType.NONE) {
                             text2 = I18n.translateToLocalFormatted("tiles.mobtotems:totem_wood." + ((TotemTileEntity) slaveTe).getType().getName() + ".shortname");
-                        }
-                        else
-                        {
+                        } else {
                             text2 = I18n.translateToLocalFormatted("tiles.mobtotems:totem_wood." + ((TotemTileEntity) slaveTe).getType().getName() + ".name");
                         }
-                        fontRendererObj.drawStringWithShadow(text2, 0, ((lines + 1)* 10) + totemTextTop, 0xffffff);
+                        fontRendererObj.drawStringWithShadow(text2, 0, ((lines + 1) * 10) + totemTextTop, 0xffffff);
                         lines++;
                     }
                 }

@@ -15,29 +15,24 @@ public class ActivateKnifeMessage extends Message<ActivateKnifeMessage> {
     @Override
     protected void handleServer(ActivateKnifeMessage message, EntityPlayerMP player) {
         ItemStack stack = player.getHeldItem(message.hand);
-        if(stack.getItem() instanceof CarvingKnife)
-        {
-            ((CarvingKnife)stack.getItem()).onKnifeActivated(player, message.hand);
+        if (stack.getItem() instanceof CarvingKnife) {
+            ((CarvingKnife) stack.getItem()).onKnifeActivated(player, message.hand);
         }
     }
 
-    public ActivateKnifeMessage setHand(EnumHand hand)
-    {
+    public ActivateKnifeMessage setHand(EnumHand hand) {
         this.hand = hand;
         return this;
     }
 
     @Override
     public void toBytes(ByteBuf buf) {
-        switch(hand)
-        {
-            case MAIN_HAND:
-            {
+        switch (hand) {
+            case MAIN_HAND: {
                 buf.writeInt(0);
                 break;
             }
-            case OFF_HAND:
-            {
+            case OFF_HAND: {
                 buf.writeInt(1);
                 break;
             }
@@ -47,15 +42,12 @@ public class ActivateKnifeMessage extends Message<ActivateKnifeMessage> {
     @Override
     public void fromBytes(ByteBuf buf) {
         int handInt = buf.readInt();
-        switch(handInt)
-        {
-            case 0:
-            {
+        switch (handInt) {
+            case 0: {
                 hand = EnumHand.MAIN_HAND;
                 break;
             }
-            case 1:
-            {
+            case 1: {
                 hand = EnumHand.OFF_HAND;
                 break;
             }
