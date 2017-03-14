@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
@@ -30,7 +29,6 @@ import static org.mockito.Mockito.when;
  */
 @RunWith(MockitoJUnitRunner.class)
 public class BlazeLogicTest {
-
     BlazeLogic blazeLogic = null;
 
     @Mock
@@ -40,7 +38,7 @@ public class BlazeLogicTest {
     @Mock
     Modifiers modifiers;
 
-    // Hack to get around isImmuneToFire being final
+    // Hack to get around isImmuneToFire() (a minecraft method) being final
     class TestEntityMob extends EntityMob {
         public TestEntityMob(World worldIn) {
             super(worldIn);
@@ -73,12 +71,10 @@ public class BlazeLogicTest {
 
     @After
     public void tearDown() throws Exception {
-
     }
 
     @Test
     public void getCost() throws Exception {
-
     }
 
     @Test
