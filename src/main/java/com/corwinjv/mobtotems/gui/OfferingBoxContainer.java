@@ -74,15 +74,10 @@ public class OfferingBoxContainer extends Container {
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
 
-        for (int i = 0; i < this.listeners.size(); ++i) {
-            IContainerListener icontainerlistener = this.listeners.get(i);
-
-            TileEntity te = MobTotems.component().minecraftServer().getEntityWorld().getTileEntity(offeringBoxPos);
-            if (te instanceof OfferingBoxTileEntity) {
-                if (this.chargeLevel != inventory.getField(0)) {
-                    icontainerlistener.sendProgressBarUpdate(this, 0, inventory.getField(0));
-                    this.chargeLevel = inventory.getField(0);
-                }
+        for (IContainerListener icontainerlistener : this.listeners) {
+            if (this.chargeLevel != inventory.getField(0)) {
+                icontainerlistener.sendProgressBarUpdate(this, 0, inventory.getField(0));
+                this.chargeLevel = inventory.getField(0);
             }
         }
     }
