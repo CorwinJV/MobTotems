@@ -2,6 +2,8 @@
 out/
 build/
 run/
+classes/
+.idea/
 eclipse/
 javadoc/
 gradle/
@@ -15,3 +17,5 @@ Art Source/
 Release/
 Reference/
 backup_mods/
+logs/
+config/

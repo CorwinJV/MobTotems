@@ -3,8 +3,8 @@ package com.corwinjv.mobtotems;
  * Created by corwinjv on 8/30/14.
  */
 
+import com.corwinjv.di.MobTotemsComponent;
 import com.corwinjv.mobtotems.blocks.ModBlocks;
-import com.corwinjv.mobtotems.blocks.SacredLightBlock;
 import com.corwinjv.mobtotems.blocks.tiles.TotemLogic.CowLogic;
 import com.corwinjv.mobtotems.blocks.tiles.TotemLogic.CreeperLogic;
 import com.corwinjv.mobtotems.blocks.tiles.TotemLogic.EnderLogic;
@@ -33,12 +33,17 @@ public class MobTotems
     @SidedProxy(clientSide = Reference.CLIENT_SIDE_PROXY_CLASS, serverSide = Reference.SERVER_SIDE_PROXY_CLASS)
     public static CommonProxy proxy;
 
+    private static MobTotemsComponent mobTotemsComponent;
+
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
+        //Dagger 2 implementation
+        mobTotemsComponent = proxy.initializeDagger(instance);
+
         // Network & Messages
         Network.init();
-        NetworkRegistry.INSTANCE.registerGuiHandler(MobTotems.instance, new OfferingBoxGuiHandler());
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new OfferingBoxGuiHandler());
 
         // Config
         ConfigurationHandler.Init(event.getSuggestedConfigurationFile());
@@ -66,6 +71,10 @@ public class MobTotems
 
         // Keybinds
         proxy.registerKeys();
+    }
+
+    public static MobTotemsComponent component() {
+        return mobTotemsComponent;
     }
 
     @Mod.EventHandler

@@ -7,10 +7,10 @@ import amerifrance.guideapi.api.impl.abstraction.EntryAbstract;
 import amerifrance.guideapi.api.util.GuiHelper;
 import amerifrance.guideapi.gui.GuiBase;
 import amerifrance.guideapi.gui.GuiEntry;
+import com.corwinjv.mobtotems.MobTotems;
 import com.corwinjv.mobtotems.TotemHelper;
 import com.corwinjv.mobtotems.blocks.TotemType;
 import com.corwinjv.mobtotems.gui.util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -38,7 +38,7 @@ public class PageOfferingBoxCost implements IPage {
     @Override
     public void draw(Book book, CategoryAbstract category, EntryAbstract entry, int guiLeft, int guiTop, int mouseX, int mouseY, GuiBase guiBase, FontRenderer fontRendererObj) {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        Minecraft.getMinecraft().getTextureManager().bindTexture(util.getGuiResourceLocation("offering_box_cost_gui.png"));
+        MobTotems.component().textureManager().bindTexture(util.getGuiResourceLocation("offering_box_cost_gui.png"));
         guiBase.drawTexturedModalRect(guiLeft, guiTop, 0, 0, 176, 166);
 
         fontRendererObj.drawString(util.getLocalizedGuideText("cost_label"), guiLeft + 85, guiTop + 85, 0);

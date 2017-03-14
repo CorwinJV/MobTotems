@@ -1,7 +1,7 @@
 package com.corwinjv.mobtotems.particles;
 
+import com.corwinjv.mobtotems.MobTotems;
 import com.corwinjv.mobtotems.Reference;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -90,7 +90,7 @@ public class WolfIdleParticle extends Particle
     static void RenderQueuedRenders(Tessellator tessellator)
     {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 0.75F);
-        Minecraft.getMinecraft().renderEngine.bindTexture(PARTICLE_TEXTURES);
+        MobTotems.component().minecraft().renderEngine.bindTexture(PARTICLE_TEXTURES);
 
         tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
         for(WolfIdleParticle particle : queuedRenders)
