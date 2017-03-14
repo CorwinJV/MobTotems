@@ -52,6 +52,7 @@ minecraft {
 }
 
 repositories {
+        jcenter()
 		maven { url 'http://tehnut.info/maven/' }
 }
 
@@ -81,12 +82,15 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
+    // Unit Testing
+    testCompile "org.mockito:mockito-core:2.7.17"
+    testCompile "junit:junit:4.12"
+
     //Dagger 2
     compile "com.google.dagger:dagger:2.8"
     testCompile "com.google.dagger:dagger:2.8"
     apt "com.google.dagger:dagger-compiler:2.8"
     testApt "com.google.dagger:dagger-compiler:2.8"
-
 }
 
 processResources
