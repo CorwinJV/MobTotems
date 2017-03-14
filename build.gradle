@@ -29,6 +29,17 @@ apply plugin: 'java'
 //https://docs.gradle.org/current/userguide/idea_plugin.html
 apply plugin: 'idea'
 
+apply plugin: "jacoco"
+
+jacocoTestReport {
+    group = "Reporting"
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.destination "${buildDir}/reports/coverage"
+    }
+}
+
 version = "1.11.2-0.3.0"
 group= "com.corwinjv.mobtotems" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "mobtotems"
