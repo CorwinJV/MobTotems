@@ -85,7 +85,7 @@ public class TotemHelper {
         }
     }
 
-    public static boolean hasTotemType(World world, OfferingBoxTileEntity tileEntity, TotemType totemType) {
+    public static boolean hasTotemType(OfferingBoxTileEntity tileEntity, TotemType totemType) {
         for (TotemType type : tileEntity.getSlaveTypes()) {
             if (type == totemType) {
                 return true;

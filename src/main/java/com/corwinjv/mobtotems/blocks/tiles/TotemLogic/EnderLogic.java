@@ -47,7 +47,7 @@ public class EnderLogic extends TotemLogic {
                 for (TileEntity tileEntity : loadedTileEntityList) {
                     if (tileEntity instanceof OfferingBoxTileEntity) {
                         if (((OfferingBoxTileEntity) tileEntity).getChargeLevel() > 0) {
-                            if (TotemHelper.hasTotemType(world, (OfferingBoxTileEntity) tileEntity, TotemType.ENDER)) {
+                            if (TotemHelper.hasTotemType((OfferingBoxTileEntity) tileEntity, TotemType.ENDER)) {
                                 Modifiers modifiers = TotemHelper.getModifiers(world, (OfferingBoxTileEntity) tileEntity);
                                 int radius = DEFAULT_RADIUS + (int) (RANGE_BOOST * modifiers.range);
 

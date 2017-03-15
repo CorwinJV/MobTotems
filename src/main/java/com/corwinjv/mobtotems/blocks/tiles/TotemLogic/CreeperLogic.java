@@ -44,7 +44,7 @@ public class CreeperLogic extends TotemLogic {
                 for (TileEntity tileEntity : loadedTileEntityList) {
                     if (tileEntity instanceof OfferingBoxTileEntity) {
                         if (((OfferingBoxTileEntity) tileEntity).getChargeLevel() > 0) {
-                            if (TotemHelper.hasTotemType(e.getWorld(), (OfferingBoxTileEntity) tileEntity, TotemType.CREEPER)) {
+                            if (TotemHelper.hasTotemType((OfferingBoxTileEntity) tileEntity, TotemType.CREEPER)) {
                                 Modifiers mods = TotemHelper.getModifiers(e.getWorld(), (OfferingBoxTileEntity) tileEntity);
                                 int radius = TotemHelper.DEFAULT_RADIUS + (int) (TotemHelper.RANGE_BOOST * mods.range);
                                 if (!canSpawnMobHere(tileEntity.getPos(), e.getEntity(), radius)) {

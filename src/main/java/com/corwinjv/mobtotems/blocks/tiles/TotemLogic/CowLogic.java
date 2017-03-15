@@ -42,7 +42,7 @@ public class CowLogic extends TotemLogic {
                 for (TileEntity tileEntity : loadedTileEntityList) {
                     if (tileEntity instanceof OfferingBoxTileEntity) {
                         if (((OfferingBoxTileEntity) tileEntity).getChargeLevel() > 0) {
-                            if (TotemHelper.hasTotemType(e.getWorld(), (OfferingBoxTileEntity) tileEntity, TotemType.COW)) {
+                            if (TotemHelper.hasTotemType((OfferingBoxTileEntity) tileEntity, TotemType.COW)) {
                                 Modifiers mods = TotemHelper.getModifiers(e.getWorld(), (OfferingBoxTileEntity) tileEntity);
                                 int radius = TotemHelper.DEFAULT_RADIUS + (int) (TotemHelper.RANGE_BOOST * mods.range);
 
