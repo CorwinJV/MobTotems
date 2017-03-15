@@ -11,7 +11,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 
 import java.util.ArrayList;
@@ -27,10 +29,11 @@ import static org.mockito.Mockito.when;
 /**
  * Created by CorwinJV on 3/14/2017.
  */
-@RunWith(MockitoJUnitRunner.class)
+@PowerMockIgnore("javax.management.*")
+@PrepareForTest({BlazeLogic.class, Modifiers.class, World.class, BlockPos.class})
+@RunWith(PowerMockRunner.class)
 public class BlazeLogicTest {
     BlazeLogic blazeLogic = null;
-
     @Mock
     World world;
     @Mock
@@ -75,6 +78,7 @@ public class BlazeLogicTest {
 
     @Test
     public void getCost() throws Exception {
+        
     }
 
     @Test
