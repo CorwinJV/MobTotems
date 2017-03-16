@@ -29,23 +29,6 @@ apply plugin: 'java'
 //https://docs.gradle.org/current/userguide/idea_plugin.html
 apply plugin: 'idea'
 
-apply plugin: "jacoco"
-
-jacocoTestReport {
-    group = "Reporting"
-    reports {
-        xml.enabled true
-        csv.enabled false
-        html.destination "${buildDir}/reports/coverage"
-    }
-
-    afterEvaluate {
-        classDirectories = files(classDirectories.files.collect {
-            fileTree(dir: it, exclude: 'baubles/api/**')
-        })
-    }
-}
-
 version = "1.11.2-0.3.0"
 group= "com.corwinjv.mobtotems" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "mobtotems"
@@ -68,8 +51,15 @@ minecraft {
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
+// Jacoco offline instrumentation to cover PowerMock classes
+configurations {
+    jacoco
+    jacocoRuntime
+}
+
 repositories {
         jcenter()
+        mavenCentral()
 		maven { url 'http://tehnut.info/maven/' }
 }
 
@@ -111,6 +101,10 @@ dependencies {
     testCompile "com.google.dagger:dagger:2.8"
     apt "com.google.dagger:dagger-compiler:2.8"
     testApt "com.google.dagger:dagger-compiler:2.8"
+
+    // offline jacoco
+    jacoco group: 'org.jacoco', name: 'org.jacoco.ant', version: '0.7.9', classifier: 'nodeps'
+    jacocoRuntime group: 'org.jacoco', name: 'org.jacoco.agent', version: '0.7.9', classifier: 'runtime'
 }
 
 processResources
@@ -132,3 +126,50 @@ processResources
         exclude 'mcmod.info'
     }
 }
+
+// offline jacoco (Yes we're using ant...)
+task instrument(dependsOn: ['classes']) {
+    ext.outputDir = buildDir.path + '/classes-instrumented'
+    doLast {
+        ant.taskdef(name: 'instrument',
+                classname: 'org.jacoco.ant.InstrumentTask',
+                classpath: configurations.jacoco.asPath)
+        ant.instrument(destdir: outputDir) {
+            fileset(dir: sourceSets.main.output.classesDir)
+        }
+    }
+}
+
+gradle.taskGraph.whenReady { graph ->
+    if (graph.hasTask(instrument)) {
+        tasks.withType(Test) {
+            doFirst {
+                systemProperty 'jacoco-agent.destfile', buildDir.path + '/jacoco/tests.exec'
+                classpath = files(instrument.outputDir) + classpath + configurations.jacocoRuntime
+            }
+        }
+    }
+}
+
+task report(dependsOn: ['instrument', 'test']) {
+    doLast {
+        ant.taskdef(name: 'report',
+                classname: 'org.jacoco.ant.ReportTask',
+                classpath: configurations.jacoco.asPath)
+        ant.report() {
+            executiondata {
+                ant.file(file: buildDir.path + '/jacoco/tests.exec')
+            }
+            structure(name: 'MobTotems') {
+                classfiles {
+                    fileset(dir: sourceSets.main.output.classesDir)
+                }
+                sourcefiles {
+                    fileset(dir: 'src/main/java')
+                }
+            }
+            html(destdir: buildDir.path + '/reports/jacoco')
+        }
+    }
+}
+
