@@ -1,36 +1,52 @@
 package com.corwinjv.mobtotems.blocks.tiles.TotemLogic;
 
+import com.corwinjv.mobtotems.utils.testingstaticmock;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
+import net.minecraft.block.BlockDirt;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Bootstrap;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLLog;
+import org.apache.logging.log4j.Level;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
 import org.powermock.modules.junit4.PowerMockRunner;
-
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 /**
  * Created by CorwinJV on 3/14/2017.
  */
-@PowerMockIgnore("javax.management.*")
-@PrepareForTest({BlazeLogic.class, Modifiers.class, World.class, BlockPos.class})
+@SuppressStaticInitializationFor({"net.minecraft.init.Blocks", "net.minecraft.init.Items"})
+@PowerMockIgnore({"javax.management.*"})
+@PrepareForTest({BlazeLogic.class, Bootstrap.class, Items.class, Blocks.class, testingstaticmock.class})
 @RunWith(PowerMockRunner.class)
 public class BlazeLogicTest {
     BlazeLogic blazeLogic = null;
@@ -40,6 +56,8 @@ public class BlazeLogicTest {
     BlockPos blockPos;
     @Mock
     Modifiers modifiers;
+    @Mock
+    Block retBlock;
 
     // Hack to get around isImmuneToFire() (a minecraft method) being final
     class TestEntityMob extends EntityMob {
@@ -56,6 +74,17 @@ public class BlazeLogicTest {
 
     @Before
     public void setUp() throws Exception {
+        // Powermock wizardry
+        mockStatic(Bootstrap.class);
+        Mockito.when(Bootstrap.isRegistered()).thenReturn(true);
+
+        mockStatic(Items.class);
+        PowerMockito.spy(Items.class);
+
+        mockStatic(Blocks.class);
+        PowerMockito.spy(Blocks.class);
+
+        // Normal mockito stuff
         blazeLogic = new BlazeLogic();
 
         when(blockPos.getX()).thenReturn(100);
@@ -69,8 +98,9 @@ public class BlazeLogicTest {
         entityList.add(entityTargetInRange);
         entityList.add(entityTargetOutOfRange);
 
-        when(world.getEntitiesWithinAABB(eq(Entity.class), Mockito.any(AxisAlignedBB.class))).thenReturn(entityList);
+        when(world.getEntitiesWithinAABB(eq(Entity.class), any(AxisAlignedBB.class))).thenReturn(entityList);
     }
+
 
     @After
     public void tearDown() throws Exception {
@@ -78,7 +108,11 @@ public class BlazeLogicTest {
 
     @Test
     public void getCost() throws Exception {
-        
+        //PowerMockito.when(retBlock.getRegistryName()).thenReturn(new ResourceLocation("minecraft:retBlock"));
+        //PowerMockito.when(Blocks.class, "getRegisteredBlock", any()).thenReturn(retBlock);
+        List<ItemStack> items = blazeLogic.getCost();
+        assertEquals(1, items.size());
+        //FMLLog.log(Level.INFO, "%s", items.get(0).toString());
     }
 
     @Test
