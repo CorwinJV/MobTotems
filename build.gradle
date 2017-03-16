@@ -135,7 +135,12 @@ task instrument(dependsOn: ['classes']) {
                 classname: 'org.jacoco.ant.InstrumentTask',
                 classpath: configurations.jacoco.asPath)
         ant.instrument(destdir: outputDir) {
-            fileset(dir: sourceSets.main.output.classesDir)
+            fileset(dir: sourceSets.main.output.classesDir) {
+                exclude(name: "**/*Test*.class")
+                exclude(name: "baubles/**/*.class")
+                exclude(name: "com/corwinjv/di/**.class")
+                exclude(name: "com/corwinjv/di/**/*.class")
+            }
         }
     }
 }
@@ -168,7 +173,6 @@ task report(dependsOn: ['instrument', 'test']) {
                         exclude(name: "com/corwinjv/di/**.class")
                         exclude(name: "com/corwinjv/di/**/*.class")
                     }
-
                 }
                 sourcefiles {
                     fileset(dir: 'src/main/java/')
