@@ -67,7 +67,7 @@ dependencies {
 	// Guide-api
 	deobfCompile "info.amerifrance.guideapi:Guide-API:1.11-2.1.0-48"
 
-	
+
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
@@ -162,10 +162,16 @@ task report(dependsOn: ['instrument', 'test']) {
             }
             structure(name: 'MobTotems') {
                 classfiles {
-                    fileset(dir: sourceSets.main.output.classesDir)
+                    fileset(dir: sourceSets.main.output.classesDir) {
+                        exclude(name: "**/*Test*.class")
+                        exclude(name: "baubles/**/*.class")
+                        exclude(name: "com/corwinjv/di/**.class")
+                        exclude(name: "com/corwinjv/di/**/*.class")
+                    }
+
                 }
                 sourcefiles {
-                    fileset(dir: 'src/main/java')
+                    fileset(dir: 'src/main/java/')
                 }
             }
             html(destdir: buildDir.path + '/reports/jacoco')
