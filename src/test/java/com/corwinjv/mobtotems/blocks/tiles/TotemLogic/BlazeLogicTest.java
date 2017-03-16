@@ -6,10 +6,13 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Bootstrap;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLLog;
+import org.apache.logging.log4j.Level;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,14 +24,14 @@ import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.AdditionalMatchers.not;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -39,7 +42,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
  */
 @SuppressStaticInitializationFor({"net.minecraft.init.Blocks", "net.minecraft.init.Items"})
 @PowerMockIgnore({"javax.management.*"})
-@PrepareForTest({BlazeLogic.class, Bootstrap.class, Items.class, Blocks.class})
+@PrepareForTest({BlazeLogic.class, Bootstrap.class, Items.class, Item.class})
 @RunWith(PowerMockRunner.class)
 public class BlazeLogicTest {
     BlazeLogic blazeLogic = null;
@@ -49,8 +52,6 @@ public class BlazeLogicTest {
     BlockPos blockPos;
     @Mock
     Modifiers modifiers;
-    @Mock
-    Block retBlock;
 
     // Hack to get around isImmuneToFire() (a minecraft method) being final
     class TestEntityMob extends EntityMob {
@@ -67,15 +68,7 @@ public class BlazeLogicTest {
 
     @Before
     public void setUp() throws Exception {
-        // Powermock wizardry
-        mockStatic(Bootstrap.class);
-        Mockito.when(Bootstrap.isRegistered()).thenReturn(true);
-
         mockStatic(Items.class);
-        PowerMockito.spy(Items.class);
-
-        mockStatic(Blocks.class);
-        PowerMockito.spy(Blocks.class);
 
         // Normal mockito stuff
         blazeLogic = new BlazeLogic();
@@ -101,11 +94,16 @@ public class BlazeLogicTest {
 
     @Test
     public void getCost() throws Exception {
-        //PowerMockito.when(retBlock.getRegistryName()).thenReturn(new ResourceLocation("minecraft:retBlock"));
-        //PowerMockito.when(Blocks.class, "getRegisteredBlock", any()).thenReturn(retBlock);
+        Whitebox.setInternalState( Items.class, "COAL", new Item().setUnlocalizedName("coal") );
+
         List<ItemStack> items = blazeLogic.getCost();
         assertEquals(1, items.size());
-        //FMLLog.log(Level.INFO, "%s", items.get(0).toString());
+        assertEquals(2, items.get(0).getCount());
+
+        // If it's null, then it's a field we haven't mocked and it's wrong.
+        assertNotNull(items.get(0).getItem());
+
+        //FMLLog.log(Level.INFO, "%s", items.get(0).getItem().getUnlocalizedName());
     }
 
     @Test
