@@ -61,5 +61,4 @@ public class TotemLogicTest {
     public void performEffect() throws Exception {
         totemLogic.performEffect(world, pos, modifiers);
     }
-
 }
