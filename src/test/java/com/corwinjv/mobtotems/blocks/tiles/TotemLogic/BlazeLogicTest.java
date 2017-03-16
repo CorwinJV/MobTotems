@@ -38,7 +38,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
  */
 @SuppressStaticInitializationFor({"net.minecraft.init.Blocks", "net.minecraft.init.Items"})
 @PowerMockIgnore({"javax.management.*"})
-@PrepareForTest({BlazeLogic.class, Bootstrap.class, Items.class, Item.class})
+@PrepareForTest({Items.class})
 @RunWith(PowerMockRunner.class)
 public class BlazeLogicTest {
     BlazeLogic blazeLogic = null;
@@ -99,7 +99,7 @@ public class BlazeLogicTest {
         // If it's null, then it's a field we haven't mocked and it's wrong.
         assertNotNull(items.get(0).getItem());
 
-        FMLLog.log(Level.INFO, "%s", items.get(0).getItem().getUnlocalizedName());
+        //FMLLog.log(Level.INFO, "%s", items.get(0).getItem().getUnlocalizedName());
     }
 
     @Test
