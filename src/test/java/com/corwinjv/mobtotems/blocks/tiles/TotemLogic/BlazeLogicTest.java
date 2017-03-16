@@ -1,9 +1,7 @@
 package com.corwinjv.mobtotems.blocks.tiles.TotemLogic;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Bootstrap;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -18,8 +16,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.classloader.annotations.SuppressStaticInitializationFor;
@@ -29,12 +25,12 @@ import org.powermock.reflect.Whitebox;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.mockito.AdditionalMatchers.not;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.*;
 import static org.powermock.api.mockito.PowerMockito.mockStatic;
 
 /**
@@ -94,7 +90,7 @@ public class BlazeLogicTest {
 
     @Test
     public void getCost() throws Exception {
-        Whitebox.setInternalState( Items.class, "COAL", new Item().setUnlocalizedName("coal") );
+        Whitebox.setInternalState(Items.class, "COAL", new Item().setUnlocalizedName("coal"));
 
         List<ItemStack> items = blazeLogic.getCost();
         assertEquals(1, items.size());
@@ -103,7 +99,7 @@ public class BlazeLogicTest {
         // If it's null, then it's a field we haven't mocked and it's wrong.
         assertNotNull(items.get(0).getItem());
 
-        //FMLLog.log(Level.INFO, "%s", items.get(0).getItem().getUnlocalizedName());
+        FMLLog.log(Level.INFO, "%s", items.get(0).getItem().getUnlocalizedName());
     }
 
     @Test
