@@ -1,22 +1,15 @@
 package com.corwinjv.mobtotems.blocks.tiles.TotemLogic;
 
-import com.corwinjv.mobtotems.utils.testingstaticmock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
-import net.minecraft.block.BlockDirt;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Bootstrap;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.FMLLog;
-import org.apache.logging.log4j.Level;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,7 +39,7 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
  */
 @SuppressStaticInitializationFor({"net.minecraft.init.Blocks", "net.minecraft.init.Items"})
 @PowerMockIgnore({"javax.management.*"})
-@PrepareForTest({BlazeLogic.class, Bootstrap.class, Items.class, Blocks.class, testingstaticmock.class})
+@PrepareForTest({BlazeLogic.class, Bootstrap.class, Items.class, Blocks.class})
 @RunWith(PowerMockRunner.class)
 public class BlazeLogicTest {
     BlazeLogic blazeLogic = null;
