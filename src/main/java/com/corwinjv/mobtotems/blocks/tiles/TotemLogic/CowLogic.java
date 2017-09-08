@@ -60,6 +60,7 @@ public class CowLogic extends TotemLogic {
 
         private boolean canSpawnMobHere(BlockPos pos, Entity mob, int radius) {
             double dist = mob.getPosition().getDistance(pos.getX(), pos.getY(), pos.getZ());
+
             return !(mob instanceof EntityAnimal && dist < radius);
         }
     }
