@@ -4,13 +4,32 @@ buildscript {
         maven { url = "http://files.minecraftforge.net/maven" }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
 apply plugin: 'net.minecraftforge.gradle.forge'
 //Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
 
-version = "1.11.2-0.3.0"
+//https://plugins.gradle.org/plugin/net.ltgt.apt
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "net.ltgt.gradle:gradle-apt-plugin:0.9"
+    }
+}
+apply plugin: "net.ltgt.apt"
+
+//https://docs.gradle.org/current/userguide/java_plugin.html
+apply plugin: 'java'
+
+//https://docs.gradle.org/current/userguide/idea_plugin.html
+apply plugin: 'idea'
+
+version = "1.12.1-0.3.0"
 group= "com.corwinjv.mobtotems" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "mobtotems"
 
@@ -20,7 +39,7 @@ compileJava {
 }
 
 minecraft {
-    version = "1.11.2-13.20.0.2222"
+    version = "1.12.1-14.22.0.2474"
     runDir = "run"
 
     // the mappings can be changed at any time, and must be in the following format.
@@ -28,19 +47,27 @@ minecraft {
     // stable_#            stables are built at the discretion of the MCP team.
     // Use non-default mappings at your own risk. they may not allways work.
     // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "snapshot_20161220"
+    mappings = "snapshot_20170624"
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
+// Jacoco offline instrumentation to cover PowerMock classes
+configurations {
+    jacoco
+    jacocoRuntime
+}
+
 repositories {
+        jcenter()
+        mavenCentral()
 		maven { url 'http://tehnut.info/maven/' }
 }
 
 dependencies {
 	// Guide-api
-	deobfCompile "info.amerifrance.guideapi:Guide-API:1.11-2.1.0-48"
+	deobfCompile "info.amerifrance.guideapi:Guide-API:1.12-2.1.4-57"
 
-	
+
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
@@ -62,6 +89,22 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
+    // Unit Testing
+    testCompile "junit:junit:4.12"
+    testCompile "org.mockito:mockito-core:2.4.5"
+    testCompile 'org.powermock:powermock:1.6.6'
+    testCompile 'org.powermock:powermock-api-mockito2:1.7.0RC4'
+    testCompile 'org.powermock:powermock-module-junit4:1.7.0RC4'
+
+    //Dagger 2
+    compile "com.google.dagger:dagger:2.8"
+    testCompile "com.google.dagger:dagger:2.8"
+    apt "com.google.dagger:dagger-compiler:2.8"
+    testApt "com.google.dagger:dagger-compiler:2.8"
+
+    // offline jacoco
+    jacoco group: 'org.jacoco', name: 'org.jacoco.ant', version: '0.7.9', classifier: 'nodeps'
+    jacocoRuntime group: 'org.jacoco', name: 'org.jacoco.agent', version: '0.7.9', classifier: 'runtime'
 }
 
 processResources
@@ -83,3 +126,60 @@ processResources
         exclude 'mcmod.info'
     }
 }
+
+// offline jacoco (Yes we're using ant...)
+task instrument(dependsOn: ['classes']) {
+    ext.outputDir = buildDir.path + '/classes-instrumented'
+    doLast {
+        ant.taskdef(name: 'instrument',
+                classname: 'org.jacoco.ant.InstrumentTask',
+                classpath: configurations.jacoco.asPath)
+        ant.instrument(destdir: outputDir) {
+            fileset(dir: sourceSets.main.output.classesDir) {
+                exclude(name: "**/*Test*.class")
+                exclude(name: "baubles/**/*.class")
+                exclude(name: "com/corwinjv/di/**.class")
+                exclude(name: "com/corwinjv/di/**/*.class")
+            }
+        }
+    }
+}
+
+gradle.taskGraph.whenReady { graph ->
+    if (graph.hasTask(instrument)) {
+        tasks.withType(Test) {
+            doFirst {
+                systemProperty 'jacoco-agent.destfile', buildDir.path + '/jacoco/tests.exec'
+                classpath = files(instrument.outputDir) + classpath + configurations.jacocoRuntime
+            }
+        }
+    }
+}
+
+task report(dependsOn: ['instrument', 'test']) {
+    doLast {
+        ant.taskdef(name: 'report',
+                classname: 'org.jacoco.ant.ReportTask',
+                classpath: configurations.jacoco.asPath)
+        ant.report() {
+            executiondata {
+                ant.file(file: buildDir.path + '/jacoco/tests.exec')
+            }
+            structure(name: 'MobTotems') {
+                classfiles {
+                    fileset(dir: sourceSets.main.output.classesDir) {
+                        exclude(name: "**/*Test*.class")
+                        exclude(name: "baubles/**/*.class")
+                        exclude(name: "com/corwinjv/di/**.class")
+                        exclude(name: "com/corwinjv/di/**/*.class")
+                    }
+                }
+                sourcefiles {
+                    fileset(dir: 'src/main/java/')
+                }
+            }
+            html(destdir: buildDir.path + '/reports/jacoco')
+        }
+    }
+}
+

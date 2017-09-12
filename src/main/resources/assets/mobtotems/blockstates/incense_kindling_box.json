@@ -1,13 +1,10 @@
 {
   "forge_marker": 1,
-  "defaults":
-  {
+  "defaults": {
   },
-  "variants":
-  {
-    "normal":
-    {
-      "model" : "mobtotems:incense_kindling_box"
+  "variants": {
+    "normal": {
+      "model": "mobtotems:incense_kindling_box"
     }
   }
 }

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "CPC",
+    " C "
+  ],
+  "key": {
+    "S":
+    {
+      "item": "minecraft:string"
+    },
+    "C": {
+      "item": "minecraft:clay"
+    },
+    "P": {
+      "item": "minecraft:blaze_powder"
+    }
+
+  },
+  "result": {
+    "item": "mobtotems:wolf_totem_bauble"
+  }
+}

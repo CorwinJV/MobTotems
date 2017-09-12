@@ -1,6 +1,5 @@
 package com.corwinjv.mobtotems.blocks.tiles.base;
 
-import com.corwinjv.mobtotems.blocks.TotemWoodBlock;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -26,11 +25,10 @@ public abstract class ModInventoryTileEntity extends TileEntityLockable implemen
 
     protected ItemStack[] stacks = new ItemStack[getSizeInventory()];
 
-    public ModInventoryTileEntity()
-    {
+    public ModInventoryTileEntity() {
         super();
-        for(int i = 0; i < getSizeInventory(); i++) {
-            if(stacks[i] == null) {
+        for (int i = 0; i < getSizeInventory(); i++) {
+            if (stacks[i] == null) {
                 stacks[i] = ItemStack.EMPTY;
             }
         }
@@ -68,20 +66,17 @@ public abstract class ModInventoryTileEntity extends TileEntityLockable implemen
 
     @Nonnull
     @Override
-    public final NBTTagCompound getUpdateTag()
-    {
+    public final NBTTagCompound getUpdateTag() {
         return writeToNBT(super.getUpdateTag());
     }
 
     @Override
-    public SPacketUpdateTileEntity getUpdatePacket()
-    {
+    public SPacketUpdateTileEntity getUpdatePacket() {
         return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager networkManager, SPacketUpdateTileEntity packet)
-    {
+    public void onDataPacket(NetworkManager networkManager, SPacketUpdateTileEntity packet) {
         super.onDataPacket(networkManager, packet);
         readFromNBT(packet.getNbtCompound());
 
@@ -90,8 +85,7 @@ public abstract class ModInventoryTileEntity extends TileEntityLockable implemen
     }
 
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, @Nonnull IBlockState oldState, @Nonnull IBlockState newState)
-    {
+    public boolean shouldRefresh(World world, BlockPos pos, @Nonnull IBlockState oldState, @Nonnull IBlockState newState) {
         return (oldState.getBlock() != newState.getBlock());
     }
 
@@ -103,8 +97,7 @@ public abstract class ModInventoryTileEntity extends TileEntityLockable implemen
     public int[] getSlotsForFace(@Nonnull EnumFacing side) {
 
         int[] ret = new int[getSizeInventory()];
-        for(int i = 0; i < ret.length; i++)
-        {
+        for (int i = 0; i < ret.length; i++) {
             ret[i] = i;
         }
         return ret;
@@ -123,10 +116,8 @@ public abstract class ModInventoryTileEntity extends TileEntityLockable implemen
     @Override
     public boolean isEmpty() {
         boolean ret = true;
-        for(ItemStack stack : stacks)
-        {
-            if(stack != ItemStack.EMPTY)
-            {
+        for (ItemStack stack : stacks) {
+            if (stack != ItemStack.EMPTY) {
                 ret = false;
             }
         }
@@ -136,8 +127,7 @@ public abstract class ModInventoryTileEntity extends TileEntityLockable implemen
     @Nonnull
     @Override
     public ItemStack getStackInSlot(int index) {
-        if(index >= 0 && index < getSizeInventory())
-        {
+        if (index >= 0 && index < getSizeInventory()) {
             return stacks[index];
         }
         return ItemStack.EMPTY;
@@ -157,12 +147,9 @@ public abstract class ModInventoryTileEntity extends TileEntityLockable implemen
             } else {
                 stack = this.getStackInSlot(index).splitStack(count);
 
-                if (this.getStackInSlot(index).getCount() <= 0)
-                {
+                if (this.getStackInSlot(index).getCount() <= 0) {
                     this.setInventorySlotContents(index, ItemStack.EMPTY);
-                }
-                else
-                {
+                } else {
                     this.setInventorySlotContents(index, this.getStackInSlot(index));
                 }
 
@@ -184,14 +171,11 @@ public abstract class ModInventoryTileEntity extends TileEntityLockable implemen
 
     @Override
     public void setInventorySlotContents(int index, @Nonnull ItemStack stack) {
-        if(index >= 0 && index < getSizeInventory())
-        {
-            if(stack != ItemStack.EMPTY && stack.getCount() > this.getInventoryStackLimit())
-            {
+        if (index >= 0 && index < getSizeInventory()) {
+            if (stack != ItemStack.EMPTY && stack.getCount() > this.getInventoryStackLimit()) {
                 stack.setCount(this.getInventoryStackLimit());
             }
-            if(stack != ItemStack.EMPTY && stack.getCount() < 0)
-            {
+            if (stack != ItemStack.EMPTY && stack.getCount() < 0) {
                 stack = ItemStack.EMPTY;
             }
 
@@ -201,8 +185,7 @@ public abstract class ModInventoryTileEntity extends TileEntityLockable implemen
     }
 
     @Override
-    public boolean isUsableByPlayer(@Nonnull EntityPlayer player)
-    {
+    public boolean isUsableByPlayer(@Nonnull EntityPlayer player) {
         return (player.getPosition().getDistance(getPos().getX(), getPos().getY(), getPos().getZ()) < getUsableDistance());
     }
 
@@ -235,8 +218,7 @@ public abstract class ModInventoryTileEntity extends TileEntityLockable implemen
 
     @Override
     public void clear() {
-        for(int i = 0; i < getSizeInventory(); i++)
-        {
+        for (int i = 0; i < getSizeInventory(); i++) {
             setInventorySlotContents(i, ItemStack.EMPTY);
         }
     }

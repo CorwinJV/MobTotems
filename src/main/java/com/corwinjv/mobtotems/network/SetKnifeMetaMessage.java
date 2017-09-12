@@ -13,12 +13,10 @@ public class SetKnifeMetaMessage extends Message<SetKnifeMetaMessage> {
     private int meta;
     private EnumHand hand = EnumHand.MAIN_HAND;
 
-    public SetKnifeMetaMessage()
-    {
+    public SetKnifeMetaMessage() {
     }
 
-    public SetKnifeMetaMessage(int meta, EnumHand hand)
-    {
+    public SetKnifeMetaMessage(int meta, EnumHand hand) {
         this.meta = meta;
         this.hand = hand;
     }
@@ -26,20 +24,17 @@ public class SetKnifeMetaMessage extends Message<SetKnifeMetaMessage> {
     @Override
     protected void handleServer(SetKnifeMetaMessage message, EntityPlayerMP player) {
         ItemStack stack = player.getHeldItem(message.hand);
-        if(stack.getItem() instanceof CarvingKnife)
-        {
-            ((CarvingKnife)stack.getItem()).setSelectedCarving(player.getHeldItem(message.hand), message.meta);
+        if (stack.getItem() instanceof CarvingKnife) {
+            ((CarvingKnife) stack.getItem()).setSelectedCarving(player.getHeldItem(message.hand), message.meta);
         }
     }
 
-    public SetKnifeMetaMessage setHand(EnumHand hand)
-    {
+    public SetKnifeMetaMessage setHand(EnumHand hand) {
         this.hand = hand;
         return this;
     }
 
-    public SetKnifeMetaMessage setMeta(int meta)
-    {
+    public SetKnifeMetaMessage setMeta(int meta) {
         this.meta = meta;
         return this;
     }
@@ -47,15 +42,12 @@ public class SetKnifeMetaMessage extends Message<SetKnifeMetaMessage> {
     @Override
     public void toBytes(ByteBuf buf) {
         buf.writeInt(meta);
-        switch(hand)
-        {
-            case MAIN_HAND:
-            {
+        switch (hand) {
+            case MAIN_HAND: {
                 buf.writeInt(0);
                 break;
             }
-            case OFF_HAND:
-            {
+            case OFF_HAND: {
                 buf.writeInt(1);
                 break;
             }
@@ -66,15 +58,12 @@ public class SetKnifeMetaMessage extends Message<SetKnifeMetaMessage> {
     public void fromBytes(ByteBuf buf) {
         meta = buf.readInt();
         int handInt = buf.readInt();
-        switch(handInt)
-        {
-            case 0:
-            {
+        switch (handInt) {
+            case 0: {
                 hand = EnumHand.MAIN_HAND;
                 break;
             }
-            case 1:
-            {
+            case 1: {
                 hand = EnumHand.OFF_HAND;
                 break;
             }

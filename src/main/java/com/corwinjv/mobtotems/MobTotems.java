@@ -3,11 +3,12 @@ package com.corwinjv.mobtotems;
  * Created by corwinjv on 8/30/14.
  */
 
+import com.corwinjv.di.MobTotemsComponent;
 import com.corwinjv.mobtotems.blocks.ModBlocks;
-import com.corwinjv.mobtotems.blocks.SacredLightBlock;
 import com.corwinjv.mobtotems.blocks.tiles.TotemLogic.CowLogic;
 import com.corwinjv.mobtotems.blocks.tiles.TotemLogic.CreeperLogic;
 import com.corwinjv.mobtotems.blocks.tiles.TotemLogic.EnderLogic;
+import com.corwinjv.mobtotems.config.ConfigurationHandler;
 import com.corwinjv.mobtotems.entities.ModEntities;
 import com.corwinjv.mobtotems.gui.OfferingBoxGuiHandler;
 import com.corwinjv.mobtotems.items.ModItems;
@@ -19,26 +20,27 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-
-import com.corwinjv.mobtotems.config.ConfigurationHandler;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 
-@Mod(modid=Reference.MOD_ID, name=Reference.MOD_NAME, version=Reference.MOD_VERSION, guiFactory = Reference.GUI_FACTORY_CLASS,
+@Mod(modid = Reference.MOD_ID, name = Reference.MOD_NAME, version = Reference.MOD_VERSION, guiFactory = Reference.GUI_FACTORY_CLASS,
         dependencies = "before:guideapi")
-public class MobTotems
-{
+public class MobTotems {
     @Mod.Instance
     public static MobTotems instance;
 
     @SidedProxy(clientSide = Reference.CLIENT_SIDE_PROXY_CLASS, serverSide = Reference.SERVER_SIDE_PROXY_CLASS)
     public static CommonProxy proxy;
 
+    private static MobTotemsComponent mobTotemsComponent;
+
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {
+    public void preInit(FMLPreInitializationEvent event) {
+//        //Dagger 2 implementation
+//        mobTotemsComponent = proxy.initializeDagger(instance);
+
         // Network & Messages
         Network.init();
-        NetworkRegistry.INSTANCE.registerGuiHandler(MobTotems.instance, new OfferingBoxGuiHandler());
+        NetworkRegistry.INSTANCE.registerGuiHandler(instance, new OfferingBoxGuiHandler());
 
         // Config
         ConfigurationHandler.Init(event.getSuggestedConfigurationFile());
@@ -52,12 +54,9 @@ public class MobTotems
 
         // Blocks
         ModBlocks.init();
-        ModBlocks.registerRecipes();
 
         // Items
         ModItems.init();
-        ModItems.registerItems();
-        ModItems.registerRecipes();
 
         // Entities
         ModEntities.init();
@@ -68,15 +67,17 @@ public class MobTotems
         proxy.registerKeys();
     }
 
+    public static MobTotemsComponent component() {
+        return mobTotemsComponent;
+    }
+
     @Mod.EventHandler
-    public void init(FMLInitializationEvent event)
-    {
+    public void init(FMLInitializationEvent event) {
         proxy.registerRenders();
     }
 
     @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent event)
-    {
+    public void postInit(FMLPostInitializationEvent event) {
         proxy.registerGui();
         proxy.registerParticleRenderer();
     }

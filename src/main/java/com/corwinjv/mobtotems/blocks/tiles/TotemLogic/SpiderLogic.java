@@ -40,15 +40,15 @@ public class SpiderLogic extends TotemLogic {
 
     @Override
     public void performEffect(World world, BlockPos pos, Modifiers modifiers) {
-        int radius = DEFAULT_RADIUS + (int)(RANGE_BOOST * modifiers.range);
+        int radius = DEFAULT_RADIUS + (int) (RANGE_BOOST * modifiers.range);
         AxisAlignedBB aabb = new AxisAlignedBB(pos.getX() - radius, pos.getY() - radius, pos.getZ() - radius, pos.getX() + radius, pos.getY() + radius, pos.getZ() + radius);
         List<EntityLivingBase> teList = world.getEntitiesWithinAABB(EntityLivingBase.class, aabb);
 
-        for(EntityLivingBase entity : teList) {
-            if(entity instanceof IMob) {
-                if(entity.getPosition().getDistance(pos.getX(), pos.getY(), pos.getZ()) <= radius) {
-                    PotionEffect potionEffect =  new PotionEffect(MobEffects.POISON, POISON_DURATION, POTION_AMPLIFIER);
-                    if(entity.isPotionApplicable(potionEffect)) {
+        for (EntityLivingBase entity : teList) {
+            if (entity instanceof IMob) {
+                if (entity.getPosition().getDistance(pos.getX(), pos.getY(), pos.getZ()) <= radius) {
+                    PotionEffect potionEffect = new PotionEffect(MobEffects.POISON, POISON_DURATION, POTION_AMPLIFIER);
+                    if (entity.isPotionApplicable(potionEffect)) {
                         entity.attackEntityFrom(DamageSource.MAGIC, LlamaLogic.DAMAGE_MODIFIER * modifiers.damage);
                         entity.addPotionEffect(potionEffect);
                     }

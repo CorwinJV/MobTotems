@@ -35,27 +35,19 @@ public class CreeperLogic extends TotemLogic {
 
     // This block limits what entities can spawn near it, we subscribe to the EntityJoinWorldEvent in order to stop entity spawning
     // based on proximity to TileEntities of our block's type
-    public static class CreeperTotemEntityJoinWorldEvent
-    {
+    public static class CreeperTotemEntityJoinWorldEvent {
         @SubscribeEvent
-        public void onEntityJoinWorldEvent(EntityJoinWorldEvent e)
-        {
-            if(!e.getWorld().isRemote)
-            {
+        public void onEntityJoinWorldEvent(EntityJoinWorldEvent e) {
+            if (!e.getWorld().isRemote) {
                 List<TileEntity> loadedTileEntityList = new ArrayList<>(e.getWorld().loadedTileEntityList);
 
-                for (TileEntity tileEntity : loadedTileEntityList)
-                {
-                    if(tileEntity instanceof OfferingBoxTileEntity)
-                    {
-                        if(((OfferingBoxTileEntity)tileEntity).getChargeLevel() > 0)
-                        {
-                            if(TotemHelper.hasTotemType(e.getWorld(), (OfferingBoxTileEntity)tileEntity, TotemType.CREEPER))
-                            {
-                                Modifiers mods = TotemHelper.getModifiers(e.getWorld(), (OfferingBoxTileEntity)tileEntity);
-                                int radius = TotemHelper.DEFAULT_RADIUS + (int)(TotemHelper.RANGE_BOOST * mods.range);
-                                if(!canSpawnMobHere(tileEntity.getPos(), e.getEntity(), radius))
-                                {
+                for (TileEntity tileEntity : loadedTileEntityList) {
+                    if (tileEntity instanceof OfferingBoxTileEntity) {
+                        if (((OfferingBoxTileEntity) tileEntity).getChargeLevel() > 0) {
+                            if (TotemHelper.hasTotemType((OfferingBoxTileEntity) tileEntity, TotemType.CREEPER)) {
+                                Modifiers mods = TotemHelper.getModifiers(e.getWorld(), (OfferingBoxTileEntity) tileEntity);
+                                int radius = TotemHelper.DEFAULT_RADIUS + (int) (TotemHelper.RANGE_BOOST * mods.range);
+                                if (!canSpawnMobHere(tileEntity.getPos(), e.getEntity(), radius)) {
                                     //FMLLog.log(Level.ERROR, "Stopped mob from spawning with radius: " + radius);
                                     e.setCanceled(true);
                                     break;

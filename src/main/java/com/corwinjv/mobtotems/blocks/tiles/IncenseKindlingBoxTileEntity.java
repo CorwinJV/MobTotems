@@ -22,8 +22,7 @@ import java.util.function.Predicate;
 /**
  * Created by CorwinJV on 7/24/2016.
  */
-public class IncenseKindlingBoxTileEntity extends ModTileEntity implements ITickable
-{
+public class IncenseKindlingBoxTileEntity extends ModTileEntity implements ITickable {
     private static final String TIME_LIVED = "TIME_LIVED";
 
     private static final long UPDATE_TICKS = 20;
@@ -34,106 +33,85 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity implements ITick
 
     private long timeLived = 0;
 
-    public IncenseKindlingBoxTileEntity()
-    {
+    public IncenseKindlingBoxTileEntity() {
         super();
     }
 
     @Nonnull
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound)
-    {
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         NBTTagCompound ret = super.writeToNBT(compound);
         ret.setLong(TIME_LIVED, timeLived);
         return ret;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound)
-    {
+    public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         long time = 0;
-        if(compound.hasKey(TIME_LIVED))
-        {
+        if (compound.hasKey(TIME_LIVED)) {
             time = compound.getLong(TIME_LIVED);
         }
         timeLived = time;
     }
 
     @Override
-    public void update()
-    {
-        if(!getWorld().isRemote)
-        {
+    public void update() {
+        if (!getWorld().isRemote) {
             performTTLUpdate();
 
             long worldTime = getWorld().getWorldTime();
-            if(worldTime % UPDATE_TICKS == 0)
-            {
+            if (worldTime % UPDATE_TICKS == 0) {
                 performChargeAura();
             }
-        }
-        else
-        {
+        } else {
             long worldTime = getWorld().getWorldTime();
-            if(worldTime % PARTICLE_UPDATE_TICKS == 0)
-            {
+            if (worldTime % PARTICLE_UPDATE_TICKS == 0) {
                 spawnParticleEffects();
             }
         }
     }
 
-    private void performTTLUpdate()
-    {
+    private void performTTLUpdate() {
         timeLived++;
-        if(timeLived > TTL)
-        {
+        if (timeLived > TTL) {
             getWorld().destroyBlock(pos, false);
         }
     }
 
-    private void performChargeAura()
-    {
+    private void performChargeAura() {
         final BlockPos targetPos = getPos();
         Predicate<EntityPlayer> playerWithinRangePredicate = input -> input != null
                 && input.getPosition().getDistance(targetPos.getX(), targetPos.getY(), targetPos.getZ()) < TMP_MANA_GAIN_DIST;
         List<EntityPlayer> playersWithinRange = getWorld().getEntities(EntityPlayer.class, playerWithinRangePredicate::test);
 
-        for(EntityPlayer player : playersWithinRange)
-        {
+        for (EntityPlayer player : playersWithinRange) {
             IBaublesItemHandler baublesItemHandler = BaublesApi.getBaublesHandler(player);
-            for(int i = 0; i < baublesItemHandler.getSlots(); i++)
-            {
+            for (int i = 0; i < baublesItemHandler.getSlots(); i++) {
                 final ItemStack baubleStack = baublesItemHandler.getStackInSlot(i);
-                if(baubleStack != ItemStack.EMPTY
-                        && baubleStack.getItem() instanceof IChargeable)
-                {
+                if (baubleStack != ItemStack.EMPTY
+                        && baubleStack.getItem() instanceof IChargeable) {
                     ((IChargeable) baubleStack.getItem()).incrementChargeLevel(baubleStack, CHARGE_GAIN_PER_TICK);
                 }
             }
         }
     }
 
-    private void spawnParticleEffects()
-    {
+    private void spawnParticleEffects() {
         double startX = pos.getX() - TMP_MANA_GAIN_DIST;
         double startY = pos.getY() - TMP_MANA_GAIN_DIST;
         double startZ = pos.getZ() - TMP_MANA_GAIN_DIST;
 
-        for(double x = startX; x < pos.getX() + TMP_MANA_GAIN_DIST; x++)
-        {
-            for(double y = startY; y < pos.getY() + TMP_MANA_GAIN_DIST; y++)
-            {
-                for(double z = startZ; z < pos.getZ() + TMP_MANA_GAIN_DIST; z++)
-                {
+        for (double x = startX; x < pos.getX() + TMP_MANA_GAIN_DIST; x++) {
+            for (double y = startY; y < pos.getY() + TMP_MANA_GAIN_DIST; y++) {
+                for (double z = startZ; z < pos.getZ() + TMP_MANA_GAIN_DIST; z++) {
                     BlockPos blockPos = new BlockPos(x, y, z);
                     Block block = getWorld().getBlockState(blockPos).getBlock();
-                    Block blockAbove = getWorld().getBlockState(new BlockPos(x, y+1, z)).getBlock();
+                    Block blockAbove = getWorld().getBlockState(new BlockPos(x, y + 1, z)).getBlock();
 
-                    if(pos.getDistance(blockPos.getX(), blockPos.getY(), blockPos.getZ()) < TMP_MANA_GAIN_DIST
-                            && block.isBlockSolid(getWorld(), blockPos, EnumFacing.UP)
-                            && blockAbove instanceof BlockAir)
-                    {
+                    if (pos.getDistance(blockPos.getX(), blockPos.getY(), blockPos.getZ()) < TMP_MANA_GAIN_DIST
+                            && block.canSpawnInBlock()
+                            && blockAbove instanceof BlockAir) {
                         Random rand = getWorld().rand;
                         float width = 0.75f;
                         float height = 0.75f;

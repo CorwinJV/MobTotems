@@ -1,7 +1,9 @@
 {
   "variants": {
     "normal": [
-      { "model": "mobtotems:sacred_light" }
+      {
+        "model": "mobtotems:sacred_light"
+      }
     ]
   }
 }

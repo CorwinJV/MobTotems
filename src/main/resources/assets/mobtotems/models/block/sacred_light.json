@@ -3,98 +3,367 @@
   "textures": {
     "torch": "blocks/torch_on",
     "particle": "blocks/torch_on",
-    "totem_wood":"blocks/log_oak",
+    "totem_wood": "blocks/log_oak",
     "totem_wood_top": "blocks/log_oak_top"
   },
   "elements": [
     {
-      "from": [ 7, 0, 7 ],
-      "to": [ 9, 10, 9 ],
+      "from": [
+        7,
+        0,
+        7
+      ],
+      "to": [
+        9,
+        10,
+        9
+      ],
       "shade": false,
       "faces": {
-        "down": { "uv": [ 7, 13, 9, 15 ], "texture": "#torch" },
-        "up":   { "uv": [ 7,  6, 9,  8 ], "texture": "#torch" }
+        "down": {
+          "uv": [
+            7,
+            13,
+            9,
+            15
+          ],
+          "texture": "#torch"
+        },
+        "up": {
+          "uv": [
+            7,
+            6,
+            9,
+            8
+          ],
+          "texture": "#torch"
+        }
       }
     },
     {
-      "from": [ 7, 0, 0 ],
-      "to": [ 9, 16, 16 ],
+      "from": [
+        7,
+        0,
+        0
+      ],
+      "to": [
+        9,
+        16,
+        16
+      ],
       "shade": false,
       "faces": {
-        "west": { "uv": [ 0, 0, 16, 16 ], "texture": "#torch" },
-        "east": { "uv": [ 0, 0, 16, 16 ], "texture": "#torch" }
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#torch"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#torch"
+        }
       }
     },
     {
-      "from": [ 0, 0, 7 ],
-      "to": [ 16, 16, 9 ],
+      "from": [
+        0,
+        0,
+        7
+      ],
+      "to": [
+        16,
+        16,
+        9
+      ],
       "shade": false,
       "faces": {
-        "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#torch" },
-        "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#torch" }
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#torch"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#torch"
+        }
       }
     },
     {
-      "from": [0,0,0],
-      "to": [16,3,16],
-      "shade":true,
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        3,
+        16
+      ],
+      "shade": true,
       "faces": {
-        "north": { "uv": [0, 13, 16, 16], "texture": "#totem_wood" },
-        "south": { "uv": [0, 13, 16, 16], "texture": "#totem_wood" },
-        "east": { "uv": [0, 13, 16, 16], "texture": "#totem_wood" },
-        "west": { "uv": [0, 13, 16, 16], "texture": "#totem_wood" },
-        "up": { "uv": [0, 0, 16, 16], "texture": "#totem_wood_top" },
-        "down": { "uv": [0, 0, 16, 16], "texture": "#totem_wood_top" }
+        "north": {
+          "uv": [
+            0,
+            13,
+            16,
+            16
+          ],
+          "texture": "#totem_wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            13,
+            16,
+            16
+          ],
+          "texture": "#totem_wood"
+        },
+        "east": {
+          "uv": [
+            0,
+            13,
+            16,
+            16
+          ],
+          "texture": "#totem_wood"
+        },
+        "west": {
+          "uv": [
+            0,
+            13,
+            16,
+            16
+          ],
+          "texture": "#totem_wood"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#totem_wood_top"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#totem_wood_top"
+        }
       }
     },
     {
-      "from": [3,3,3],
-      "to": [13,6,13],
-      "shade":true,
+      "from": [
+        3,
+        3,
+        3
+      ],
+      "to": [
+        13,
+        6,
+        13
+      ],
+      "shade": true,
       "faces": {
-        "north": { "uv": [0, 13, 16, 16], "texture": "#totem_wood" },
-        "south": { "uv": [0, 13, 16, 16], "texture": "#totem_wood" },
-        "east": { "uv": [0, 13, 16, 16], "texture": "#totem_wood" },
-        "west": { "uv": [0, 13, 16, 16], "texture": "#totem_wood" },
-        "up": { "uv": [0, 0, 16, 16], "texture": "#totem_wood_top" },
-        "down": { "uv": [0, 0, 16, 16], "texture": "#totem_wood_top" }
+        "north": {
+          "uv": [
+            0,
+            13,
+            16,
+            16
+          ],
+          "texture": "#totem_wood"
+        },
+        "south": {
+          "uv": [
+            0,
+            13,
+            16,
+            16
+          ],
+          "texture": "#totem_wood"
+        },
+        "east": {
+          "uv": [
+            0,
+            13,
+            16,
+            16
+          ],
+          "texture": "#totem_wood"
+        },
+        "west": {
+          "uv": [
+            0,
+            13,
+            16,
+            16
+          ],
+          "texture": "#totem_wood"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#totem_wood_top"
+        },
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#totem_wood_top"
+        }
       }
-    }],
-	"display": {
-	  "thirdperson_righthand": {
-		"rotation": [ 62, 41, 0 ],
-		"translation": [ 0, 0, 0 ],
-		"scale": [ 0.4, 0.4, 0.4 ]
-	  },
-	  "thirdperson_lefthand": {
-		"rotation": [ 62, 41, 0 ],
-		"translation": [ 0, 0, 0 ],
-		"scale": [ 0.4, 0.4, 0.4 ]
-	  },
-	  "ground": {
-		"rotation": [ 0, 0, 0 ],
-		"translation": [ 0, 4, 0 ],
-		"scale": [ 0.4, 0.4, 0.4 ]
-	  },
-	  "fixed": {
-		"rotation": [ 0, 0, 0 ],
-		"translation": [ 0, 0, 0 ],
-		"scale": [ 1, 1, 1 ]
-	  },
-	  "firstperson_righthand": {
-		"rotation": [ 10, 48, -3 ],
-		"translation": [ -1.89, 3, 0 ],
-		"scale": [ 0.38, 0.38, 0.38 ]
-	  },
-	  "firstperson_lefthand": {
-		"rotation": [ 10, 48, -3 ],
-		"translation": [ -1.89, 3, 0 ],
-		"scale": [ 0.38, 0.38, 0.38 ]
-	  },
-	  "gui": {
-		"rotation": [ 30, 45, 0 ],
-		"translation": [ 0, 0, 0],
-		"scale":[ 0.6, 0.6, 0.6 ]
-	  }
-	}
+    }
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [
+        62,
+        41,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        62,
+        41,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        4,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        10,
+        48,
+        -3
+      ],
+      "translation": [
+        -1.89,
+        3,
+        0
+      ],
+      "scale": [
+        0.38,
+        0.38,
+        0.38
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        10,
+        48,
+        -3
+      ],
+      "translation": [
+        -1.89,
+        3,
+        0
+      ],
+      "scale": [
+        0.38,
+        0.38,
+        0.38
+      ]
+    },
+    "gui": {
+      "rotation": [
+        30,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ]
+    }
+  }
 }

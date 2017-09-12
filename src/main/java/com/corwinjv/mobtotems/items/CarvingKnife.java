@@ -1,22 +1,19 @@
 package com.corwinjv.mobtotems.items;
 
+import com.corwinjv.mobtotems.MobTotems;
 import com.corwinjv.mobtotems.blocks.TotemType;
 import com.corwinjv.mobtotems.blocks.TotemWoodBlock;
 import com.corwinjv.mobtotems.gui.CarvingSelectorGui;
 import com.corwinjv.mobtotems.network.ActivateKnifeMessage;
 import com.corwinjv.mobtotems.network.Network;
 import com.corwinjv.mobtotems.network.OpenKnifeGuiMessage;
-import com.corwinjv.mobtotems.particles.ModParticles;
 import com.corwinjv.mobtotems.utils.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.IParticleFactory;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleBlockDust;
-import net.minecraft.client.particle.ParticleDigging;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -30,10 +27,8 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.FMLClientHandler;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import org.apache.logging.log4j.Level;
 
 /**
  * Created by CorwinJV on 1/14/2017.
@@ -44,8 +39,7 @@ public class CarvingKnife extends ModItem {
 
     boolean spawnParticles = false;
 
-    public CarvingKnife()
-    {
+    public CarvingKnife() {
         super();
     }
 
@@ -54,10 +48,8 @@ public class CarvingKnife extends ModItem {
         super.init();
     }
 
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
-    {
-        if (world.isRemote)
-        {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        if (world.isRemote) {
             Network.sendToServer(new ActivateKnifeMessage().setHand(hand));
             return new ActionResult(EnumActionResult.PASS, player.getHeldItem(hand));
         }
@@ -65,24 +57,24 @@ public class CarvingKnife extends ModItem {
     }
 
     @SideOnly(Side.CLIENT)
-    public void openGui(EntityPlayer player, int meta)
-    {
+    public void openGui(EntityPlayer player, int meta) {
         FMLClientHandler.instance().displayGuiScreen(player, new CarvingSelectorGui(meta));
     }
 
     @Override
     public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
         super.onUpdate(stack, world, entity, itemSlot, isSelected);
-        if(world.isRemote
+        if (world.isRemote
                 && entity instanceof EntityPlayer) {
-            spawnParticles(stack, world, (EntityPlayer)entity);
+            spawnParticles(stack, world, (EntityPlayer) entity);
         }
     }
 
     @SideOnly(Side.CLIENT)
     private void spawnParticles(ItemStack stack, World world, EntityPlayer player) {
         long worldTime = world.getWorldTime();
-        if(spawnParticles) {
+
+        if (spawnParticles) {
             IParticleFactory particleFactory = new ParticleBlockDust.Factory();
 
             Vec3d posEyes = player.getPositionEyes(1.0f);
@@ -100,9 +92,9 @@ public class CarvingKnife extends ModItem {
                     for (int j = 0; j < 4; ++j) {
                         for (int k = 0; k < 4; ++k) {
                             for (int l = 0; l < 4; ++l) {
-                                double d0 = ((double)j + 0.5D) / 4.0D;
-                                double d1 = ((double)k + 0.5D) / 4.0D;
-                                double d2 = ((double)l + 0.5D) / 4.0D;
+                                double d0 = ((double) j + 0.5D) / 4.0D;
+                                double d1 = ((double) k + 0.5D) / 4.0D;
+                                double d2 = ((double) l + 0.5D) / 4.0D;
 
                                 double speedX = d0 - 0.5D;
                                 double speedY = d1 - 0.5D;
@@ -113,13 +105,13 @@ public class CarvingKnife extends ModItem {
                                 Minecraft.getMinecraft().effectRenderer.addEffect(
                                         particleFactory.createParticle(EnumParticleTypes.BLOCK_DUST.getParticleID(),
                                                 world,
-                                                (double)pos.getX() + d0,
-                                                (double)pos.getY() + d1,
-                                                (double)pos.getZ() + d2,
+                                                (double) pos.getX() + d0,
+                                                (double) pos.getY() + d1,
+                                                (double) pos.getZ() + d2,
                                                 speedX,
                                                 speedY,
                                                 speedZ,
-                                        new int[] { Block.getStateId(state) }));
+                                                new int[]{Block.getStateId(state)}));
                             }
                         }
                     }
@@ -129,9 +121,8 @@ public class CarvingKnife extends ModItem {
         }
     }
 
-    public void onKnifeActivated(EntityPlayer player, EnumHand hand)
-    {
-        if(player.world.isRemote) {
+    public void onKnifeActivated(EntityPlayer player, EnumHand hand) {
+        if (player.world.isRemote) {
             return;
         }
 
@@ -140,21 +131,20 @@ public class CarvingKnife extends ModItem {
         Vec3d posEyes = player.getPositionEyes(1.0f);
         RayTraceResult rayTraceResult = world.rayTraceBlocks(posEyes, posEyes.add(player.getLookVec().scale(3f)));
 
-        if(stack.getItem() instanceof CarvingKnife) {
-            if(rayTraceResult != null) {
+        if (stack.getItem() instanceof CarvingKnife) {
+            if (rayTraceResult != null) {
                 BlockPos pos = rayTraceResult.getBlockPos();
                 Block targetBlock = BlockUtils.getBlock(world, pos);
 
                 if (targetBlock != null
                         && targetBlock instanceof TotemWoodBlock) {
-                    if(world.setBlockState(pos, targetBlock.getDefaultState().withProperty(TotemWoodBlock.TOTEM_TYPE, TotemType.fromMeta(getSelectedCarving(stack))))) {
+                    if (world.setBlockState(pos, targetBlock.getDefaultState().withProperty(TotemWoodBlock.TOTEM_TYPE, TotemType.fromMeta(getSelectedCarving(stack))))) {
                         player.setActiveHand(hand);
                         spawnParticles = true;
                     }
                 }
-            }
-            else {
-                Network.sendTo(new OpenKnifeGuiMessage().setMeta(getSelectedCarving(stack)), (EntityPlayerMP)player);
+            } else {
+                Network.sendTo(new OpenKnifeGuiMessage().setMeta(getSelectedCarving(stack)), (EntityPlayerMP) player);
             }
         }
     }
@@ -169,24 +159,22 @@ public class CarvingKnife extends ModItem {
 //        return super.getItemUseAction(stack);
 //    }
 
-    public void setSelectedCarving(ItemStack stack, int selectedCarving)
-    {
-        if(stack.getTagCompound() == null) {
+    public void setSelectedCarving(ItemStack stack, int selectedCarving) {
+        if (stack.getTagCompound() == null) {
             initNbtData(stack);
         }
 
-        NBTTagCompound tagCompound = (NBTTagCompound)stack.getTagCompound().getTag(COMPOUND_TAG);
+        NBTTagCompound tagCompound = (NBTTagCompound) stack.getTagCompound().getTag(COMPOUND_TAG);
         tagCompound.setInteger(SELECTED_CARVING_TAG, selectedCarving);
         stack.getTagCompound().setTag(COMPOUND_TAG, tagCompound);
     }
 
-    public int getSelectedCarving(ItemStack stack)
-    {
-        if(stack.getTagCompound() == null) {
+    public int getSelectedCarving(ItemStack stack) {
+        if (stack.getTagCompound() == null) {
             initNbtData(stack);
         }
 
-        NBTTagCompound tagCompound = (NBTTagCompound)stack.getTagCompound().getTag(COMPOUND_TAG);
+        NBTTagCompound tagCompound = (NBTTagCompound) stack.getTagCompound().getTag(COMPOUND_TAG);
         return tagCompound.getInteger(SELECTED_CARVING_TAG);
     }
 
@@ -196,10 +184,8 @@ public class CarvingKnife extends ModItem {
         initNbtData(stack);
     }
 
-    protected NBTTagCompound initNbtData(ItemStack stack)
-    {
-        if(stack.getTagCompound() == null)
-        {
+    protected NBTTagCompound initNbtData(ItemStack stack) {
+        if (stack.getTagCompound() == null) {
             stack.setTagCompound(new NBTTagCompound());
         }
 

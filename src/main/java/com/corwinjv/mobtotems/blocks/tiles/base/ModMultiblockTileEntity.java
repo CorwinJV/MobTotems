@@ -20,8 +20,7 @@ public abstract class ModMultiblockTileEntity<T> extends ModTileEntity implement
     protected List<BlockPos> slaves = new ArrayList<BlockPos>();
     protected BlockPos masterPos = null;
 
-    public ModMultiblockTileEntity()
-    {
+    public ModMultiblockTileEntity() {
         super();
     }
 
@@ -31,13 +30,12 @@ public abstract class ModMultiblockTileEntity<T> extends ModTileEntity implement
         tagCompound.setBoolean(IS_MASTER, isMaster);
 
         NBTTagList slaveList = new NBTTagList();
-        for(BlockPos slavePos : slaves) {
+        for (BlockPos slavePos : slaves) {
             slaveList.appendTag(new NBTTagLong(slavePos.toLong()));
         }
         tagCompound.setTag(SLAVES, slaveList);
 
-        if(masterPos != null)
-        {
+        if (masterPos != null) {
             tagCompound.setLong(MASTER_POS, masterPos.toLong());
         }
         return tagCompound;
@@ -49,9 +47,9 @@ public abstract class ModMultiblockTileEntity<T> extends ModTileEntity implement
         isMaster = tagCompound.getBoolean(IS_MASTER);
 
         NBTTagList tagList = tagCompound.getTagList(SLAVES, Constants.NBT.TAG_LONG);
-        for(int i = 0; i < tagList.tagCount(); i++) {
+        for (int i = 0; i < tagList.tagCount(); i++) {
             NBTBase tag = tagList.get(i);
-            if(tag instanceof NBTTagLong) {
+            if (tag instanceof NBTTagLong) {
                 BlockPos blockPos = BlockPos.fromLong(((NBTTagLong) tag).getLong());
                 slaves.add(blockPos);
             }
@@ -78,10 +76,9 @@ public abstract class ModMultiblockTileEntity<T> extends ModTileEntity implement
 
     @Override
     public void setMaster(IMultiblock<T> master) {
-        if(master instanceof TileEntity) {
+        if (master instanceof TileEntity) {
             masterPos = ((TileEntity) master).getPos();
-        }
-        else {
+        } else {
             masterPos = null;
         }
         markDirty();
@@ -89,16 +86,14 @@ public abstract class ModMultiblockTileEntity<T> extends ModTileEntity implement
 
     @Override
     public IMultiblock<T> getMaster() {
-        if(masterPos != null)
-        {
+        if (masterPos != null) {
             try {
                 TileEntity te = world.getTileEntity(masterPos);
-                if(te != null
+                if (te != null
                         && te instanceof IMultiblock) {
-                    return (IMultiblock)te;
+                    return (IMultiblock) te;
                 }
-            }
-            catch(Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

@@ -1,80 +1,67 @@
 {
   "forge_marker": 1,
-  "defaults":
-  {
+  "defaults": {
   },
-  "variants":
-  {
-    "totem_type=none":
-    {
-      "model" : "mobtotems:totem_wood"
+  "variants": {
+    "totem_type=none": {
+      "model": "mobtotems:totem_wood"
     },
-    "totem_type=creeper":
-    {
-      "model" : "mobtotems:creeper_totem",
+    "totem_type=creeper": {
+      "model": "mobtotems:creeper_totem",
       "textures": {
         "0": "mobtotems:blocks/creeper_totem_face"
-		}
+      }
     },
-    "totem_type=ender":
-    {
-      "model" : "mobtotems:creeper_totem",
+    "totem_type=ender": {
+      "model": "mobtotems:creeper_totem",
       "textures": {
         "0": "mobtotems:blocks/endermen_totem_face"
       }
     },
-    "totem_type=blaze":
-    {
-      "model" : "mobtotems:creeper_totem",
+    "totem_type=blaze": {
+      "model": "mobtotems:creeper_totem",
       "textures": {
         "0": "mobtotems:blocks/blaze_totem_face"
       }
     },
-    "totem_type=spider":
-    {
-      "model" : "mobtotems:creeper_totem",
+    "totem_type=spider": {
+      "model": "mobtotems:creeper_totem",
       "textures": {
         "0": "mobtotems:blocks/spider_totem_face"
       }
     },
-    "totem_type=cow":
-    {
-      "model" : "mobtotems:creeper_totem",
+    "totem_type=cow": {
+      "model": "mobtotems:creeper_totem",
       "textures": {
         "0": "mobtotems:blocks/cow_totem_face"
       }
     },
-    "totem_type=wolf":
-    {
-      "model" : "mobtotems:creeper_totem",
+    "totem_type=wolf": {
+      "model": "mobtotems:creeper_totem",
       "textures": {
         "0": "mobtotems:blocks/wolf_totem_face"
       }
     },
-    "totem_type=ocelot":
-    {
-      "model" : "mobtotems:creeper_totem",
+    "totem_type=ocelot": {
+      "model": "mobtotems:creeper_totem",
       "textures": {
         "0": "mobtotems:blocks/ocelot_totem_face"
       }
     },
-    "totem_type=wither":
-    {
-      "model" : "mobtotems:creeper_totem",
+    "totem_type=wither": {
+      "model": "mobtotems:creeper_totem",
       "textures": {
         "0": "mobtotems:blocks/wither_totem_face"
       }
     },
-    "totem_type=llama":
-    {
-      "model" : "mobtotems:creeper_totem",
+    "totem_type=llama": {
+      "model": "mobtotems:creeper_totem",
       "textures": {
         "0": "mobtotems:blocks/llama_totem_face"
       }
     },
-    "totem_type=rabbit":
-    {
-      "model" : "mobtotems:creeper_totem",
+    "totem_type=rabbit": {
+      "model": "mobtotems:creeper_totem",
       "textures": {
         "0": "mobtotems:blocks/rabbit_totem_face"
       }

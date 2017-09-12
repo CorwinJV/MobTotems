@@ -3,7 +3,6 @@ package com.corwinjv.mobtotems.blocks;
 import com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.SacredLightTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
-import com.google.common.collect.Collections2;
 import net.minecraft.block.Block;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.SoundType;
@@ -16,28 +15,18 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-import java.util.function.Predicate;
-
-import static com.corwinjv.mobtotems.blocks.TotemWoodBlock.MAX_MULTIBLOCK_RANGE;
 
 /**
  * Created by CorwinJV on 7/13/2016.
  */
-public class SacredLightBlock extends ModBlock implements ITileEntityProvider
-{
-    public SacredLightBlock()
-    {
+public class SacredLightBlock extends ModBlock implements ITileEntityProvider {
+    public SacredLightBlock() {
         super(Material.CIRCUITS);
         this.setHardness(2.0F);
         this.setSoundType(SoundType.WOOD);
@@ -46,50 +35,41 @@ public class SacredLightBlock extends ModBlock implements ITileEntityProvider
     }
 
     // Rendering stuff
-    public boolean isVisuallyOpaque()
-    {
+    public boolean isVisuallyOpaque() {
         return false;
     }
 
-    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face)
-    {
+    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
         return false;
     }
 
     @Nonnull
     @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
-    {
+    public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
     }
 
     @SideOnly(Side.CLIENT)
-    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand)
-    {
-        double d0 = (double)pos.getX() + 0.5D;
-        double d1 = (double)pos.getY() + 0.7D;
-        double d2 = (double)pos.getZ() + 0.5D;
+    public void randomDisplayTick(IBlockState stateIn, World worldIn, BlockPos pos, Random rand) {
+        double d0 = (double) pos.getX() + 0.5D;
+        double d1 = (double) pos.getY() + 0.7D;
+        double d2 = (double) pos.getZ() + 0.5D;
 
-        worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + 0.27D * (double)EnumFacing.UP.getFrontOffsetX(), d1 + 0.22D, d2 + 0.27D * (double)EnumFacing.UP.getFrontOffsetZ(), 0.0D, 0.0D, 0.0D);
+        worldIn.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, d0 + 0.27D * (double) EnumFacing.UP.getFrontOffsetX(), d1 + 0.22D, d2 + 0.27D * (double) EnumFacing.UP.getFrontOffsetZ(), 0.0D, 0.0D, 0.0D);
         worldIn.spawnParticle(EnumParticleTypes.FLAME, d0, d1, d2, 0.0D, 0.0D, 0.0D);
     }
 
     @Override
-    public int getLightValue(@Nullable IBlockState state, @Nullable IBlockAccess world, @Nullable BlockPos pos)
-    {
+    public int getLightValue(@Nullable IBlockState state, @Nullable IBlockAccess world, @Nullable BlockPos pos) {
         return 15;
     }
 
     // Can only place on the tops of solid things
-    private boolean canPlaceOn(World worldIn, BlockPos pos)
-    {
+    private boolean canPlaceOn(World worldIn, BlockPos pos) {
         IBlockState state = worldIn.getBlockState(pos);
-        if (state.isSideSolid(worldIn, pos, EnumFacing.UP))
-        {
+        if (state.isSideSolid(worldIn, pos, EnumFacing.UP)) {
             return true;
-        }
-        else
-        {
+        } else {
             return state.getBlock().canPlaceTorchOnTop(state, worldIn, pos);
         }
     }
@@ -99,7 +79,7 @@ public class SacredLightBlock extends ModBlock implements ITileEntityProvider
     public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
         super.onBlockDestroyedByPlayer(worldIn, pos, state);
         TileEntity te = worldIn.getTileEntity(new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ()));
-        if(te != null
+        if (te != null
                 && te instanceof TotemTileEntity) {
             TileEntity master = (TileEntity) ((TotemTileEntity) te).getMaster();
             if (master != null
@@ -111,27 +91,23 @@ public class SacredLightBlock extends ModBlock implements ITileEntityProvider
     }
 
     @Override
-    public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos)
-    {
+    public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos) {
         return this.canPlaceAt(worldIn, pos, EnumFacing.UP);
     }
 
-    private boolean canPlaceAt(World worldIn, BlockPos pos, EnumFacing facing)
-    {
+    private boolean canPlaceAt(World worldIn, BlockPos pos, EnumFacing facing) {
         BlockPos blockpos = pos.offset(facing.getOpposite());
         return this.canPlaceOn(worldIn, blockpos);
     }
 
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state)
-    {
+    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
         this.checkForDrop(worldIn, pos, state);
     }
 
     // Okay, so I see that neighborChanged is deprecated but it appears that onNeighborChange(IBlockAccess, BlockPos, BlockPos)
     // doesn't get called when a sand block is broken under the SacredLightBlock
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos p_189540_5_)
-    {
+    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos p_189540_5_) {
         this.checkForDrop(worldIn, pos, state);
     }
 
@@ -140,16 +116,11 @@ public class SacredLightBlock extends ModBlock implements ITileEntityProvider
         super.onNeighborChange(world, pos, neighbor);
     }
 
-    private boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state)
-    {
-        if (this.canPlaceAt(worldIn, pos, EnumFacing.UP))
-        {
+    private boolean checkForDrop(World worldIn, BlockPos pos, IBlockState state) {
+        if (this.canPlaceAt(worldIn, pos, EnumFacing.UP)) {
             return true;
-        }
-        else
-        {
-            if (worldIn.getBlockState(pos).getBlock() == this)
-            {
+        } else {
+            if (worldIn.getBlockState(pos).getBlock() == this) {
                 this.dropBlockAsItem(worldIn, pos, state, 0);
                 worldIn.setBlockToAir(pos);
             }
@@ -160,8 +131,7 @@ public class SacredLightBlock extends ModBlock implements ITileEntityProvider
 
     @Nonnull
     @Override
-    public TileEntity createNewTileEntity(@Nullable World worldIn, int meta)
-    {
+    public TileEntity createNewTileEntity(@Nullable World worldIn, int meta) {
         return new SacredLightTileEntity();
     }
 }

@@ -25,10 +25,9 @@ public class TotemHelper {
     public static final int RANGE_BOOST = 16;
     public static final int MAX_TOTEM_HEIGHT = 3;
 
-    private static Map<TotemType,Class<? extends TotemLogic>> totemMap = new HashMap<>();
+    private static Map<TotemType, Class<? extends TotemLogic>> totemMap = new HashMap<>();
 
-    public static void init()
-    {
+    public static void init() {
         totemMap.put(TotemType.NONE, null);
         totemMap.put(TotemType.CREEPER, CreeperLogic.class);
         totemMap.put(TotemType.ENDER, EnderLogic.class);
@@ -45,10 +44,9 @@ public class TotemHelper {
     @Nullable
     public static TotemLogic getTotemLogic(TotemType totemType) {
         TotemLogic ret = null;
-        if(totemMap.containsKey(totemType)) {
+        if (totemMap.containsKey(totemType)) {
             try {
-                if(totemMap.get(totemType) != null)
-                {
+                if (totemMap.get(totemType) != null) {
                     ret = totemMap.get(totemType).newInstance();
                 }
             } catch (InstantiationException | IllegalAccessException e) {
@@ -62,18 +60,18 @@ public class TotemHelper {
     public static List<ItemStack> getCostForTotemType(TotemType totemType) {
         List<ItemStack> cost = new ArrayList<>();
         TotemLogic logic = getTotemLogic(totemType);
-        if(logic != null) {
+        if (logic != null) {
             cost = logic.getCost();
         }
         return cost;
     }
 
     public static void sortEffectsAndModifiers(List<TotemType> list, List<TotemType> effectsList, List<TotemType> modifiersList) {
-        for(TotemType type : list) {
+        for (TotemType type : list) {
             TotemLogic logic = getTotemLogic(type);
 
-            if(logic != null) {
-                switch(logic.getEffectType()) {
+            if (logic != null) {
+                switch (logic.getEffectType()) {
                     case EFFECT: {
                         effectsList.add(type);
                         break;
@@ -87,39 +85,36 @@ public class TotemHelper {
         }
     }
 
-    public static boolean hasTotemType(World world, OfferingBoxTileEntity tileEntity, TotemType totemType)
-    {
-        for(TotemType type : tileEntity.getSlaveTypes()) {
-            if(type == totemType) {
+    public static boolean hasTotemType(OfferingBoxTileEntity tileEntity, TotemType totemType) {
+        for (TotemType type : tileEntity.getSlaveTypes()) {
+            if (type == totemType) {
                 return true;
             }
         }
         return false;
     }
 
-    public static Modifiers getModifiers(World world, OfferingBoxTileEntity tileEntity)
-    {
+    public static Modifiers getModifiers(World world, OfferingBoxTileEntity tileEntity) {
         Modifiers mods = new Modifiers();
-        for(TotemType type : tileEntity.getSlaveTypes()) {
+        for (TotemType type : tileEntity.getSlaveTypes()) {
             TotemLogic logic = getTotemLogic(type);
-            if(logic != null) {
+            if (logic != null) {
                 mods = logic.adjustModifiers(mods);
             }
         }
         return mods;
     }
 
-    public static List<BlockPos> checkForSlaveAboveRecursively(World world, BlockPos startPos, int height)
-    {
+    public static List<BlockPos> checkForSlaveAboveRecursively(World world, BlockPos startPos, int height) {
         List<BlockPos> totemTileList = new ArrayList<>();
 
-        if(height > 0) {
+        if (height > 0) {
             TileEntity totemTileEntity = world.getTileEntity(startPos);
-            if(totemTileEntity instanceof TotemTileEntity) {
+            if (totemTileEntity instanceof TotemTileEntity) {
                 totemTileList.add(startPos);
 
-                List<BlockPos> tmpList = checkForSlaveAboveRecursively(world, startPos.add(0, 1, 0), height-1);
-                for(BlockPos te : tmpList) {
+                List<BlockPos> tmpList = checkForSlaveAboveRecursively(world, startPos.add(0, 1, 0), height - 1);
+                for (BlockPos te : tmpList) {
                     totemTileList.add(te);
                 }
             }

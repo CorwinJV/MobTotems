@@ -36,17 +36,18 @@ public class CowLogic extends TotemLogic {
     public static class CowTotemEntityJoinWorldEvent {
         @SubscribeEvent
         public void onEntityJoinWorldEvent(EntityJoinWorldEvent e) {
-            if(!e.getWorld().isRemote) {
+            if (!e.getWorld().isRemote) {
                 List<TileEntity> loadedTileEntityList = e.getWorld().loadedTileEntityList;
 
-                for (TileEntity tileEntity : loadedTileEntityList) {
-                    if(tileEntity instanceof OfferingBoxTileEntity) {
-                        if(((OfferingBoxTileEntity)tileEntity).getChargeLevel() > 0) {
-                            if(TotemHelper.hasTotemType(e.getWorld(), (OfferingBoxTileEntity)tileEntity, TotemType.COW)) {
-                                Modifiers mods = TotemHelper.getModifiers(e.getWorld(), (OfferingBoxTileEntity)tileEntity);
-                                int radius = TotemHelper.DEFAULT_RADIUS + (int)(TotemHelper.RANGE_BOOST * mods.range);
+                for (int i = loadedTileEntityList.size() - 1; i >= 0; i--) {
+                    TileEntity tileEntity = loadedTileEntityList.get(i);
+                    if (tileEntity instanceof OfferingBoxTileEntity) {
+                        if (((OfferingBoxTileEntity) tileEntity).getChargeLevel() > 0) {
+                            if (TotemHelper.hasTotemType((OfferingBoxTileEntity) tileEntity, TotemType.COW)) {
+                                Modifiers mods = TotemHelper.getModifiers(e.getWorld(), (OfferingBoxTileEntity) tileEntity);
+                                int radius = TotemHelper.DEFAULT_RADIUS + (int) (TotemHelper.RANGE_BOOST * mods.range);
 
-                                if(!canSpawnMobHere(tileEntity.getPos(), e.getEntity(), radius)) {
+                                if (!canSpawnMobHere(tileEntity.getPos(), e.getEntity(), radius)) {
                                     //FMLLog.log(Level.ERROR, "Stopped mob from spawning with radius: " + radius);
                                     e.setCanceled(true);
                                     break;
@@ -60,6 +61,7 @@ public class CowLogic extends TotemLogic {
 
         private boolean canSpawnMobHere(BlockPos pos, Entity mob, int radius) {
             double dist = mob.getPosition().getDistance(pos.getX(), pos.getY(), pos.getZ());
+
             return !(mob instanceof EntityAnimal && dist < radius);
         }
     }

@@ -8,32 +8,27 @@ import net.minecraft.block.material.Material;
 /**
  * Created by CorwinJV on 9/1/14.
  */
-public class ModBlock extends Block
-{
+public class ModBlock extends Block {
     public ModBlock(Material aMaterial) {
         super(aMaterial);
         this.init();
     }
 
-    public ModBlock()
-    {
+    public ModBlock() {
         super(Material.WOOD);
         this.init();
     }
 
-    public void init()
-    {
+    public void init() {
         this.setCreativeTab(CreativeTabMT.MT_TAB);
     }
 
     @Override
-    public String getUnlocalizedName()
-    {
+    public String getUnlocalizedName() {
         return String.format("tiles.%s%s", Reference.RESOURCE_PREFIX, getUnwrappedUnlocalizedName(super.getUnlocalizedName()));
     }
 
-    protected String getUnwrappedUnlocalizedName(String unlocalizedName)
-    {
+    protected String getUnwrappedUnlocalizedName(String unlocalizedName) {
         return unlocalizedName.substring(unlocalizedName.indexOf(".") + 1);
     }
 }

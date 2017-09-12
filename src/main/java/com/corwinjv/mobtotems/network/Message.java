@@ -1,5 +1,6 @@
 package com.corwinjv.mobtotems.network;
 
+import com.corwinjv.mobtotems.MobTotems;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,24 +14,20 @@ import net.minecraftforge.fml.relauncher.Side;
 /**
  * Created by CorwinJV on 2/1/2016.
  */
-public class Message<REQ extends IMessage> implements IMessage, IMessageHandler<REQ, REQ>
-{
+public class Message<REQ extends IMessage> implements IMessage, IMessageHandler<REQ, REQ> {
     @Override
     public REQ onMessage(REQ aMessage, MessageContext aCtx) {
         final REQ message = aMessage;
         final MessageContext ctx = aCtx;
 
-        if(ctx.side == Side.SERVER)
-        {
-            ((IThreadListener) ctx.getServerHandler().playerEntity.world).addScheduledTask(new Runnable() {
+        if (ctx.side == Side.SERVER) {
+            ((IThreadListener) ctx.getServerHandler().player.world).addScheduledTask(new Runnable() {
                 @Override
                 public void run() {
-                    handleServer(message, ctx.getServerHandler().playerEntity);
+                    handleServer(message, ctx.getServerHandler().player);
                 }
             });
-        }
-        else if(ctx.side == Side.CLIENT)
-        {
+        } else if (ctx.side == Side.CLIENT) {
             Minecraft.getMinecraft().addScheduledTask(new Runnable() {
                 @Override
                 public void run() {
@@ -41,13 +38,11 @@ public class Message<REQ extends IMessage> implements IMessage, IMessageHandler<
         return null;
     }
 
-    protected void handleClient(REQ Message, EntityPlayer player)
-    {
+    protected void handleClient(REQ Message, EntityPlayer player) {
 
     }
 
-    protected void handleServer(REQ Message, EntityPlayerMP player)
-    {
+    protected void handleServer(REQ Message, EntityPlayerMP player) {
 
     }
 

@@ -1,40 +1,124 @@
 {
   "parent": "mobtotems:block/offering_box",
   "display": {
-      "thirdperson_righthand": {
-        "rotation": [ 62, 41, 0 ],
-        "translation": [ 0, 1, 0 ],
-        "scale": [ 0.4, 0.4, 0.4 ]
-      },
-      "thirdperson_lefthand": {
-        "rotation": [ 62, 41, 0 ],
-        "translation": [ 0, 1, 0 ],
-        "scale": [ 0.4, 0.4, 0.4 ]
-      },
-      "ground": {
-        "rotation": [ 0, 0, 0 ],
-        "translation": [ 0, 4, 0 ],
-        "scale": [ 0.4, 0.4, 0.4 ]
-      },
-      "fixed": {
-        "rotation": [ 0, 0, 0 ],
-        "translation": [ 0, 0, 0 ],
-        "scale": [ 1, 1, 1 ]
-      },
-      "firstperson_righthand": {
-        "rotation": [ 10, 48, -3 ],
-        "translation": [ -1.89, 4, 0 ],
-        "scale": [ 0.38, 0.38, 0.38 ]
-      },
-      "firstperson_lefthand": {
-        "rotation": [ 10, 48, -3 ],
-        "translation": [ -1.89, 4, 0 ],
-        "scale": [ 0.38, 0.38, 0.38 ]
-      },
-      "gui": {
-        "rotation": [ 30, 45, 0 ],
-        "translation": [ 0, 4, 0],
-        "scale":[ 0.6, 0.6, 0.6 ]
-      }
+    "thirdperson_righthand": {
+      "rotation": [
+        62,
+        41,
+        0
+      ],
+      "translation": [
+        0,
+        1,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        62,
+        41,
+        0
+      ],
+      "translation": [
+        0,
+        1,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "ground": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        4,
+        0
+      ],
+      "scale": [
+        0.4,
+        0.4,
+        0.4
+      ]
+    },
+    "fixed": {
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "translation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        10,
+        48,
+        -3
+      ],
+      "translation": [
+        -1.89,
+        4,
+        0
+      ],
+      "scale": [
+        0.38,
+        0.38,
+        0.38
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        10,
+        48,
+        -3
+      ],
+      "translation": [
+        -1.89,
+        4,
+        0
+      ],
+      "scale": [
+        0.38,
+        0.38,
+        0.38
+      ]
+    },
+    "gui": {
+      "rotation": [
+        30,
+        45,
+        0
+      ],
+      "translation": [
+        0,
+        4,
+        0
+      ],
+      "scale": [
+        0.6,
+        0.6,
+        0.6
+      ]
     }
+  }
 }

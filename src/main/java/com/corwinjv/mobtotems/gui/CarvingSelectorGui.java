@@ -1,6 +1,5 @@
 package com.corwinjv.mobtotems.gui;
 
-import amerifrance.guideapi.api.util.TextHelper;
 import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.blocks.TotemType;
 import com.corwinjv.mobtotems.network.Network;
@@ -25,8 +24,7 @@ import static com.corwinjv.mobtotems.blocks.ModBlocks.TOTEM_WOOD;
 /**
  * Created by CorwinJV on 1/19/2017.
  */
-public class CarvingSelectorGui extends GuiScreen
-{
+public class CarvingSelectorGui extends GuiScreen {
     private static int INTRO_UPDATES = 5;
     private static int ANGLE_OFFSET = 17;
 
@@ -41,32 +39,27 @@ public class CarvingSelectorGui extends GuiScreen
         selectedType = TotemType.fromMeta(meta);
     }
 
-    public TotemType getTypeHoveredOver(float centerX, float centerY, int mouseX, int mouseY)
-    {
+    public TotemType getTypeHoveredOver(float centerX, float centerY, int mouseX, int mouseY) {
         TotemType typeHoveredOver = TotemType.NONE;
-        for(TotemType type : TotemType.values())
-        {
+        for (TotemType type : TotemType.values()) {
             float baseAngle = (360 / TotemType.values().length);
-            double angle =  (baseAngle * type.getMeta()) - ANGLE_OFFSET;
+            double angle = (baseAngle * type.getMeta()) - ANGLE_OFFSET;
 
             double mouseAngle = getMouseAngle(new Vec2f(centerX, centerY), new Vec2f(mouseX, mouseY));
             double minToCheck = sanitizeDegree(angle - (baseAngle / 2));
             double maxToCheck = sanitizeDegree(angle + (baseAngle / 2));
-            if(minToCheck > maxToCheck)
-            {
+            if (minToCheck > maxToCheck) {
                 minToCheck -= 360;
             }
-            if(mouseAngle > minToCheck
-                    && mouseAngle < maxToCheck)
-            {
+            if (mouseAngle > minToCheck
+                    && mouseAngle < maxToCheck) {
                 typeHoveredOver = type;
             }
         }
         return typeHoveredOver;
     }
 
-    public TotemType getTypeSelected()
-    {
+    public TotemType getTypeSelected() {
         return selectedType;
     }
 
@@ -86,12 +79,11 @@ public class CarvingSelectorGui extends GuiScreen
         TotemType typeSelected = getTypeSelected();
 
         Item item = Item.getItemFromBlock(TOTEM_WOOD);
-        for(TotemType type : TotemType.values())
-        {
+        for (TotemType type : TotemType.values()) {
             ItemStack stack = new ItemStack(item, 1, type.getMeta());
             float radius = Math.min(updates * 20, 95f);
             float baseAngle = (360 / TotemType.values().length);
-            double angle =  (baseAngle * type.getMeta()) - ANGLE_OFFSET;
+            double angle = (baseAngle * type.getMeta()) - ANGLE_OFFSET;
 
             angle = sanitizeDegree(angle);
 
@@ -101,7 +93,7 @@ public class CarvingSelectorGui extends GuiScreen
             // Render bg
             mc.renderEngine.bindTexture(util.getGuiResourceLocation("chargeable_bg.png"));
             GlStateManager.pushMatrix();
-            GlStateManager.translate(x-18.5, y-18.5, 90.0F + this.zLevel);
+            GlStateManager.translate(x - 18.5, y - 18.5, 90.0F + this.zLevel);
             GlStateManager.scale(2.0f, 2.0f, 1.0f);
             drawTexturedModalRect(0, 0, 0, 0, 32, 32);
             GlStateManager.popMatrix();
@@ -116,57 +108,49 @@ public class CarvingSelectorGui extends GuiScreen
             int hoveredColor = 0x55FFFF;
 
             GlStateManager.pushMatrix();
-            GlStateManager.translate(x-25, y+13, 100F + this.zLevel);
+            GlStateManager.translate(x - 25, y + 13, 100F + this.zLevel);
             GlStateManager.scale(0.85, 0.85, 1.0);
             String text = I18n.translateToLocalFormatted(stack.getItem().getUnlocalizedName(stack) + ".name");
 
             // is text selected
             int colorToPrint = unselectedColor;
-            if(type == typeSelected)
-            {
+            if (type == typeSelected) {
                 colorToPrint = selectedColor;
             }
-            if(type == typeHovered)
-            {
+            if (type == typeHovered) {
                 colorToPrint = hoveredColor;
             }
 
-            fontRendererObj.drawStringWithShadow(text, 0, 0, colorToPrint);
-            fontRendererObj.drawStringWithShadow("", 0, 0, unselectedColor);
+            fontRenderer.drawStringWithShadow(text, 0, 0, colorToPrint);
+            fontRenderer.drawStringWithShadow("", 0, 0, unselectedColor);
             GlStateManager.popMatrix();
         }
 
-        if(updates >= INTRO_UPDATES)
-        {
-            fontRendererObj.drawStringWithShadow(I18n.translateToLocalFormatted(Reference.RESOURCE_PREFIX + "gui.carving.leftclick"), centerX - 50, centerY - 5, 0xFFFFFF);
-            fontRendererObj.drawStringWithShadow(I18n.translateToLocalFormatted(Reference.RESOURCE_PREFIX + "gui.carving.rightclick"), centerX - 50, 15 + centerY, 0xFFFFFF);
+        if (updates >= INTRO_UPDATES) {
+            fontRenderer.drawStringWithShadow(I18n.translateToLocalFormatted(Reference.RESOURCE_PREFIX + "gui.carving.leftclick"), centerX - 50, centerY - 5, 0xFFFFFF);
+            fontRenderer.drawStringWithShadow(I18n.translateToLocalFormatted(Reference.RESOURCE_PREFIX + "gui.carving.rightclick"), centerX - 50, 15 + centerY, 0xFFFFFF);
         }
 
         GlStateManager.popMatrix();
     }
 
-    public double getMouseAngle(Vec2f referencePoint, Vec2f mousePos)
-    {
+    public double getMouseAngle(Vec2f referencePoint, Vec2f mousePos) {
         Vec2f relativePos = new Vec2f(mousePos.x - referencePoint.x, mousePos.y - referencePoint.y);
         double degrees = Math.toDegrees(Math.atan2(relativePos.y, relativePos.x));
         return sanitizeDegree(degrees);
     }
 
-    public double sanitizeDegree(double degree)
-    {
-        if(degree < 0)
-        {
+    public double sanitizeDegree(double degree) {
+        if (degree < 0) {
             degree += 360;
         }
-        if(degree > 360)
-        {
+        if (degree > 360) {
             degree -= 360;
         }
         return degree;
     }
 
-    protected void renderItemModel(ItemStack stack, double x, double y, IBakedModel bakedmodel, RenderItem renderItem)
-    {
+    protected void renderItemModel(ItemStack stack, double x, double y, IBakedModel bakedmodel, RenderItem renderItem) {
         GlStateManager.pushMatrix();
         mc.renderEngine.bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
         mc.renderEngine.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).setBlurMipmap(false, false);
@@ -176,7 +160,7 @@ public class CarvingSelectorGui extends GuiScreen
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        this.setupGuiTransform((int)x, (int)y);
+        this.setupGuiTransform((int) x, (int) y);
         bakedmodel = net.minecraftforge.client.ForgeHooksClient.handleCameraTransforms(bakedmodel, ItemCameraTransforms.TransformType.GUI, false);
         renderItem.renderItem(stack, bakedmodel);
         GlStateManager.disableAlpha();
@@ -187,9 +171,8 @@ public class CarvingSelectorGui extends GuiScreen
         mc.renderEngine.getTexture(TextureMap.LOCATION_BLOCKS_TEXTURE).restoreLastBlurMipmap();
     }
 
-    private void setupGuiTransform(int xPosition, int yPosition)
-    {
-        GlStateManager.translate((float)xPosition, (float)yPosition, 100.0F + this.zLevel);
+    private void setupGuiTransform(int xPosition, int yPosition) {
+        GlStateManager.translate((float) xPosition, (float) yPosition, 100.0F + this.zLevel);
         GlStateManager.translate(0.0F, 0.0F, 0.0F);
         GlStateManager.scale(1.0F, -1.0F, 1.0F);
         GlStateManager.scale(32.0F, 32.0F, 32.0F);
@@ -200,19 +183,14 @@ public class CarvingSelectorGui extends GuiScreen
     @Override
     public void updateScreen() {
         super.updateScreen();
-        if(in)
-        {
+        if (in) {
             updates++;
-            if(updates > INTRO_UPDATES)
-            {
+            if (updates > INTRO_UPDATES) {
                 updates = INTRO_UPDATES;
             }
-        }
-        else
-        {
+        } else {
             updates--;
-            if(updates < 0)
-            {
+            if (updates < 0) {
                 updates = 0;
                 mc.player.closeScreen();
             }
@@ -220,10 +198,8 @@ public class CarvingSelectorGui extends GuiScreen
     }
 
     @Override
-    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
-    {
-        if(mouseButton == 0)
-        {
+    protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+        if (mouseButton == 0) {
             int centerX = width / 2;
             int centerY = (height / 2) - 8;
 
@@ -231,8 +207,7 @@ public class CarvingSelectorGui extends GuiScreen
             Network.sendToServer(new SetKnifeMetaMessage(selectedType.getMeta(), EnumHand.MAIN_HAND));
         }
 
-        if(mouseButton == 0 || mouseButton == 1)
-        {
+        if (mouseButton == 0 || mouseButton == 1) {
             in = false;
         }
     }
