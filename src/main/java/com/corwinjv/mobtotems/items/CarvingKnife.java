@@ -10,6 +10,7 @@ import com.corwinjv.mobtotems.network.OpenKnifeGuiMessage;
 import com.corwinjv.mobtotems.utils.BlockUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.ParticleBlockDust;
 import net.minecraft.entity.Entity;
@@ -101,7 +102,7 @@ public class CarvingKnife extends ModItem {
                                 speedX *= 0.2;
                                 speedY *= 0.2;
                                 speedZ *= 0.2;
-                                MobTotems.component().minecraft().effectRenderer.addEffect(
+                                Minecraft.getMinecraft().effectRenderer.addEffect(
                                         particleFactory.createParticle(EnumParticleTypes.BLOCK_DUST.getParticleID(),
                                                 world,
                                                 (double) pos.getX() + d0,

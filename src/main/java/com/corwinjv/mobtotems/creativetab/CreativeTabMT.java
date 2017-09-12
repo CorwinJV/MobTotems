@@ -12,7 +12,7 @@ public class CreativeTabMT {
     public static final CreativeTabs MT_TAB = new CreativeTabs(Reference.MOD_ID) {
         @Override
         public ItemStack getTabIconItem() {
-            return new ItemStack(ModItems.TOTEMIC_FOCUS_ITEM);
+            return new ItemStack(ModItems.TOTEMIC_FOCUS);
         }
     };
 }

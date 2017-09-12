@@ -2,10 +2,11 @@ package com.corwinjv.mobtotems.particles;
 
 import com.corwinjv.mobtotems.MobTotems;
 import com.corwinjv.mobtotems.Reference;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
@@ -63,7 +64,7 @@ public class WolfIdleParticle extends Particle {
     }
 
     @Override
-    public void renderParticle(VertexBuffer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+    public void renderParticle(BufferBuilder worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
         this.partialTicks = partialTicks;
         this.rotationX = rotationX;
         this.rotationZ = rotationZ;
@@ -80,7 +81,7 @@ public class WolfIdleParticle extends Particle {
 
     static void RenderQueuedRenders(Tessellator tessellator) {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 0.75F);
-        MobTotems.component().minecraft().renderEngine.bindTexture(PARTICLE_TEXTURES);
+        Minecraft.getMinecraft().renderEngine.bindTexture(PARTICLE_TEXTURES);
 
         tessellator.getBuffer().begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX_COLOR);
         for (WolfIdleParticle particle : queuedRenders) {
@@ -116,10 +117,10 @@ public class WolfIdleParticle extends Particle {
         float f6 = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) partialTicks - interpPosY);
         float f7 = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) partialTicks - interpPosZ);
 
-        VertexBuffer buffer = tessellator.getBuffer();
-        buffer.pos((double) f5 + avec3d[0].xCoord, (double) f6 + avec3d[0].yCoord, (double) f7 + avec3d[0].zCoord).tex(maxU, maxV).color(1.0f, 1.0f, 1.0f, 0.5f).endVertex();
-        buffer.pos((double) f5 + avec3d[1].xCoord, (double) f6 + avec3d[1].yCoord, (double) f7 + avec3d[1].zCoord).tex(maxU, minV).color(1.0f, 1.0f, 1.0f, 0.5f).endVertex();
-        buffer.pos((double) f5 + avec3d[2].xCoord, (double) f6 + avec3d[2].yCoord, (double) f7 + avec3d[2].zCoord).tex(minU, minV).color(1.0f, 1.0f, 1.0f, 0.5f).endVertex();
-        buffer.pos((double) f5 + avec3d[3].xCoord, (double) f6 + avec3d[3].yCoord, (double) f7 + avec3d[3].zCoord).tex(minU, maxV).color(1.0f, 1.0f, 1.0f, 0.5f).endVertex();
+        BufferBuilder buffer = tessellator.getBuffer();
+        buffer.pos((double) f5 + avec3d[0].x, (double) f6 + avec3d[0].y, (double) f7 + avec3d[0].z).tex(maxU, maxV).color(1.0f, 1.0f, 1.0f, 0.5f).endVertex();
+        buffer.pos((double) f5 + avec3d[1].x, (double) f6 + avec3d[1].y, (double) f7 + avec3d[1].z).tex(maxU, minV).color(1.0f, 1.0f, 1.0f, 0.5f).endVertex();
+        buffer.pos((double) f5 + avec3d[2].x, (double) f6 + avec3d[2].y, (double) f7 + avec3d[2].z).tex(minU, minV).color(1.0f, 1.0f, 1.0f, 0.5f).endVertex();
+        buffer.pos((double) f5 + avec3d[3].x, (double) f6 + avec3d[3].y, (double) f7 + avec3d[3].z).tex(minU, maxV).color(1.0f, 1.0f, 1.0f, 0.5f).endVertex();
     }
 }

@@ -34,11 +34,6 @@ public class IncenseKindlingBox extends ModBlock implements ITileEntityProvider 
         return boundingBox;
     }
 
-    @Override
-    public boolean isBlockSolid(IBlockAccess worldIn, BlockPos pos, EnumFacing side) {
-        return false;
-    }
-
     // Rendering stuff
     public boolean isVisuallyOpaque() {
         return false;
@@ -51,7 +46,7 @@ public class IncenseKindlingBox extends ModBlock implements ITileEntityProvider 
     // Can only place on the tops of solid things
     private boolean canPlaceOn(World worldIn, BlockPos pos) {
         IBlockState state = worldIn.getBlockState(pos);
-        return (state.getBlock().isBlockSolid(worldIn, pos, EnumFacing.UP)
+        return (state.getBlock().canSpawnInBlock()
                 || state.getBlock().canPlaceTorchOnTop(state, worldIn, pos))
                 && state.getBlock().isFullBlock(state);
     }

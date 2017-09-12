@@ -110,7 +110,7 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity implements ITick
                     Block blockAbove = getWorld().getBlockState(new BlockPos(x, y + 1, z)).getBlock();
 
                     if (pos.getDistance(blockPos.getX(), blockPos.getY(), blockPos.getZ()) < TMP_MANA_GAIN_DIST
-                            && block.isBlockSolid(getWorld(), blockPos, EnumFacing.UP)
+                            && block.canSpawnInBlock()
                             && blockAbove instanceof BlockAir) {
                         Random rand = getWorld().rand;
                         float width = 0.75f;

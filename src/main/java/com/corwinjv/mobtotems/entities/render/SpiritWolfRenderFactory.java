@@ -15,4 +15,3 @@ public class SpiritWolfRenderFactory implements IRenderFactory<EntitySpiritWolf>
         return new SpiritWolfRender(manager, new ModelWolf(), 0.5F);
     }
 }
-

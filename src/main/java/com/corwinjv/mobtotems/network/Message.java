@@ -21,19 +21,17 @@ public class Message<REQ extends IMessage> implements IMessage, IMessageHandler<
         final MessageContext ctx = aCtx;
 
         if (ctx.side == Side.SERVER) {
-            ((IThreadListener) ctx.getServerHandler().playerEntity.world).addScheduledTask(new Runnable() {
+            ((IThreadListener) ctx.getServerHandler().player.world).addScheduledTask(new Runnable() {
                 @Override
                 public void run() {
-                    handleServer(message, ctx.getServerHandler().playerEntity);
+                    handleServer(message, ctx.getServerHandler().player);
                 }
             });
         } else if (ctx.side == Side.CLIENT) {
-            Minecraft minecraft = MobTotems.component().minecraft();
-
-            minecraft.addScheduledTask(new Runnable() {
+            Minecraft.getMinecraft().addScheduledTask(new Runnable() {
                 @Override
                 public void run() {
-                    handleClient(message, minecraft.player);
+                    handleClient(message, Minecraft.getMinecraft().player);
                 }
             });
         }

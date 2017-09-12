@@ -35,8 +35,8 @@ public class MobTotems {
 
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
-        //Dagger 2 implementation
-        mobTotemsComponent = proxy.initializeDagger(instance);
+//        //Dagger 2 implementation
+//        mobTotemsComponent = proxy.initializeDagger(instance);
 
         // Network & Messages
         Network.init();
@@ -54,12 +54,9 @@ public class MobTotems {
 
         // Blocks
         ModBlocks.init();
-        ModBlocks.registerRecipes();
 
         // Items
         ModItems.init();
-        ModItems.registerItems();
-        ModItems.registerRecipes();
 
         // Entities
         ModEntities.init();

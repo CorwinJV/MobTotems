@@ -121,14 +121,14 @@ public class CarvingSelectorGui extends GuiScreen {
                 colorToPrint = hoveredColor;
             }
 
-            fontRendererObj.drawStringWithShadow(text, 0, 0, colorToPrint);
-            fontRendererObj.drawStringWithShadow("", 0, 0, unselectedColor);
+            fontRenderer.drawStringWithShadow(text, 0, 0, colorToPrint);
+            fontRenderer.drawStringWithShadow("", 0, 0, unselectedColor);
             GlStateManager.popMatrix();
         }
 
         if (updates >= INTRO_UPDATES) {
-            fontRendererObj.drawStringWithShadow(I18n.translateToLocalFormatted(Reference.RESOURCE_PREFIX + "gui.carving.leftclick"), centerX - 50, centerY - 5, 0xFFFFFF);
-            fontRendererObj.drawStringWithShadow(I18n.translateToLocalFormatted(Reference.RESOURCE_PREFIX + "gui.carving.rightclick"), centerX - 50, 15 + centerY, 0xFFFFFF);
+            fontRenderer.drawStringWithShadow(I18n.translateToLocalFormatted(Reference.RESOURCE_PREFIX + "gui.carving.leftclick"), centerX - 50, centerY - 5, 0xFFFFFF);
+            fontRenderer.drawStringWithShadow(I18n.translateToLocalFormatted(Reference.RESOURCE_PREFIX + "gui.carving.rightclick"), centerX - 50, 15 + centerY, 0xFFFFFF);
         }
 
         GlStateManager.popMatrix();

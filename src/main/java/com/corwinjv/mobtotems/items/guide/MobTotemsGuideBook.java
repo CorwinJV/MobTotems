@@ -21,6 +21,7 @@ import com.corwinjv.mobtotems.items.ModItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -55,24 +56,24 @@ public class MobTotemsGuideBook implements IGuideBook {
         // Totemic Focus Entry
         List<IPage> pages = new ArrayList<IPage>();
         pages.add(new PageText(util.getLocalizedGuideText("totemic_focus_page_1")));
-        pages.add(new PageIRecipe(new ShapedOreRecipe(ModItems.getItem(ModItems.TOTEMIC_FOCUS), "GXF",
+        pages.add(new PageIRecipe(new ShapedOreRecipe(null, ModItems.ITEMS.get(ModItems.TOTEMIC_FOCUS_NAME), "GXF",
                 " X ",
                 " X ",
                 'X', Items.STICK,
                 'G', Items.GUNPOWDER,
                 'F', Items.FEATHER)));
-        entries.put(new ResourceLocation(Reference.MOD_ID, ModItems.TOTEMIC_FOCUS), new EntryItemStack(pages, util.getLocalizedGuideText("totemic_focus_entry_name"), new ItemStack(ModItems.getItem(ModItems.TOTEMIC_FOCUS))));
+        entries.put(new ResourceLocation(Reference.MOD_ID, ModItems.TOTEMIC_FOCUS_NAME), new EntryItemStack(pages, util.getLocalizedGuideText("totemic_focus_entry_name"), new ItemStack(ModItems.ITEMS.get(ModItems.TOTEMIC_FOCUS_NAME))));
 
         // Carving Knife Entry
         pages = new ArrayList<>();
         pages.add(new PageText(util.getLocalizedGuideText("carving_knife_page_1")));
-        pages.add(new PageIRecipe(new ShapedOreRecipe(ModItems.getItem(ModItems.CARVING_KNIFE),
+        pages.add(new PageIRecipe(new ShapedOreRecipe(null, ModItems.ITEMS.get(ModItems.CARVING_KNIFE_NAME),
                 "   ",
                 " F ",
                 "S  ",
                 'F', Items.FLINT,
                 'S', Items.STICK)));
-        entries.put(new ResourceLocation(Reference.MOD_ID, ModItems.CARVING_KNIFE), new EntryItemStack(pages, util.getLocalizedGuideText("carving_knife_entry_name"), new ItemStack(ModItems.getItem(ModItems.CARVING_KNIFE))));
+        entries.put(new ResourceLocation(Reference.MOD_ID, ModItems.CARVING_KNIFE_NAME), new EntryItemStack(pages, util.getLocalizedGuideText("carving_knife_entry_name"), new ItemStack(ModItems.ITEMS.get(ModItems.CARVING_KNIFE_NAME))));
 
         // Offering Box Entry
         pages = new ArrayList<>();
@@ -87,7 +88,7 @@ public class MobTotemsGuideBook implements IGuideBook {
         pages = new ArrayList<>();
         pages.add(new PageText(util.getLocalizedGuideText("sacred_light_page_1")));
         if (ConfigurationHandler.hardSacredLightRecipe) {
-            pages.add(new PageIRecipe(new ShapedOreRecipe(ModBlocks.SACRED_LIGHT,
+            pages.add(new PageIRecipe(new ShapedOreRecipe(null, ModBlocks.SACRED_LIGHT,
                     "GRG",
                     "XNX",
                     "GTG",
@@ -97,7 +98,7 @@ public class MobTotemsGuideBook implements IGuideBook {
                     'N', Items.NETHER_STAR,
                     'T', TOTEM_WOOD)));
         } else {
-            pages.add(new PageIRecipe(new ShapedOreRecipe(ModBlocks.SACRED_LIGHT,
+            pages.add(new PageIRecipe(new ShapedOreRecipe(null, ModBlocks.SACRED_LIGHT,
                     "GRG",
                     "XOX",
                     "GTG",
@@ -111,7 +112,7 @@ public class MobTotemsGuideBook implements IGuideBook {
         pages.add(new PageTextImage(util.getLocalizedGuideText("sacred_light_example"), util.getGuideResourceLocation("finished_totem_example.png"), false));
         entries.put(new ResourceLocation(Reference.MOD_ID, "sacred_light"), new EntryItemStack(pages, util.getLocalizedGuideText("sacred_light_entry_name"), new ItemStack(ModBlocks.SACRED_LIGHT)));
 
-        categories.add(new CategoryItemStack(entries, util.getLocalizedGuideText("totems_category_name"), new ItemStack(ModItems.getItem(ModItems.TOTEMIC_FOCUS), 1, 0)));
+        categories.add(new CategoryItemStack(entries, util.getLocalizedGuideText("totems_category_name"), new ItemStack(ModItems.ITEMS.get(ModItems.TOTEMIC_FOCUS_NAME), 1, 0)));
 
         // =====================================
         // Totem Types Category
@@ -136,7 +137,7 @@ public class MobTotemsGuideBook implements IGuideBook {
 
         pages = new ArrayList<IPage>();
         pages.add(new PageText(util.getLocalizedGuideText("wolf_bauble_page_1")));
-        pages.add(new PageIRecipe(new ShapedOreRecipe(ModItems.getItem(ModItems.WOLF_TOTEM_BAUBLE),
+        pages.add(new PageIRecipe(new ShapedOreRecipe(null, ModItems.ITEMS.get(ModItems.WOLF_TOTEM_BAUBLE_NAME),
                 "SSS",
                 "CPC",
                 " C ",
@@ -144,15 +145,15 @@ public class MobTotemsGuideBook implements IGuideBook {
                 'P', Items.BLAZE_POWDER,
                 'S', Items.STRING)));
         pages.add(new PageText(util.getLocalizedGuideText("wolf_bauble_page_2")));
-        pages.add(new PageIRecipe(new ShapedOreRecipe(ModBlocks.INCENSE_KINDLING_BOX, "WWW",
+        pages.add(new PageIRecipe(new ShapedOreRecipe(null, ModBlocks.INCENSE_KINDLING_BOX, "WWW",
                 "WIW",
                 "WFW",
                 'W', Blocks.PLANKS,
                 'I', Blocks.TALLGRASS,
                 'F', Items.FLINT)));
         pages.add(new PageText(util.getLocalizedGuideText("wolf_bauble_page_3")));
-        entries.put(new ResourceLocation(Reference.MOD_ID, "wolf_totem_bauble"), new EntryItemStack(pages, util.getLocalizedGuideText("wolf_bauble_entry_name"), new ItemStack(ModItems.getItem(ModItems.WOLF_TOTEM_BAUBLE))));
-        categories.add(new CategoryItemStack(entries, util.getLocalizedGuideText("baubles_category_name"), new ItemStack(ModItems.getItem(ModItems.WOLF_TOTEM_BAUBLE))));
+        entries.put(new ResourceLocation(Reference.MOD_ID, "wolf_totem_bauble"), new EntryItemStack(pages, util.getLocalizedGuideText("wolf_bauble_entry_name"), new ItemStack(ModItems.ITEMS.get(ModItems.WOLF_TOTEM_BAUBLE_NAME))));
+        categories.add(new CategoryItemStack(entries, util.getLocalizedGuideText("baubles_category_name"), new ItemStack(ModItems.ITEMS.get(ModItems.WOLF_TOTEM_BAUBLE_NAME))));
 
         // Setup the book's base information
         myGuide = new Book();
@@ -176,7 +177,7 @@ public class MobTotemsGuideBook implements IGuideBook {
     @Override
     public void handlePost(ItemStack bookStack) {
         // Register a recipe so player's can obtain the book
-        GameRegistry.addShapelessRecipe(bookStack, Items.BOOK, Items.BONE);
+        GameRegistry.addShapelessRecipe(bookStack.getItem().getRegistryName(), null, bookStack, Ingredient.fromItem(Items.BOOK), Ingredient.fromItem(Items.BONE));
     }
 
 }

@@ -39,9 +39,10 @@ public class TotemWoodBlock extends ModBlock implements ITileEntityProvider {
     }
 
     @Override
-    public void getSubBlocks(Item itemIn, CreativeTabs tab, NonNullList<ItemStack> list) {
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items)
+    {
         for (int i = 0; i < TotemType.values().length; i++) {
-            list.add(new ItemStack(itemIn, 1, i));
+            items.add(new ItemStack(this, 1, i));
         }
     }
 

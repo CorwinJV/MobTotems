@@ -33,7 +33,7 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void registerGui() {
-        MinecraftForge.EVENT_BUS.register(new BaublesChargeGui(MobTotems.component().minecraft()));
+        MinecraftForge.EVENT_BUS.register(new BaublesChargeGui(Minecraft.getMinecraft()));
     }
 
     @Override
@@ -41,10 +41,10 @@ public class ClientProxy extends CommonProxy {
         MinecraftForge.EVENT_BUS.register(new ParticleRenderer());
     }
 
-    @Override
-    protected MinecraftComponent initializeMinecraftComponent() {
-        return DaggerMinecraftComponent.builder()
-                .minecraftModule(new MinecraftModule(Minecraft.getMinecraft(), null))
-                .build();
-    }
+//    @Override
+//    protected MinecraftComponent initializeMinecraftComponent() {
+//        return DaggerMinecraftComponent.builder()
+//                .minecraftModule(new MinecraftModule(Minecraft.getMinecraft(), null))
+//                .build();
+//    }
 }

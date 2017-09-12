@@ -6,6 +6,7 @@ import com.corwinjv.mobtotems.blocks.TotemType;
 import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
 import com.corwinjv.mobtotems.interfaces.IChargeableTileEntity;
 import com.corwinjv.mobtotems.interfaces.IMultiblock;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -80,7 +81,7 @@ public class OfferingBoxGuiContainer extends GuiContainer {
             GlStateManager.translate(chargeLeft - 14, chargeBottom + 2, 100F + this.zLevel);
             GlStateManager.scale(0.6, 0.6, 1.0);
             String text = I18n.translateToLocalFormatted(Reference.RESOURCE_PREFIX + "gui.offering_box.chargelevel");
-            fontRendererObj.drawStringWithShadow(text, 0, 0, 0xffffff);
+            fontRenderer.drawStringWithShadow(text, 0, 0, 0xffffff);
             GlStateManager.popMatrix();
         }
 
@@ -93,14 +94,14 @@ public class OfferingBoxGuiContainer extends GuiContainer {
                 String text = I18n.translateToLocalFormatted(Reference.RESOURCE_PREFIX + "gui.offering_box.totems");
                 GlStateManager.pushMatrix();
                 GlStateManager.scale(0.7, 0.7, 1.0);
-                fontRendererObj.drawStringWithShadow(text, 0, totemTextTop, 0xffffff);
+                fontRenderer.drawStringWithShadow(text, 0, totemTextTop, 0xffffff);
 
                 List<BlockPos> slaves = multiblockTileEntity.getSlaves();
                 int lines = 0;
 
                 for (int i = slaves.size() - 1; i >= 0; i--) {
                     BlockPos slavePos = slaves.get(i);
-                    TileEntity slaveTe = MobTotems.component().minecraft().world.getTileEntity(slavePos);
+                    TileEntity slaveTe = Minecraft.getMinecraft().world.getTileEntity(slavePos);
                     if (slaveTe instanceof TotemTileEntity) {
                         String text2 = "";
                         if (((TotemTileEntity) slaveTe).getType() == TotemType.NONE) {
@@ -108,7 +109,7 @@ public class OfferingBoxGuiContainer extends GuiContainer {
                         } else {
                             text2 = I18n.translateToLocalFormatted("tiles.mobtotems:totem_wood." + ((TotemTileEntity) slaveTe).getType().getName() + ".name");
                         }
-                        fontRendererObj.drawStringWithShadow(text2, 0, ((lines + 1) * 10) + totemTextTop, 0xffffff);
+                        fontRenderer.drawStringWithShadow(text2, 0, ((lines + 1) * 10) + totemTextTop, 0xffffff);
                         lines++;
                     }
                 }

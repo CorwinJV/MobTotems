@@ -39,7 +39,8 @@ public class CowLogic extends TotemLogic {
             if (!e.getWorld().isRemote) {
                 List<TileEntity> loadedTileEntityList = e.getWorld().loadedTileEntityList;
 
-                for (TileEntity tileEntity : loadedTileEntityList) {
+                for (int i = loadedTileEntityList.size() - 1; i >= 0; i--) {
+                    TileEntity tileEntity = loadedTileEntityList.get(i);
                     if (tileEntity instanceof OfferingBoxTileEntity) {
                         if (((OfferingBoxTileEntity) tileEntity).getChargeLevel() > 0) {
                             if (TotemHelper.hasTotemType((OfferingBoxTileEntity) tileEntity, TotemType.COW)) {

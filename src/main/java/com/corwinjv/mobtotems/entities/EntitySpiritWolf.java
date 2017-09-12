@@ -2,6 +2,7 @@ package com.corwinjv.mobtotems.entities;
 
 import com.corwinjv.mobtotems.MobTotems;
 import com.corwinjv.mobtotems.particles.ModParticles;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -82,14 +83,14 @@ public class EntitySpiritWolf extends EntityWolf {
             double initialYSpeed = 0.05D;
 
             Vec3d forwardVec = getForward();
-            Vec3d speedVec = new Vec3d(0, -forwardVec.yCoord * 0.10 + initialYSpeed, 0);
+            Vec3d speedVec = new Vec3d(0, -forwardVec.y * 0.10 + initialYSpeed, 0);
             float yPos = (float) this.getEntityBoundingBox().minY;
 
             for (int j = 0; j < 2; ++j) {
                 float xPos = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
                 float zPos = (this.rand.nextFloat() * 2.0F - 1.0F) * this.width;
-                Particle particle = particleFactory.createParticle(ModParticles.WOLF_IDLE_SMOKE, getEntityWorld(), this.posX + (double) xPos, (double) (yPos + 0.1F), this.posZ + (double) zPos, speedVec.xCoord, speedVec.yCoord, speedVec.zCoord);
-                MobTotems.component().minecraft().effectRenderer.addEffect(particle);
+                Particle particle = particleFactory.createParticle(ModParticles.WOLF_IDLE_SMOKE, getEntityWorld(), this.posX + (double) xPos, (double) (yPos + 0.1F), this.posZ + (double) zPos, speedVec.x, speedVec.y, speedVec.z);
+                Minecraft.getMinecraft().effectRenderer.addEffect(particle);
             }
         }
     }

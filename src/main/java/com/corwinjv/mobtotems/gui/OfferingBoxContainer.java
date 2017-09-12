@@ -65,7 +65,7 @@ public class OfferingBoxContainer extends Container {
 
         for (IContainerListener icontainerlistener : this.listeners) {
             if (this.chargeLevel != inventory.getField(0)) {
-                icontainerlistener.sendProgressBarUpdate(this, 0, inventory.getField(0));
+                icontainerlistener.sendWindowProperty(this, 0, inventory.getField(0));
                 this.chargeLevel = inventory.getField(0);
             }
         }

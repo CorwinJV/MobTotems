@@ -28,17 +28,17 @@ public class CommonProxy {
     public void registerParticleRenderer() {
     }
 
-    public MobTotemsComponent initializeDagger(MobTotems instance) {
-        MinecraftComponent minecraftComponent = initializeMinecraftComponent();
-        return DaggerMobTotemsComponent.builder()
-                .mobTotemsModule(new MobTotemsModule(instance))
-                .minecraftComponent(minecraftComponent)
-                .build();
-    }
+//    public MobTotemsComponent initializeDagger(MobTotems instance) {
+//        MinecraftComponent minecraftComponent = initializeMinecraftComponent();
+//        return DaggerMobTotemsComponent.builder()
+//                .mobTotemsModule(new MobTotemsModule(instance))
+//                .minecraftComponent(minecraftComponent)
+//                .build();
+//    }
 
-    protected MinecraftComponent initializeMinecraftComponent() {
-        return DaggerMinecraftComponent.builder()
-                .minecraftModule(new MinecraftModule(null, FMLCommonHandler.instance().getMinecraftServerInstance()))
-                .build();
-    }
+//    protected MinecraftComponent initializeMinecraftComponent() {
+//        return DaggerMinecraftComponent.builder()
+//                .minecraftModule(new MinecraftModule(null, FMLCommonHandler.instance().getMinecraftServerInstance()))
+//                .build();
+//    }
 }
