@@ -1,7 +1,7 @@
 {
     "display": {
         "icon": {
-            "item": "mobtotems:carving_knife"
+            "item": "mobtotems:totemic_focus"
         },
         "title": {
             "translate": "mobtotems:advancements.root.title"
