@@ -35,3 +35,7 @@ mobtotems:gui.carving.leftclick=[Left-click to select]
 mobtotems:gui.carving.rightclick=[Right-click to close]
 mobtotems:gui.offering_box.chargelevel=Charge level
 mobtotems:gui.offering_box.totems=Totem Parts
+
+#advancements
+mobtotems:advancements.root.title=MobTotems
+mobtotems:advancements.root.description=Welcome to MobTotems

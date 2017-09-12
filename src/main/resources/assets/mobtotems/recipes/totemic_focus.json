@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GXF",
+    " X ",
+    " X "
+  ],
+  "key": {
+    "X":
+    {
+      "item": "minecraft:stick"
+    },
+    "G": {
+      "item": "minecraft:gunpowder"
+    },
+    "F": {
+      "item": "minecraft:feather"
+    }
+
+  },
+  "result": {
+    "item": "mobtotems:totemic_focus"
+  }
+}

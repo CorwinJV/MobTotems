@@ -87,27 +87,27 @@ public class MobTotemsGuideBook implements IGuideBook {
         // Sacred Light Entry
         pages = new ArrayList<>();
         pages.add(new PageText(util.getLocalizedGuideText("sacred_light_page_1")));
-        if (ConfigurationHandler.hardSacredLightRecipe) {
-            pages.add(new PageIRecipe(new ShapedOreRecipe(null, ModBlocks.SACRED_LIGHT,
-                    "GRG",
-                    "XNX",
-                    "GTG",
-                    'G', Items.GUNPOWDER,
-                    'R', Items.BLAZE_ROD,
-                    'X', Items.ROTTEN_FLESH,
-                    'N', Items.NETHER_STAR,
-                    'T', TOTEM_WOOD)));
-        } else {
-            pages.add(new PageIRecipe(new ShapedOreRecipe(null, ModBlocks.SACRED_LIGHT,
-                    "GRG",
-                    "XOX",
-                    "GTG",
-                    'G', Items.GUNPOWDER,
-                    'R', Items.BLAZE_ROD,
-                    'X', Items.ROTTEN_FLESH,
-                    'O', Blocks.TORCH,
-                    'T', TOTEM_WOOD)));
-        }
+//        if (ConfigurationHandler.hardSacredLightRecipe) {
+//            pages.add(new PageIRecipe(new ShapedOreRecipe(null, ModBlocks.SACRED_LIGHT,
+//                    "GRG",
+//                    "XNX",
+//                    "GTG",
+//                    'G', Items.GUNPOWDER,
+//                    'R', Items.BLAZE_ROD,
+//                    'X', Items.ROTTEN_FLESH,
+//                    'N', Items.NETHER_STAR,
+//                    'T', TOTEM_WOOD)));
+//        } else {
+//            pages.add(new PageIRecipe(new ShapedOreRecipe(null, ModBlocks.SACRED_LIGHT,
+//                    "GRG",
+//                    "XOX",
+//                    "GTG",
+//                    'G', Items.GUNPOWDER,
+//                    'R', Items.BLAZE_ROD,
+//                    'X', Items.ROTTEN_FLESH,
+//                    'O', Blocks.TORCH,
+//                    'T', TOTEM_WOOD)));
+//        }
 
         pages.add(new PageTextImage(util.getLocalizedGuideText("sacred_light_example"), util.getGuideResourceLocation("finished_totem_example.png"), false));
         entries.put(new ResourceLocation(Reference.MOD_ID, "sacred_light"), new EntryItemStack(pages, util.getLocalizedGuideText("sacred_light_entry_name"), new ItemStack(ModBlocks.SACRED_LIGHT)));

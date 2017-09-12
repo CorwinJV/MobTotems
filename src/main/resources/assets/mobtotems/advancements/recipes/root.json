@@ -1,0 +1,21 @@
+{
+    "display": {
+        "icon": {
+            "item": "mobtotems:carving_knife"
+        },
+        "title": {
+            "translate": "mobtotems:advancements.root.title"
+        },
+        "description": {
+            "translate": "mobtotems:advancements.root.description"
+        },
+        "background": "minecraft:textures/gui/advancements/backgrounds/husbandry.png",
+        "show_toast": true,
+        "announce_to_chat": false
+    },
+    "criteria": {
+        "auto_unlock": {
+            "trigger": "minecraft:tick"
+        }
+    }
+}

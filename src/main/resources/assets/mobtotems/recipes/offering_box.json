@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SIS",
+    "SSS"
+  ],
+  "key": {
+    "S":
+    {
+      "type": "forge:ore_dict",
+      "ore": "stone"
+    },
+    "I": [{
+      "item": "minecraft:tallgrass",
+      "data": 0
+    },
+    {
+      "item": "minecraft:tallgrass",
+      "data": 1
+    },
+    {
+      "item": "minecraft:tallgrass",
+      "data": 2
+    }]
+  },
+  "result": {
+    "item": "mobtotems:offering_box"
+  }
+}

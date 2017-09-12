@@ -32,8 +32,10 @@ public class ModItems {
 
     // We're going to use the TotemicFocus for the CreativeTab:
     public static final Item TOTEMIC_FOCUS = new TotemicFocus().setUnlocalizedName(TOTEMIC_FOCUS_NAME).setRegistryName(Reference.MOD_ID, TOTEMIC_FOCUS_NAME);
-    public static final Item WOLF_TOTEM_BAUBLE = new WolfTotemBauble().setUnlocalizedName(WOLF_TOTEM_BAUBLE_NAME).setRegistryName(Reference.MOD_ID, WOLF_TOTEM_BAUBLE_NAME);;
-    public static final Item CARVING_KNIFE = new CarvingKnife().setUnlocalizedName(CARVING_KNIFE_NAME).setRegistryName(Reference.MOD_ID, CARVING_KNIFE_NAME);;
+    public static final Item WOLF_TOTEM_BAUBLE = new WolfTotemBauble().setUnlocalizedName(WOLF_TOTEM_BAUBLE_NAME).setRegistryName(Reference.MOD_ID, WOLF_TOTEM_BAUBLE_NAME);
+    ;
+    public static final Item CARVING_KNIFE = new CarvingKnife().setUnlocalizedName(CARVING_KNIFE_NAME).setRegistryName(Reference.MOD_ID, CARVING_KNIFE_NAME);
+    ;
 
     public static void init() {
     }
@@ -47,8 +49,7 @@ public class ModItems {
                 CARVING_KNIFE
         };
 
-        for(Item item : items)
-        {
+        for (Item item : items) {
             registry.register(item);
         }
 
@@ -70,35 +71,5 @@ public class ModItems {
         Minecraft.getMinecraft().getRenderItem().getItemModelMesher().register(item,
                 meta,
                 new ModelResourceLocation(Reference.RESOURCE_PREFIX + key, "inventory"));
-    }
-
-    @SubscribeEvent
-    public static void registerRecipes(RegistryEvent.Register<IRecipe> e) {
-        Item item = ITEMS.get(TOTEMIC_FOCUS_NAME);
-        e.getRegistry().register(new ShapedOreRecipe(null, new ItemStack(item),
-                "GXF",
-                " X ",
-                " X ",
-                'X', Items.STICK,
-                'G', Items.GUNPOWDER,
-                'F', Items.FEATHER).setRegistryName(TOTEMIC_FOCUS_NAME));
-
-        // Wolf totem bauble recipe
-        item = ITEMS.get(WOLF_TOTEM_BAUBLE_NAME);
-        e.getRegistry().register(new ShapedOreRecipe(null,new ItemStack(item),
-                "SSS",
-                "CPC",
-                " C ",
-                'C', Blocks.CLAY,
-                'P', Items.BLAZE_POWDER,
-                'S', Items.STRING).setRegistryName(WOLF_TOTEM_BAUBLE_NAME));
-
-        item = ITEMS.get(CARVING_KNIFE_NAME);
-        e.getRegistry().register(new ShapedOreRecipe(null,new ItemStack(item),
-                "   ",
-                " F ",
-                "S  ",
-                'F', Items.FLINT,
-                'S', Items.STICK).setRegistryName(CARVING_KNIFE_NAME));
     }
 }

@@ -16,7 +16,7 @@ public class ConfigurationHandler {
     /**
      * Config Properties
      **/
-    public static boolean hardSacredLightRecipe = true;
+
 
     public static void Init(File aConfigFile) {
         if (configuration == null) {
@@ -33,7 +33,6 @@ public class ConfigurationHandler {
     }
 
     private static void loadConfiguration() {
-        hardSacredLightRecipe = configuration.getBoolean("HardSacredLightRecipe", Configuration.CATEGORY_GENERAL, true, "Hard Sacred Light recipe");
 
         if (configuration.hasChanged()) {
             configuration.save();

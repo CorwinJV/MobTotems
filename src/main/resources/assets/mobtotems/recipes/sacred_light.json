@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GRG",
+    "XNX",
+    "GTG"
+  ],
+  "key": {
+    "G":
+    {
+      "item": "minecraft:gunpowder"
+    },
+    "R": {
+      "item": "minecraft:blaze_rod"
+    },
+    "X": {
+      "item": "minecraft:rotten_flesh"
+    },
+    "N": {
+      "item": "minecraft:nether_star"
+    },
+    "T": {
+      "item": "mobtotems:totem_wood",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "mobtotems:sacred_light"
+  }
+}

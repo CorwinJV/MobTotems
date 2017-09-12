@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "WIW",
+    "WFW"
+  ],
+  "key": {
+    "W":
+    {
+      "type": "forge:ore_dict",
+      "ore": "plankWood"
+    },
+    "I": [{
+      "item": "minecraft:tallgrass",
+      "data": 0
+    },
+    {
+      "item": "minecraft:tallgrass",
+      "data": 1
+    },
+    {
+      "item": "minecraft:tallgrass",
+      "data": 2
+    }],
+    "F": {
+      "item": "minecraft:flint"
+    }
+  },
+  "result": {
+    "item": "mobtotems:incense_kindling_box"
+  }
+}
