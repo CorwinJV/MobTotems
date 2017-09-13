@@ -18,11 +18,13 @@ import com.corwinjv.mobtotems.blocks.TotemType;
 import com.corwinjv.mobtotems.config.ConfigurationHandler;
 import com.corwinjv.mobtotems.gui.util;
 import com.corwinjv.mobtotems.items.ModItems;
+import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -88,15 +90,15 @@ public class MobTotemsGuideBook implements IGuideBook {
         pages = new ArrayList<>();
         pages.add(new PageText(util.getLocalizedGuideText("sacred_light_page_1")));
 //        if (ConfigurationHandler.hardSacredLightRecipe) {
-//            pages.add(new PageIRecipe(new ShapedOreRecipe(null, ModBlocks.SACRED_LIGHT,
-//                    "GRG",
-//                    "XNX",
-//                    "GTG",
-//                    'G', Items.GUNPOWDER,
-//                    'R', Items.BLAZE_ROD,
-//                    'X', Items.ROTTEN_FLESH,
-//                    'N', Items.NETHER_STAR,
-//                    'T', TOTEM_WOOD)));
+            pages.add(new PageIRecipe(new ShapedOreRecipe(null, ModBlocks.SACRED_LIGHT,
+                    "GRG",
+                    "XNX",
+                    "GTG",
+                    'G', Items.GUNPOWDER,
+                    'R', Items.BLAZE_ROD,
+                    'X', Items.ROTTEN_FLESH,
+                    'N', Items.NETHER_STAR,
+                    'T', TOTEM_WOOD).setRegistryName(ModBlocks.SACRED_LIGHT_NAME)));
 //        } else {
 //            pages.add(new PageIRecipe(new ShapedOreRecipe(null, ModBlocks.SACRED_LIGHT,
 //                    "GRG",
