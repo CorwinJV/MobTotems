@@ -10,7 +10,7 @@
             "translate": "mobtotems:advancements.root.description"
         },
         "background": "minecraft:textures/gui/advancements/backgrounds/husbandry.png",
-        "show_toast": true,
+        "show_toast": false,
         "announce_to_chat": false
     },
     "criteria": {
