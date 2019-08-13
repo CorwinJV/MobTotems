@@ -1,4 +1,4 @@
-MobTotems [![](http://cf.way2muchnoise.eu/full_MobTotems_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/mobtotems)
+MobTotems [![](http://cf.way2muchnoise.eu/full_mobtotems_downloads.svg)](https://www.curseforge.com/minecraft/mc-mods/mobtotems)
 =========
 A Minecraft 1.12.2 Minecraft Forge Mod
 
