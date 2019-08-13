@@ -1,9 +1,9 @@
 package com.corwinjv.mobtotems.entities.render;
 
 import com.corwinjv.mobtotems.entities.EntitySpiritWolf;
-import net.minecraft.client.model.ModelWolf;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.entity.EntityRenderer;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.entity.model.WolfModel;
 import net.minecraftforge.fml.client.registry.IRenderFactory;
 
 /**
@@ -11,7 +11,7 @@ import net.minecraftforge.fml.client.registry.IRenderFactory;
  */
 public class SpiritWolfRenderFactory implements IRenderFactory<EntitySpiritWolf> {
     @Override
-    public Render<? super EntitySpiritWolf> createRenderFor(RenderManager manager) {
-        return new SpiritWolfRender(manager, new ModelWolf(), 0.5F);
+    public EntityRenderer<? super EntitySpiritWolf> createRenderFor(EntityRendererManager manager) {
+        return new SpiritWolfRender(manager, new WolfModel<>(), 0.5F);
     }
 }
