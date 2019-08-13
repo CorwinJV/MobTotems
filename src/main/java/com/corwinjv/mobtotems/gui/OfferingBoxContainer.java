@@ -1,8 +1,8 @@
 package com.corwinjv.mobtotems.gui;
 
 import com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
@@ -28,7 +28,7 @@ public class OfferingBoxContainer extends Container {
 
     private int chargeLevel = 0;
 
-    public OfferingBoxContainer(InventoryPlayer playerInventory, IInventory inventory) {
+    public OfferingBoxContainer(PlayerInventory playerInventory, IInventory inventory) {
         this.inventory = inventory;
 
         for (int x = 0; x < width; x++) {
@@ -78,12 +78,12 @@ public class OfferingBoxContainer extends Container {
 
 
     @Override
-    public boolean canInteractWith(EntityPlayer playerIn) {
+    public boolean canInteractWith(PlayerEntity playerIn) {
         return true;
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer playerIn, int index) {
+    public ItemStack transferStackInSlot(PlayerEntity playerIn, int index) {
         ItemStack prevStack = ItemStack.EMPTY;
         Slot slot = this.inventorySlots.get(index);
 

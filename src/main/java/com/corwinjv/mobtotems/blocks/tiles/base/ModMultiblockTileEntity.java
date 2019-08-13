@@ -1,11 +1,12 @@
 package com.corwinjv.mobtotems.blocks.tiles.base;
 
+import com.corwinjv.mobtotems.blocks.ModBlocks;
 import com.corwinjv.mobtotems.interfaces.IMultiblock;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagLong;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
+import net.minecraft.nbt.LongNBT;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 
@@ -20,39 +21,36 @@ public abstract class ModMultiblockTileEntity<T> extends ModTileEntity implement
     protected List<BlockPos> slaves = new ArrayList<BlockPos>();
     protected BlockPos masterPos = null;
 
-    public ModMultiblockTileEntity() {
-        super();
+    public ModMultiblockTileEntity(TileEntityType<?> type) {
+        super(type);
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tagCompound) {
-        tagCompound = super.writeToNBT(tagCompound);
-        tagCompound.setBoolean(IS_MASTER, isMaster);
+    public CompoundNBT write(CompoundNBT tagCompound) {
+        tagCompound = super.write(tagCompound);
+        tagCompound.putBoolean(IS_MASTER, isMaster);
 
-        NBTTagList slaveList = new NBTTagList();
+        ListNBT slaveList = new ListNBT();
         for (BlockPos slavePos : slaves) {
-            slaveList.appendTag(new NBTTagLong(slavePos.toLong()));
+            slaveList.add(new LongNBT(slavePos.toLong()));
         }
-        tagCompound.setTag(SLAVES, slaveList);
+        tagCompound.put(SLAVES, slaveList);
 
         if (masterPos != null) {
-            tagCompound.setLong(MASTER_POS, masterPos.toLong());
+            tagCompound.putLong(MASTER_POS, masterPos.toLong());
         }
         return tagCompound;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tagCompound) {
-        super.readFromNBT(tagCompound);
+    public void read(CompoundNBT tagCompound) {
+        super.read(tagCompound);
         isMaster = tagCompound.getBoolean(IS_MASTER);
 
-        NBTTagList tagList = tagCompound.getTagList(SLAVES, Constants.NBT.TAG_LONG);
-        for (int i = 0; i < tagList.tagCount(); i++) {
-            NBTBase tag = tagList.get(i);
-            if (tag instanceof NBTTagLong) {
-                BlockPos blockPos = BlockPos.fromLong(((NBTTagLong) tag).getLong());
-                slaves.add(blockPos);
-            }
+        ListNBT tagList = tagCompound.getList(SLAVES, Constants.NBT.TAG_LONG);
+        for (int i = 0; i < tagList.size(); i++) {
+            BlockPos blockPos = BlockPos.fromLong(((LongNBT) tagList.get(i)).getLong());
+            slaves.add(blockPos);
         }
 
         masterPos = BlockPos.fromLong(tagCompound.getLong(MASTER_POS));

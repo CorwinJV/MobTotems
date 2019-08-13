@@ -1,32 +1,32 @@
 package com.corwinjv.mobtotems.blocks.tiles.base;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntityLockable;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.LockableTileEntity;
+import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.Direction;
+import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nonnull;
 
 /**
  * Created by CorwinJV on 1/21/2017.
  */
-public abstract class ModInventoryTileEntity extends TileEntityLockable implements ISidedInventory, ITickable {
+public abstract class ModInventoryTileEntity extends LockableTileEntity implements ISidedInventory, ITickableTileEntity {
     private static final String SLOT_TAG = "Slot";
     private static final String INVENTORY_TAG = "inventory";
 
     protected ItemStack[] stacks = new ItemStack[getSizeInventory()];
 
-    public ModInventoryTileEntity() {
-        super();
+    public ModInventoryTileEntity(TileEntityType<?> type) {
+        super(type);
         for (int i = 0; i < getSizeInventory(); i++) {
             if (stacks[i] == null) {
                 stacks[i] = ItemStack.EMPTY;
@@ -37,64 +37,65 @@ public abstract class ModInventoryTileEntity extends TileEntityLockable implemen
     // Nbt syncing & inventory nbt
     @Nonnull
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-        NBTTagCompound tagCompound = super.writeToNBT(nbt);
+    public CompoundNBT write(CompoundNBT nbt) {
+        CompoundNBT tagCompound = super.write(nbt);
 
-        NBTTagList list = new NBTTagList();
+        ListNBT list = new ListNBT();
         for (int i = 0; i < this.getSizeInventory(); ++i) {
-            NBTTagCompound stackTag = new NBTTagCompound();
-            stackTag.setByte(SLOT_TAG, (byte) i);
-            this.getStackInSlot(i).writeToNBT(stackTag);
-            list.appendTag(stackTag);
+            CompoundNBT stackTag = new CompoundNBT();
+            stackTag.putByte(SLOT_TAG, (byte) i);
+            this.getStackInSlot(i).write(stackTag);
+            list.add(stackTag);
         }
-        tagCompound.setTag(INVENTORY_TAG, list);
+        tagCompound.put(INVENTORY_TAG, list);
 
         return tagCompound;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound nbt) {
-        super.readFromNBT(nbt);
+    public void read(CompoundNBT nbt) {
+        super.read(nbt);
 
-        NBTTagList list = nbt.getTagList(INVENTORY_TAG, 10);
-        for (int i = 0; i < list.tagCount(); ++i) {
-            NBTTagCompound stackTag = list.getCompoundTagAt(i);
+        ListNBT list = nbt.getList(INVENTORY_TAG, Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < list.size(); ++i) {
+            CompoundNBT stackTag = list.getCompound(i);
             int slot = stackTag.getByte(SLOT_TAG) & 255;
-            this.setInventorySlotContents(slot, new ItemStack(stackTag));
+            // TODO: Figure out how to save/restore inventory now that ItemStack doesn't take CompoundNBT
+            //this.setInventorySlotContents(slot, new ItemStack(stackTag));
         }
     }
 
     @Nonnull
     @Override
-    public final NBTTagCompound getUpdateTag() {
-        return writeToNBT(super.getUpdateTag());
+    public final CompoundNBT getUpdateTag() {
+        return write(super.getUpdateTag());
     }
 
     @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        return new SPacketUpdateTileEntity(pos, 0, getUpdateTag());
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        return new SUpdateTileEntityPacket(pos, 0, getUpdateTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager networkManager, SPacketUpdateTileEntity packet) {
+    public void onDataPacket(NetworkManager networkManager, SUpdateTileEntityPacket packet) {
         super.onDataPacket(networkManager, packet);
-        readFromNBT(packet.getNbtCompound());
+        read(packet.getNbtCompound());
 
-        final IBlockState state = getWorld().getBlockState(getPos());
+        final BlockState state = getWorld().getBlockState(getPos());
         getWorld().notifyBlockUpdate(getPos(), state, state, 3);
     }
 
-    @Override
-    public boolean shouldRefresh(World world, BlockPos pos, @Nonnull IBlockState oldState, @Nonnull IBlockState newState) {
-        return (oldState.getBlock() != newState.getBlock());
-    }
+//    @Override
+//    public boolean shouldRefresh(World world, BlockPos pos, @Nonnull BlockState oldState, @Nonnull BlockState newState) {
+//        return (oldState.getBlock() != newState.getBlock());
+//    }
 
     // IInventory & Gui stuff
     protected abstract int getUsableDistance();
 
     @Nonnull
     @Override
-    public int[] getSlotsForFace(@Nonnull EnumFacing side) {
+    public int[] getSlotsForFace(@Nonnull Direction side) {
 
         int[] ret = new int[getSizeInventory()];
         for (int i = 0; i < ret.length; i++) {
@@ -104,12 +105,12 @@ public abstract class ModInventoryTileEntity extends TileEntityLockable implemen
     }
 
     @Override
-    public boolean canInsertItem(int index, @Nonnull ItemStack stack, @Nonnull EnumFacing direction) {
+    public boolean canInsertItem(int index, @Nonnull ItemStack stack, @Nonnull Direction direction) {
         return (getStackInSlot(index) == ItemStack.EMPTY);
     }
 
     @Override
-    public boolean canExtractItem(int index, @Nonnull ItemStack stack, @Nonnull EnumFacing direction) {
+    public boolean canExtractItem(int index, @Nonnull ItemStack stack, @Nonnull Direction direction) {
         return (getStackInSlot(index) != ItemStack.EMPTY);
     }
 
@@ -145,7 +146,7 @@ public abstract class ModInventoryTileEntity extends TileEntityLockable implemen
                 this.markDirty();
                 return stack;
             } else {
-                stack = this.getStackInSlot(index).splitStack(count);
+                stack = this.getStackInSlot(index).split(count);
 
                 if (this.getStackInSlot(index).getCount() <= 0) {
                     this.setInventorySlotContents(index, ItemStack.EMPTY);
@@ -185,16 +186,16 @@ public abstract class ModInventoryTileEntity extends TileEntityLockable implemen
     }
 
     @Override
-    public boolean isUsableByPlayer(@Nonnull EntityPlayer player) {
-        return (player.getPosition().getDistance(getPos().getX(), getPos().getY(), getPos().getZ()) < getUsableDistance());
+    public boolean isUsableByPlayer(@Nonnull PlayerEntity player) {
+        return player.getPosition().withinDistance(getPos(), getUsableDistance());
     }
 
     @Override
-    public void openInventory(@Nonnull EntityPlayer player) {
+    public void openInventory(@Nonnull PlayerEntity player) {
     }
 
     @Override
-    public void closeInventory(@Nonnull EntityPlayer player) {
+    public void closeInventory(@Nonnull PlayerEntity player) {
     }
 
     @Override
@@ -202,19 +203,20 @@ public abstract class ModInventoryTileEntity extends TileEntityLockable implemen
         return true;
     }
 
-    @Override
-    public int getField(int id) {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value) {
-    }
-
-    @Override
-    public int getFieldCount() {
-        return 0;
-    }
+    // TODO: I don't think these are needed, remove.
+//    @Override
+//    public int getField(int id) {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void setField(int id, int value) {
+//    }
+//
+//    @Override
+//    public int getFieldCount() {
+//        return 0;
+//    }
 
     @Override
     public void clear() {

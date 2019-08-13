@@ -9,7 +9,7 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.*;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityWolf;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -29,7 +29,7 @@ public class EntitySpiritWolf extends EntityWolf {
         this.initialized = initialized;
     }
 
-    public void tame(EntityPlayer player) {
+    public void tame(PlayerEntity player) {
         setTamed(true);
         getNavigator().clearPathEntity();
         setAttackTarget(null);

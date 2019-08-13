@@ -6,7 +6,7 @@ import com.corwinjv.mobtotems.utils.BlockUtils;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityLivingData;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.StringUtils;
@@ -51,7 +51,7 @@ public class WolfTotemBauble extends BaubleItem {
     }
 
     @Override
-    public void onCreated(ItemStack stack, World world, EntityPlayer player) {
+    public void onCreated(ItemStack stack, World world, PlayerEntity player) {
         super.onCreated(stack, world, player);
     }
 
@@ -110,7 +110,7 @@ public class WolfTotemBauble extends BaubleItem {
     }
 
     @Override
-    public void onBaubleActivated(ItemStack stack, EntityPlayer player) {
+    public void onBaubleActivated(ItemStack stack, PlayerEntity player) {
         if (!player.world.isRemote) {
             if (!hasValidNbt(stack)) {
                 return;

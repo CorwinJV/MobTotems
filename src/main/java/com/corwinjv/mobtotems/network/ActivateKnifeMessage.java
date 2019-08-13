@@ -13,7 +13,7 @@ public class ActivateKnifeMessage extends Message<ActivateKnifeMessage> {
     private EnumHand hand = EnumHand.MAIN_HAND;
 
     @Override
-    protected void handleServer(ActivateKnifeMessage message, EntityPlayerMP player) {
+    protected void handleServer(ActivateKnifeMessage message, PlayerEntityMP player) {
         ItemStack stack = player.getHeldItem(message.hand);
         if (stack.getItem() instanceof CarvingKnife) {
             ((CarvingKnife) stack.getItem()).onKnifeActivated(player, message.hand);

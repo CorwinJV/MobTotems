@@ -35,7 +35,7 @@ public class Network {
         instance.sendToAll(message);
     }
 
-    public static void sendTo(Message message, EntityPlayerMP player) {
+    public static void sendTo(Message message, PlayerEntityMP player) {
         instance.sendTo(message, player);
     }
 }

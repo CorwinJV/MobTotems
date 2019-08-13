@@ -1,20 +1,19 @@
 package com.corwinjv.mobtotems.blocks.tiles;
 
-import baubles.api.BaublesApi;
-import baubles.api.cap.IBaublesItemHandler;
 import com.corwinjv.mobtotems.blocks.tiles.base.ModTileEntity;
 import com.corwinjv.mobtotems.interfaces.IChargeable;
+import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAir;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.ITickable;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.particles.IParticleData;
+import net.minecraft.particles.ParticleType;
+import net.minecraft.particles.ParticleTypes;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.math.BlockPos;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
@@ -22,7 +21,7 @@ import java.util.function.Predicate;
 /**
  * Created by CorwinJV on 7/24/2016.
  */
-public class IncenseKindlingBoxTileEntity extends ModTileEntity implements ITickable {
+public class IncenseKindlingBoxTileEntity extends ModTileEntity implements ITickableTileEntity {
     private static final String TIME_LIVED = "TIME_LIVED";
 
     private static final long UPDATE_TICKS = 20;
@@ -37,35 +36,34 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity implements ITick
         super();
     }
 
-    @Nonnull
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        NBTTagCompound ret = super.writeToNBT(compound);
-        ret.setLong(TIME_LIVED, timeLived);
+    public CompoundNBT write(CompoundNBT compound) {
+        CompoundNBT ret = super.write(compound);
+        ret.putLong(TIME_LIVED, timeLived);
         return ret;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound compound) {
-        super.readFromNBT(compound);
+    public void read(CompoundNBT compound) {
+        super.read(compound);
         long time = 0;
-        if (compound.hasKey(TIME_LIVED)) {
+        if (compound.keySet().contains(TIME_LIVED)) {
             time = compound.getLong(TIME_LIVED);
         }
         timeLived = time;
     }
 
     @Override
-    public void update() {
+    public void tick() {
         if (!getWorld().isRemote) {
             performTTLUpdate();
 
-            long worldTime = getWorld().getWorldTime();
+            long worldTime = getWorld().getDayTime();
             if (worldTime % UPDATE_TICKS == 0) {
                 performChargeAura();
             }
         } else {
-            long worldTime = getWorld().getWorldTime();
+            long worldTime = getWorld().getDayTime();
             if (worldTime % PARTICLE_UPDATE_TICKS == 0) {
                 spawnParticleEffects();
             }
@@ -81,20 +79,22 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity implements ITick
 
     private void performChargeAura() {
         final BlockPos targetPos = getPos();
-        Predicate<EntityPlayer> playerWithinRangePredicate = input -> input != null
-                && input.getPosition().getDistance(targetPos.getX(), targetPos.getY(), targetPos.getZ()) < TMP_MANA_GAIN_DIST;
-        List<EntityPlayer> playersWithinRange = getWorld().getEntities(EntityPlayer.class, playerWithinRangePredicate::test);
+        //TODO construct an AABB with radius TMP_MANA_GAIN_DIST and pass to getWorld().getEntitiesWithinAABB()
+        Predicate<PlayerEntity> playerWithinRangePredicate = input -> input != null
+                && input.getPosition().withinDistance(targetPos, TMP_MANA_GAIN_DIST);
+//        List<PlayerEntity> playersWithinRange = getWorld().getEntity(PlayerEntity.class, playerWithinRangePredicate::test);
 
-        for (EntityPlayer player : playersWithinRange) {
-            IBaublesItemHandler baublesItemHandler = BaublesApi.getBaublesHandler(player);
-            for (int i = 0; i < baublesItemHandler.getSlots(); i++) {
-                final ItemStack baubleStack = baublesItemHandler.getStackInSlot(i);
-                if (baubleStack != ItemStack.EMPTY
-                        && baubleStack.getItem() instanceof IChargeable) {
-                    ((IChargeable) baubleStack.getItem()).incrementChargeLevel(baubleStack, CHARGE_GAIN_PER_TICK);
-                }
-            }
-        }
+        // TODO: Re-enable if I get a fix for baubles?
+//        for (PlayerEntity player : playersWithinRange) {
+//            IBaublesItemHandler baublesItemHandler = BaublesApi.getBaublesHandler(player);
+//            for (int i = 0; i < baublesItemHandler.getSlots(); i++) {
+//                final ItemStack baubleStack = baublesItemHandler.getStackInSlot(i);
+//                if (baubleStack != ItemStack.EMPTY
+//                        && baubleStack.getItem() instanceof IChargeable) {
+//                    ((IChargeable) baubleStack.getItem()).incrementChargeLevel(baubleStack, CHARGE_GAIN_PER_TICK);
+//                }
+//            }
+//        }
     }
 
     private void spawnParticleEffects() {
@@ -109,9 +109,9 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity implements ITick
                     Block block = getWorld().getBlockState(blockPos).getBlock();
                     Block blockAbove = getWorld().getBlockState(new BlockPos(x, y + 1, z)).getBlock();
 
-                    if (pos.getDistance(blockPos.getX(), blockPos.getY(), blockPos.getZ()) < TMP_MANA_GAIN_DIST
+                    if (pos.withinDistance(blockPos, TMP_MANA_GAIN_DIST)
                             && block.canSpawnInBlock()
-                            && blockAbove instanceof BlockAir) {
+                            && blockAbove instanceof AirBlock) {
                         Random rand = getWorld().rand;
                         float width = 0.75f;
                         float height = 0.75f;
@@ -119,8 +119,21 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity implements ITick
                         double motionX = rand.nextGaussian() * 0.02D;
                         double motionY = rand.nextGaussian() * 0.02D;
                         double motionZ = rand.nextGaussian() * 0.02D;
-                        world.spawnParticle(
-                                EnumParticleTypes.CLOUD,
+                        world.addParticle(new IParticleData() {
+                                    @Override
+                                    public ParticleType<?> getType() {
+                                        return ParticleTypes.CLOUD;
+                                    }
+
+                                    @Override
+                                    public void write(PacketBuffer packetBuffer) {
+                                    }
+
+                                    @Override
+                                    public String getParameters() {
+                                        return null;
+                                    }
+                                },
                                 x + rand.nextFloat() * width * 2.0F - width,
                                 y + 1.0D + rand.nextFloat() * height,
                                 z + rand.nextFloat() * width * 2.0F - width,
@@ -134,8 +147,22 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity implements ITick
                         motionX = rand.nextGaussian() * 0.02D;
                         motionY = rand.nextGaussian() * 0.02D;
                         motionZ = rand.nextGaussian() * 0.02D;
-                        world.spawnParticle(
-                                EnumParticleTypes.VILLAGER_HAPPY,
+                        world.addParticle(
+                                new IParticleData() {
+                                    @Override
+                                    public ParticleType<?> getType() {
+                                        return ParticleTypes.HAPPY_VILLAGER;
+                                    }
+
+                                    @Override
+                                    public void write(PacketBuffer packetBuffer) {
+                                    }
+
+                                    @Override
+                                    public String getParameters() {
+                                        return null;
+                                    }
+                                },
                                 x + rand.nextFloat() * width * 2.0F - width,
                                 y + 0.5D + rand.nextFloat() * height,
                                 z + rand.nextFloat() * width * 2.0F - width,

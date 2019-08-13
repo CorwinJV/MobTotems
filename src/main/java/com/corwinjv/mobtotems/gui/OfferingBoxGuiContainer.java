@@ -9,7 +9,7 @@ import com.corwinjv.mobtotems.interfaces.IMultiblock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -28,8 +28,8 @@ public class OfferingBoxGuiContainer extends GuiContainer {
     private IMultiblock<TotemType> multiblockTileEntity = null;
     private IInventory inventory = null;
 
-    public OfferingBoxGuiContainer(InventoryPlayer inventoryPlayer, IInventory inventory) {
-        super(new OfferingBoxContainer(inventoryPlayer, inventory));
+    public OfferingBoxGuiContainer(PlayerInventory PlayerInventory, IInventory inventory) {
+        super(new OfferingBoxContainer(PlayerInventory, inventory));
         this.inventory = inventory;
         if (inventory instanceof IChargeableTileEntity) {
             chargeableTileEntity = (IChargeableTileEntity) inventory;

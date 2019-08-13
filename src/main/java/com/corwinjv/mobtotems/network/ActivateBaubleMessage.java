@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
  */
 public class ActivateBaubleMessage extends Message<ActivateBaubleMessage> {
     @Override
-    protected void handleServer(ActivateBaubleMessage message, EntityPlayerMP player) {
+    protected void handleServer(ActivateBaubleMessage message, PlayerEntityMP player) {
         final IBaublesItemHandler baublesItemHandler = BaublesApi.getBaublesHandler(player);
 
         if (baublesItemHandler == null) {

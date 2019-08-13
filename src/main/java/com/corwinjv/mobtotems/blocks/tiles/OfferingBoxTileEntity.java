@@ -12,24 +12,27 @@ import com.corwinjv.mobtotems.gui.OfferingBoxContainer;
 import com.corwinjv.mobtotems.interfaces.IChargeableTileEntity;
 import com.corwinjv.mobtotems.interfaces.IMultiblock;
 import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.container.Container;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by CorwinJV on 1/21/2017.
  */
-public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<TotemType> implements IChargeableTileEntity {
+public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<TotemType> implements IChargeableTileEntity, ITickableTileEntity {
     public static final int MAX_CHARGE = 1000;
 
     private static int INVENTORY_SIZE = 9;
@@ -47,8 +50,8 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
     }
 
     @Override
-    public void update() {
-        long worldTime = world.getTotalWorldTime();
+    public void tick() {
+        long worldTime = this.getTotalWorldTime();
 
         if (!world.isRemote
                 && getIsMaster()
@@ -262,7 +265,7 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
         // Check adjacent blocks for a totem wood
         TotemTileEntity firstSlave = null;
 
-        for (EnumFacing direction : EnumFacing.HORIZONTALS) {
+        for (Direction direction : Direction.HORIZONTALS) {
             Vec3i dirVec = direction.getDirectionVec();
             BlockPos posToCheck = new BlockPos(getPos().getX() + dirVec.getX(), getPos().getY() + dirVec.getY(), getPos().getZ() + dirVec.getZ());
             TileEntity te = world.getTileEntity(posToCheck);
@@ -372,7 +375,7 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
     }
 
     @Override
-    public void setType(TotemType type) {
+    public void setMultiblockType(TotemType type) {
     }
 
     @Override
@@ -387,7 +390,7 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
     // Inventory
     @Nonnull
     @Override
-    public Container createContainer(@Nonnull InventoryPlayer playerInventory, @Nonnull EntityPlayer playerIn) {
+    public Container createContainer(@Nonnull PlayerInventory playerInventory, @Nonnull PlayerEntity playerIn) {
         return new OfferingBoxContainer(playerInventory, this);
     }
 
@@ -405,6 +408,11 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
     @Override
     public int getInventoryStackLimit() {
         return 9;
+    }
+
+    @Override
+    public void markDirty() {
+
     }
 
     @Nonnull
@@ -440,6 +448,22 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
 
     public int getFieldCount() {
         return 1;
+    }
+
+    // Refactored....
+    @Override
+    public int[] getSlotsForFace(Direction direction) {
+        return new int[0];
+    }
+
+    @Override
+    public boolean canInsertItem(int i, ItemStack itemStack, @Nullable Direction direction) {
+        return false;
+    }
+
+    @Override
+    public boolean canExtractItem(int i, ItemStack itemStack, Direction direction) {
+        return false;
     }
 
     ;

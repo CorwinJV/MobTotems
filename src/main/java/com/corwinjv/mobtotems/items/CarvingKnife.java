@@ -9,12 +9,12 @@ import com.corwinjv.mobtotems.network.Network;
 import com.corwinjv.mobtotems.network.OpenKnifeGuiMessage;
 import com.corwinjv.mobtotems.utils.BlockUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.IParticleFactory;
 import net.minecraft.client.particle.ParticleBlockDust;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -48,7 +48,7 @@ public class CarvingKnife extends ModItem {
         super.init();
     }
 
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, EnumHand hand) {
         if (world.isRemote) {
             Network.sendToServer(new ActivateKnifeMessage().setHand(hand));
             return new ActionResult(EnumActionResult.PASS, player.getHeldItem(hand));
@@ -57,7 +57,7 @@ public class CarvingKnife extends ModItem {
     }
 
     @SideOnly(Side.CLIENT)
-    public void openGui(EntityPlayer player, int meta) {
+    public void openGui(PlayerEntity player, int meta) {
         FMLClientHandler.instance().displayGuiScreen(player, new CarvingSelectorGui(meta));
     }
 
@@ -65,13 +65,13 @@ public class CarvingKnife extends ModItem {
     public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
         super.onUpdate(stack, world, entity, itemSlot, isSelected);
         if (world.isRemote
-                && entity instanceof EntityPlayer) {
-            spawnParticles(stack, world, (EntityPlayer) entity);
+                && entity instanceof PlayerEntity) {
+            spawnParticles(stack, world, (PlayerEntity) entity);
         }
     }
 
     @SideOnly(Side.CLIENT)
-    private void spawnParticles(ItemStack stack, World world, EntityPlayer player) {
+    private void spawnParticles(ItemStack stack, World world, PlayerEntity player) {
         long worldTime = world.getWorldTime();
 
         if (spawnParticles) {
@@ -86,7 +86,7 @@ public class CarvingKnife extends ModItem {
 
                 if (targetBlock != null
                         && targetBlock instanceof TotemWoodBlock) {
-                    IBlockState state = world.getBlockState(pos);
+                    BlockState state = world.getBlockState(pos);
                     int i = 4;
 
                     for (int j = 0; j < 4; ++j) {
@@ -121,7 +121,7 @@ public class CarvingKnife extends ModItem {
         }
     }
 
-    public void onKnifeActivated(EntityPlayer player, EnumHand hand) {
+    public void onKnifeActivated(PlayerEntity player, EnumHand hand) {
         if (player.world.isRemote) {
             return;
         }
@@ -144,7 +144,7 @@ public class CarvingKnife extends ModItem {
                     }
                 }
             } else {
-                Network.sendTo(new OpenKnifeGuiMessage().setMeta(getSelectedCarving(stack)), (EntityPlayerMP) player);
+                Network.sendTo(new OpenKnifeGuiMessage().setMeta(getSelectedCarving(stack)), (PlayerEntityMP) player);
             }
         }
     }
@@ -179,7 +179,7 @@ public class CarvingKnife extends ModItem {
     }
 
     @Override
-    public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
+    public void onCreated(ItemStack stack, World worldIn, PlayerEntity playerIn) {
         super.onCreated(stack, worldIn, playerIn);
         initNbtData(stack);
     }

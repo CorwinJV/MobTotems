@@ -26,9 +26,9 @@ public interface IMultiblock<T> {
 
     List<T> getSlaveTypes();
 
-    T getType();
+    T getMultiblockType();
 
-    void setType(T type);
+    void setMultiblockType(T type);
 
     void setMaster(IMultiblock<T> master);
 

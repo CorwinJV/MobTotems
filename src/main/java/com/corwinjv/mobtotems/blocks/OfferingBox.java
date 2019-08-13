@@ -5,18 +5,29 @@ import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity;
 import com.corwinjv.mobtotems.blocks.tiles.TotemTileEntity;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.Vec3i;
-import net.minecraft.world.IBlockAccess;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ToolType;
+import net.minecraftforge.fml.network.NetworkHooks;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,43 +38,63 @@ import javax.annotation.Nullable;
 public class OfferingBox extends ModBlockContainer {
     private static final AxisAlignedBB boundingBox = new AxisAlignedBB(0.5 / 16.0, 0, 0.5D / 16.0, 15.5D / 16.0, 3.0D / 16.0, 15.5D / 16.0);
 
-    public OfferingBox() {
-        super();
-        this.setHardness(1.0f);
-        this.isBlockContainer = true;
-        this.setLightOpacity(0);
+    public OfferingBox(Block.Properties props) {
+        super(props);
     }
 
     @Nullable
     @Override
-    public String getHarvestTool(IBlockState state) {
+    public ToolType getHarvestTool(BlockState state) {
         return null;
     }
 
     @Override
-    public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
         boolean retVal = true;
         if (!worldIn.isRemote) {
-            playerIn.openGui(MobTotems.instance, Reference.GUI_ID.OFFERING_BOX.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
+            NetworkHooks.openGui((ServerPlayerEntity)player, new INamedContainerProvider() {
+                @Override
+                public ITextComponent getDisplayName() {
+                    return null;
+                }
+
+                @Nullable
+                @Override
+                public Container createMenu(int i, PlayerInventory playerInventory, PlayerEntity playerEntity) {
+                    //return new OfferingBox();
+                    return null;
+                }
+            }, pos);
+//            NetworkHooks.openGui(MobTotems.instance, Reference.GUI_ID.OFFERING_BOX.ordinal(), worldIn, pos.getX(), pos.getY(), pos.getZ());
         }
         return retVal;
     }
 
     @Override
-    public boolean isFullCube(IBlockState state) {
+    public boolean isFullCube(BlockState state) {
         return false;
     }
 
     // Collision
     @Nonnull
     @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess world, BlockPos pos) {
         return boundingBox;
+    }
+
+    @Override
+    public VoxelShape getCollisionShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return super.getCollisionShape(state, worldIn, pos, context);
+    }
+
+    @Override
+    public BlockRenderLayer getRenderLayer() {
+        return super.getRenderLayer();
     }
 
     // Rendering stuff
     @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
+    public EnumBlockRenderType getRenderType(BlockState state) {
         return EnumBlockRenderType.MODEL;
     }
 
@@ -71,14 +102,14 @@ public class OfferingBox extends ModBlockContainer {
         return false;
     }
 
-    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
+    public boolean doesSideBlockRendering(BlockState state, IBlockAccess world, BlockPos pos, Direction face) {
         return false;
     }
 
     // Can only place on the tops of solid things
     private boolean canPlaceOn(World worldIn, BlockPos pos) {
 
-        IBlockState state = worldIn.getBlockState(pos);
+        BlockState state = worldIn.getBlockState(pos);
         boolean canPlaceAt = (state.getBlock().canSpawnInBlock()
                 || state.getBlock().canPlaceTorchOnTop(state, worldIn, pos))
                 && state.getBlock().isFullBlock(state);
@@ -88,7 +119,7 @@ public class OfferingBox extends ModBlockContainer {
         // Can't place if there is already an offering box who has claimed this
         if (canPlaceAt) {
             // Check for adjacent totem
-            for (EnumFacing direction : EnumFacing.HORIZONTALS) {
+            for (Direction direction : Direction.HORIZONTALS) {
                 Vec3i dirVec = direction.getDirectionVec();
                 BlockPos posToCheck = new BlockPos(adjustedPos.getX() + dirVec.getX(), adjustedPos.getY(), adjustedPos.getZ() + dirVec.getZ());
                 TileEntity te = worldIn.getTileEntity(posToCheck);
@@ -110,21 +141,22 @@ public class OfferingBox extends ModBlockContainer {
     }
 
     @Override
-    public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos) {
+    public boolean canPlaceTorchOnTop(BlockState state, IBlockAccess world, BlockPos pos) {
         return false;
     }
 
+
     @Override
     public boolean canPlaceBlockAt(World worldIn, @Nonnull BlockPos pos) {
-        return this.canPlaceAt(worldIn, pos, EnumFacing.UP);
+        return this.canPlaceAt(worldIn, pos, Direction.UP);
     }
 
-    private boolean canPlaceAt(World worldIn, BlockPos pos, EnumFacing facing) {
+    private boolean canPlaceAt(World worldIn, BlockPos pos, Direction facing) {
         BlockPos blockpos = pos.offset(facing.getOpposite());
         return this.canPlaceOn(worldIn, blockpos);
     }
 
-    public void onBlockAdded(World world, BlockPos pos, IBlockState state) {
+    public void onBlockAdded(World world, BlockPos pos, BlockState state) {
         this.checkForDrop(world, pos, state);
 
         TileEntity te = world.getTileEntity(pos);
@@ -134,12 +166,12 @@ public class OfferingBox extends ModBlockContainer {
     }
 
     @Override
-    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+    public boolean isSideSolid(BlockState base_state, IBlockAccess world, BlockPos pos, Direction side) {
         return false;
     }
 
     @Override
-    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
+    public boolean removedByPlayer(BlockState state, World world, BlockPos pos, PlayerEntity player, boolean willHarvest) {
         TileEntity te = world.getTileEntity(pos);
         if (te != null
                 && te instanceof OfferingBoxTileEntity) {
@@ -154,12 +186,12 @@ public class OfferingBox extends ModBlockContainer {
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos p_189540_5_) {
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos p_189540_5_) {
         this.checkForDrop(worldIn, pos, state);
     }
 
-    public boolean checkForDrop(World world, BlockPos pos, IBlockState state) {
-        if (this.canPlaceAt(world, pos, EnumFacing.UP)) {
+    public boolean checkForDrop(World world, BlockPos pos, BlockState state) {
+        if (this.canPlaceAt(world, pos, Direction.UP)) {
             return true;
         } else {
             if (world.getBlockState(pos).getBlock() == this) {
@@ -177,7 +209,7 @@ public class OfferingBox extends ModBlockContainer {
 
 
     @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+    public void breakBlock(World world, BlockPos pos, BlockState state) {
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof OfferingBoxTileEntity) {
             InventoryHelper.dropInventoryItems(world, pos, (OfferingBoxTileEntity) te);

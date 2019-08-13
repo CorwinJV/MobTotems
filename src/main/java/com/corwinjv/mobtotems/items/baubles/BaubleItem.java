@@ -6,7 +6,7 @@ import com.corwinjv.mobtotems.interfaces.IChargeable;
 import com.corwinjv.mobtotems.items.ModItem;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -29,7 +29,7 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable {
     }
 
     @Override
-    public void onCreated(ItemStack stack, World worldIn, EntityPlayer playerIn) {
+    public void onCreated(ItemStack stack, World worldIn, PlayerEntity playerIn) {
         initNbtData(stack);
     }
 
@@ -89,7 +89,7 @@ public class BaubleItem extends ModItem implements IBauble, IChargeable {
         return 16;
     }
 
-    public void onBaubleActivated(ItemStack stack, EntityPlayer player) {
+    public void onBaubleActivated(ItemStack stack, PlayerEntity player) {
     }
 
     @Override

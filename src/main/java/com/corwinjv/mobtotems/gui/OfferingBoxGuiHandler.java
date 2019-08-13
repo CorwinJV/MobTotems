@@ -1,7 +1,7 @@
 package com.corwinjv.mobtotems.gui;
 
 import com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 public class OfferingBoxGuiHandler implements IGuiHandler {
     @Nullable
     @Override
-    public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    public Object getServerGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z) {
         OfferingBoxContainer ret = null;
         TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
         if (tileEntity instanceof OfferingBoxTileEntity) {
@@ -27,7 +27,7 @@ public class OfferingBoxGuiHandler implements IGuiHandler {
 
     @Nullable
     @Override
-    public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
+    public Object getClientGuiElement(int ID, PlayerEntity player, World world, int x, int y, int z) {
         OfferingBoxGuiContainer ret = null;
         TileEntity tileEntity = world.getTileEntity(new BlockPos(x, y, z));
         if (tileEntity instanceof OfferingBoxTileEntity) {

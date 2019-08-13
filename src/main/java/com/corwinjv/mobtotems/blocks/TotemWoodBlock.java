@@ -9,12 +9,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
-import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.BlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -30,12 +30,12 @@ public class TotemWoodBlock extends ModBlock implements ITileEntityProvider {
     public static final PropertyEnum<TotemType> TOTEM_TYPE = PropertyEnum.create("totem_type", TotemType.class);
     public static final int MAX_MULTIBLOCK_RANGE = 9;
 
-    TotemWoodBlock() {
-        super(Material.WOOD);
-        this.isBlockContainer = true;
-        this.setHardness(2.0F);
-        this.setSoundType(SoundType.WOOD);
-        this.setDefaultState(getDefaultState().withProperty(TOTEM_TYPE, TotemType.NONE));
+    TotemWoodBlock(Block.Properties properties) {
+        super(properties);
+//        this.isBlockContainer = true;
+//        this.setHardness(2.0F);
+//        this.setSoundType(SoundType.WOOD);
+//        this.setDefaultState(getDefaultState().withProperty(TOTEM_TYPE, TotemType.NONE));
     }
 
     @Override
@@ -52,12 +52,12 @@ public class TotemWoodBlock extends ModBlock implements ITileEntityProvider {
     }
 
     @Override
-    public IBlockState getStateFromMeta(int meta) {
+    public BlockState getStateFromMeta(int meta) {
         return this.getDefaultState().withProperty(TOTEM_TYPE, TotemType.fromMeta(meta));
     }
 
     @Override
-    public int getMetaFromState(IBlockState state) {
+    public int getMetaFromState(BlockState state) {
         return state.getValue(TOTEM_TYPE).getMeta();
     }
 
@@ -74,12 +74,12 @@ public class TotemWoodBlock extends ModBlock implements ITileEntityProvider {
     }
 
     @Override
-    public void neighborChanged(IBlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
+    public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos) {
         super.neighborChanged(state, worldIn, pos, blockIn, fromPos);
     }
 
     @Override
-    public void onBlockAdded(World worldIn, BlockPos pos, IBlockState state) {
+    public void onBlockAdded(World worldIn, BlockPos pos, BlockState state) {
         for (int i = worldIn.loadedTileEntityList.size() - 1; i >= 0; i--) {
             TileEntity te = worldIn.loadedTileEntityList.get(i);
             if (te instanceof OfferingBoxTileEntity
@@ -96,7 +96,7 @@ public class TotemWoodBlock extends ModBlock implements ITileEntityProvider {
     }
 
     @Override
-    public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
+    public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, BlockState state) {
         super.onBlockDestroyedByPlayer(worldIn, pos, state);
         for (int i = worldIn.loadedTileEntityList.size() - 1; i >= 0; i--) {
             TileEntity te = worldIn.loadedTileEntityList.get(i);
@@ -109,7 +109,7 @@ public class TotemWoodBlock extends ModBlock implements ITileEntityProvider {
     }
 
     @Override
-    public int damageDropped(IBlockState state) {
+    public int damageDropped(BlockState state) {
         return getMetaFromState(state);
     }
 
@@ -118,12 +118,12 @@ public class TotemWoodBlock extends ModBlock implements ITileEntityProvider {
         return false;
     }
 
-    public boolean doesSideBlockRendering(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing face) {
+    public boolean doesSideBlockRendering(BlockState state, IBlockAccess world, BlockPos pos, Direction face) {
         return false;
     }
 
     @Override
-    public void breakBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull IBlockState blockState) {
+    public void breakBlock(@Nonnull World world, @Nonnull BlockPos pos, @Nonnull BlockState blockState) {
         super.breakBlock(world, pos, blockState);
     }
 }
