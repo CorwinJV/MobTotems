@@ -1,11 +1,5 @@
 package com.corwinjv.mobtotems;
 
-import net.minecraft.entity.EntityList;
-import net.minecraftforge.fml.common.FMLLog;
-import org.apache.logging.log4j.Level;
-
-import java.util.Iterator;
-
 /**
  * Created by CorwinJV on 8/31/14.
  */

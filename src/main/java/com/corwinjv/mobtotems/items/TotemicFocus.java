@@ -3,47 +3,39 @@ package com.corwinjv.mobtotems.items;
 import com.corwinjv.mobtotems.blocks.ModBlocks;
 import com.corwinjv.mobtotems.utils.BlockUtils;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLog;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.EnumAction;
+import net.minecraft.block.LogBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.Direction;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-
-import javax.annotation.Nonnull;
+import net.minecraft.item.ItemUseContext;
+import net.minecraft.item.UseAction;
+import net.minecraft.util.ActionResultType;
 
 /**
  * Created by CorwinJV on 2/17/2016.
  */
 public class TotemicFocus extends ModItem {
-    @Nonnull
     @Override
-    public EnumActionResult onItemUse(PlayerEntity player, World world, BlockPos pos, EnumHand enumHand, Direction side, float hitX, float hitY, float hitZ) {
-        if (!world.isRemote) {
-            Block targetBlock = BlockUtils.getBlock(world, pos);
+    public ActionResultType onItemUse(ItemUseContext context) {
+        if (!context.getWorld().isRemote) {
+            Block targetBlock = BlockUtils.getBlock(context.getWorld(), context.getPos());
             if (targetBlock != null
-                    && targetBlock instanceof BlockLog) {
-                world.destroyBlock(pos, false);
+                    && targetBlock instanceof LogBlock) {
+                context.getWorld().destroyBlock(context.getPos(), false);
                 Block blockToPlace = ModBlocks.TOTEM_WOOD;
                 if (blockToPlace != null) {
-                    world.setBlockState(pos, blockToPlace.getDefaultState());
-                    return EnumActionResult.SUCCESS;
+                    context.getWorld().setBlockState(context.getPos(), blockToPlace.getDefaultState());
+                    return ActionResultType.SUCCESS;
                 }
             }
         }
-        return EnumActionResult.FAIL;
+        return ActionResultType.FAIL;
     }
 
-    /**
-     * returns the action that specifies what animation to play when the items is being used
-     */
-    public EnumAction getItemUseAction(ItemStack stack) {
-        return EnumAction.BLOCK;
+    @Override
+    public UseAction getUseAction(ItemStack stack) {
+        return UseAction.BLOCK;
     }
 
+    // TODO: Not sure if this is required at all anymore...
     public boolean canItemEditBlocks() {
         return true;
     }
