@@ -15,6 +15,7 @@ import net.minecraft.client.particle.ParticleBlockDust;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
@@ -40,8 +41,8 @@ public class CarvingKnife extends ModItem {
 
     boolean spawnParticles = false;
 
-    public CarvingKnife() {
-        super();
+    public CarvingKnife(Item.Properties props) {
+        super(props);
     }
 
     @Override

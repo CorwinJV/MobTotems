@@ -29,11 +29,9 @@ public class ModItems {
     public static final String TOTEMIC_FOCUS_NAME = "totemic_focus";
     public static final String CARVING_KNIFE_NAME = "carving_knife";
 
-    // We're going to use the TotemicFocus for the CreativeTab:
-    @ObjectHolder(TOTEMIC_FOCUS_NAME)
-    public static Item TOTEMIC_FOCUS;
-    public static final Item WOLF_TOTEM_BAUBLE = new WolfTotemBauble().setRegistryName(Reference.MOD_ID, WOLF_TOTEM_BAUBLE_NAME);
-    public static final Item CARVING_KNIFE = new CarvingKnife().setRegistryName(Reference.MOD_ID, CARVING_KNIFE_NAME);
+    @ObjectHolder(TOTEMIC_FOCUS_NAME) public static Item TOTEMIC_FOCUS;
+    @ObjectHolder(WOLF_TOTEM_BAUBLE_NAME) public static Item WOLF_TOTEM_BAUBLE;
+    @ObjectHolder(CARVING_KNIFE_NAME) public static Item CARVING_KNIFE;
 
     public static void init() {
     }
