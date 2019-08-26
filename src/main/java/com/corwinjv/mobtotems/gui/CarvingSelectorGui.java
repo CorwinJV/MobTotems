@@ -2,7 +2,7 @@ package com.corwinjv.mobtotems.gui;
 
 import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.blocks.TotemType;
-import com.corwinjv.mobtotems.network.Network;
+import com.corwinjv.mobtotems.network.PacketHandler;
 import com.corwinjv.mobtotems.network.SetKnifeMetaMessage;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.renderer.GlStateManager;
@@ -204,7 +204,7 @@ public class CarvingSelectorGui extends GuiScreen {
             int centerY = (height / 2) - 8;
 
             selectedType = getTypeHoveredOver(centerX, centerY, mouseX, mouseY);
-            Network.sendToServer(new SetKnifeMetaMessage(selectedType.getMeta(), EnumHand.MAIN_HAND));
+            PacketHandler.sendToServer(new SetKnifeMetaMessage(selectedType.getMeta(), EnumHand.MAIN_HAND));
         }
 
         if (mouseButton == 0 || mouseButton == 1) {

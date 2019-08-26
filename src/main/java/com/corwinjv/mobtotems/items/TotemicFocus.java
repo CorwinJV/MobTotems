@@ -13,6 +13,10 @@ import net.minecraft.util.ActionResultType;
  * Created by CorwinJV on 2/17/2016.
  */
 public class TotemicFocus extends ModItem {
+    public TotemicFocus(Properties properties) {
+        super(properties);
+    }
+
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
         if (!context.getWorld().isRemote) {

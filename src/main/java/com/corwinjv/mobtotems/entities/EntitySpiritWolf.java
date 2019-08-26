@@ -35,13 +35,16 @@ public class EntitySpiritWolf extends WolfEntity {
         super.livingTick();
 
         if (initialized && getOwner() == null) {
-            // TODO: Find replacement for setDead()?
-            // setDead();
+             setDead();
         }
 
         if (getEntityWorld().isRemote) {
 //            spawnParticles();
         }
+    }
+
+    public void setDead() {
+        onKillCommand();
     }
 
     // TODO Port

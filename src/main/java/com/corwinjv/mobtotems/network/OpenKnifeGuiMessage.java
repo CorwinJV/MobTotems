@@ -1,27 +1,21 @@
 package com.corwinjv.mobtotems.network;
 
 import com.corwinjv.mobtotems.items.CarvingKnife;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.Hand;
+import net.minecraftforge.fml.network.NetworkEvent;
+
+import java.util.function.Supplier;
 
 /**
  * Created by CorwinJV on 1/20/2017.
  */
-public class OpenKnifeGuiMessage extends Message<OpenKnifeGuiMessage> {
-    private EnumHand hand = EnumHand.MAIN_HAND;
+public class OpenKnifeGuiMessage {
+    private Hand hand = Hand.MAIN_HAND;
     private int meta = 0;
 
-    @Override
-    protected void handleClient(OpenKnifeGuiMessage message, PlayerEntity player) {
-        ItemStack stack = player.getHeldItem(message.hand);
-        if (stack.getItem() instanceof CarvingKnife) {
-            ((CarvingKnife) stack.getItem()).openGui(player, message.meta);
-        }
-    }
-
-    public OpenKnifeGuiMessage setHand(EnumHand hand) {
+    public OpenKnifeGuiMessage setHand(Hand hand) {
         this.hand = hand;
         return this;
     }
@@ -31,34 +25,45 @@ public class OpenKnifeGuiMessage extends Message<OpenKnifeGuiMessage> {
         return this;
     }
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeInt(meta);
-        switch (hand) {
+    public static void encode(OpenKnifeGuiMessage packet, PacketBuffer buffer) {
+        buffer.writeInt(packet.meta);
+        switch (packet.hand) {
             case MAIN_HAND: {
-                buf.writeInt(0);
+                buffer.writeInt(0);
                 break;
             }
             case OFF_HAND: {
-                buf.writeInt(1);
+                buffer.writeInt(1);
                 break;
             }
         }
     }
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        meta = buf.readInt();
-        int handInt = buf.readInt();
+    public static OpenKnifeGuiMessage decode(PacketBuffer buffer) {
+
+        OpenKnifeGuiMessage packet = new OpenKnifeGuiMessage();
+        packet.meta = buffer.readInt();
+        int handInt = buffer.readInt();
         switch (handInt) {
             case 0: {
-                hand = EnumHand.MAIN_HAND;
+                packet.hand = Hand.MAIN_HAND;
                 break;
             }
             case 1: {
-                hand = EnumHand.OFF_HAND;
+                packet.hand = Hand.OFF_HAND;
                 break;
             }
+        }
+        return packet;
+    }
+
+    public static class Handler {
+        public static void handle(OpenKnifeGuiMessage packet, Supplier<NetworkEvent.Context> context) {
+            ItemStack stack = context.get().getSender().getHeldItem(packet.hand);
+            if (stack.getItem() instanceof CarvingKnife) {
+                ((CarvingKnife) stack.getItem()).openGui(context.get().getSender(), packet.meta);
+            }
+
         }
     }
 }

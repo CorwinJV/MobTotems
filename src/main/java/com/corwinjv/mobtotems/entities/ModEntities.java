@@ -2,39 +2,37 @@ package com.corwinjv.mobtotems.entities;
 
 import com.corwinjv.mobtotems.Reference;
 import com.corwinjv.mobtotems.entities.render.SpiritWolfRenderFactory;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.ObjectHolder;
 
 /**
  * Created by CorwinJV on 2/15/2016.
  */
 // TODO: Port
+@Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@ObjectHolder(Reference.MOD_ID)
 public class ModEntities {
-    private static int ENTITY_ID = 0;
+    public static final String SPIRIT_WOLF_NAME = "spirit_wolf";
 
-    public static final String SPIRIT_WOLF = "spirit_wolf";
-
-    private static Map<String, Class<? extends Entity>> mEntities = Collections.emptyMap();
+    @ObjectHolder(SPIRIT_WOLF_NAME)
+    public static EntityType<EntitySpiritWolf> SPIRIT_WOLF;
 
     public static void init() {
-        mEntities = new HashMap<String, Class<? extends Entity>>();
-        mEntities.put(SPIRIT_WOLF, EntitySpiritWolf.class);
     }
 
-    public static void registerEntities(Object modObject) {
-        for (String key : mEntities.keySet()) {
-            Class<? extends Entity> entityClass = mEntities.get(key);
-            if (entityClass != null) {
-                EntityRegistry.registerModEntity(new ResourceLocation(Reference.RESOURCE_PREFIX + key), entityClass, Reference.RESOURCE_PREFIX + key, ENTITY_ID++, modObject, 80, 3, false);
-                EntityRegistry.registerEgg(new ResourceLocation(Reference.RESOURCE_PREFIX + key), 1, 2);
-            }
-        }
+    @SubscribeEvent
+    public static void registerEntities(RegistryEvent.Register<EntityType<?>> event) {
+
+        event.getRegistry().register(EntityType.Builder.create(EntitySpiritWolf::new, EntityClassification.CREATURE)
+                .size(0, 0)
+                .setUpdateInterval(10)
+                .build("")
+                .setRegistryName(SPIRIT_WOLF_NAME));
     }
 
     public static void registerEntityRenders() {

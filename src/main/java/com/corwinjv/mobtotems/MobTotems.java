@@ -12,7 +12,7 @@ import com.corwinjv.mobtotems.config.ConfigurationHandler;
 import com.corwinjv.mobtotems.entities.ModEntities;
 import com.corwinjv.mobtotems.gui.OfferingBoxGuiHandler;
 import com.corwinjv.mobtotems.items.ModItems;
-import com.corwinjv.mobtotems.network.Network;
+import com.corwinjv.mobtotems.network.PacketHandler;
 import com.corwinjv.mobtotems.proxy.CommonProxy;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -38,8 +38,8 @@ public class MobTotems {
 //        //Dagger 2 implementation
 //        mobTotemsComponent = proxy.initializeDagger(instance);
 
-        // Network & Messages
-        Network.init();
+        // PacketHandler & Messages
+        PacketHandler.init();
         NetworkRegistry.INSTANCE.registerGuiHandler(instance, new OfferingBoxGuiHandler());
 
         // Config

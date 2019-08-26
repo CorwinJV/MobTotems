@@ -1,11 +1,10 @@
 package com.corwinjv.mobtotems.items;
 
-import com.corwinjv.mobtotems.MobTotems;
 import com.corwinjv.mobtotems.blocks.TotemType;
 import com.corwinjv.mobtotems.blocks.TotemWoodBlock;
 import com.corwinjv.mobtotems.gui.CarvingSelectorGui;
-import com.corwinjv.mobtotems.network.ActivateKnifeMessage;
-import com.corwinjv.mobtotems.network.Network;
+import com.corwinjv.mobtotems.network.ActivateKnifePacket;
+import com.corwinjv.mobtotems.network.PacketHandler;
 import com.corwinjv.mobtotems.network.OpenKnifeGuiMessage;
 import com.corwinjv.mobtotems.utils.BlockUtils;
 import net.minecraft.block.Block;
@@ -19,9 +18,11 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -48,12 +49,12 @@ public class CarvingKnife extends ModItem {
         super.init();
     }
 
-    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, EnumHand hand) {
+    public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
         if (world.isRemote) {
-            Network.sendToServer(new ActivateKnifeMessage().setHand(hand));
-            return new ActionResult(EnumActionResult.PASS, player.getHeldItem(hand));
+            PacketHandler.sendToServer(new ActivateKnifePacket().setHand(hand));
+            return new ActionResult<>(ActionResultType.PASS, player.getHeldItem(hand));
         }
-        return new ActionResult(EnumActionResult.PASS, player.getHeldItem(hand));
+        return new ActionResult<>(ActionResultType.PASS, player.getHeldItem(hand));
     }
 
     @SideOnly(Side.CLIENT)
@@ -121,7 +122,7 @@ public class CarvingKnife extends ModItem {
         }
     }
 
-    public void onKnifeActivated(PlayerEntity player, EnumHand hand) {
+    public void onKnifeActivated(PlayerEntity player, Hand hand) {
         if (player.world.isRemote) {
             return;
         }
@@ -144,7 +145,7 @@ public class CarvingKnife extends ModItem {
                     }
                 }
             } else {
-                Network.sendTo(new OpenKnifeGuiMessage().setMeta(getSelectedCarving(stack)), (PlayerEntityMP) player);
+                PacketHandler.sendTo(new OpenKnifeGuiMessage().setMeta(getSelectedCarving(stack)), (PlayerEntityMP) player);
             }
         }
     }

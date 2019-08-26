@@ -21,7 +21,7 @@ public enum TotemType implements IStringSerializable {
     private final int meta;
     private final String name;
 
-    private TotemType(int meta, String name) {
+    TotemType(int meta, String name) {
         this.meta = meta;
         this.name = name;
     }

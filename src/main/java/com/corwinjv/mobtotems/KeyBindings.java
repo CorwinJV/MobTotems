@@ -1,7 +1,7 @@
 package com.corwinjv.mobtotems;
 
-import com.corwinjv.mobtotems.network.ActivateBaubleMessage;
-import com.corwinjv.mobtotems.network.Network;
+import com.corwinjv.mobtotems.network.ActivateBaublePacket;
+import com.corwinjv.mobtotems.network.PacketHandler;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.client.FMLClientHandler;
@@ -33,7 +33,7 @@ public class KeyBindings {
     public void onKeyInput(InputEvent.KeyInputEvent event) {
         if (!FMLClientHandler.instance().isGUIOpen(GuiChat.class)) {
             if (keys[ACTIVATE_BAUBLE_KEY].isKeyDown() && !ACTIVATE_BAUBLE_KEY_PRESSED) {
-                Network.sendToServer(new ActivateBaubleMessage());
+                PacketHandler.sendToServer(new ActivateBaublePacket());
                 ACTIVATE_BAUBLE_KEY_PRESSED = true;
             } else if (!keys[ACTIVATE_BAUBLE_KEY].isKeyDown() && ACTIVATE_BAUBLE_KEY_PRESSED) {
                 ACTIVATE_BAUBLE_KEY_PRESSED = false;

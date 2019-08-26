@@ -1,35 +1,26 @@
 package com.corwinjv.mobtotems.network;
 
 import com.corwinjv.mobtotems.items.CarvingKnife;
-import io.netty.buffer.ByteBuf;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHand;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.Hand;
+import net.minecraftforge.fml.network.NetworkEvent;
+
+import java.util.function.Supplier;
 
 /**
  * Created by CorwinJV on 1/19/2017.
  */
-public class SetKnifeMetaMessage extends Message<SetKnifeMetaMessage> {
-    private int meta;
-    private EnumHand hand = EnumHand.MAIN_HAND;
+public class SetKnifeMetaMessage  {
+    public int meta;
+    public Hand hand = Hand.MAIN_HAND;
 
-    public SetKnifeMetaMessage() {
-    }
-
-    public SetKnifeMetaMessage(int meta, EnumHand hand) {
+    public SetKnifeMetaMessage(int meta, Hand hand) {
         this.meta = meta;
         this.hand = hand;
     }
 
-    @Override
-    protected void handleServer(SetKnifeMetaMessage message, EntityPlayerMP player) {
-        ItemStack stack = player.getHeldItem(message.hand);
-        if (stack.getItem() instanceof CarvingKnife) {
-            ((CarvingKnife) stack.getItem()).setSelectedCarving(player.getHeldItem(message.hand), message.meta);
-        }
-    }
-
-    public SetKnifeMetaMessage setHand(EnumHand hand) {
+    public SetKnifeMetaMessage setHand(Hand hand) {
         this.hand = hand;
         return this;
     }
@@ -39,33 +30,43 @@ public class SetKnifeMetaMessage extends Message<SetKnifeMetaMessage> {
         return this;
     }
 
-    @Override
-    public void toBytes(ByteBuf buf) {
-        buf.writeInt(meta);
-        switch (hand) {
+    public static void encode(SetKnifeMetaMessage packet, PacketBuffer buffer) {
+        buffer.writeInt(packet.meta);
+        switch (packet.hand) {
             case MAIN_HAND: {
-                buf.writeInt(0);
+                buffer.writeInt(0);
                 break;
             }
             case OFF_HAND: {
-                buf.writeInt(1);
+                buffer.writeInt(1);
                 break;
             }
         }
     }
 
-    @Override
-    public void fromBytes(ByteBuf buf) {
-        meta = buf.readInt();
-        int handInt = buf.readInt();
+    public static SetKnifeMetaMessage decode(PacketBuffer buffer) {
+
+        int meta = buffer.readInt();
+        int handInt = buffer.readInt();
+        Hand hand = Hand.MAIN_HAND;
         switch (handInt) {
             case 0: {
-                hand = EnumHand.MAIN_HAND;
+                hand = Hand.MAIN_HAND;
                 break;
             }
             case 1: {
-                hand = EnumHand.OFF_HAND;
+                hand = Hand.OFF_HAND;
                 break;
+            }
+        }
+        return new SetKnifeMetaMessage(meta, hand);
+    }
+
+    public static class Handler {
+        public static void handle(final SetKnifeMetaMessage packet, Supplier<NetworkEvent.Context> context) {
+            ItemStack stack = context.get().getSender().getHeldItem(packet.hand);
+            if (stack.getItem() instanceof CarvingKnife) {
+                ((CarvingKnife) stack.getItem()).setSelectedCarving(stack, packet.meta);
             }
         }
     }

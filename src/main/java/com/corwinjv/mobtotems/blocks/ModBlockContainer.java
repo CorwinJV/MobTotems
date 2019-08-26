@@ -18,17 +18,6 @@ public class ModBlockContainer extends ContainerBlock {
     }
 
     public void init() {
-        // TODO: setCreativeTabMoved?
-        //this.setCreativeTab(CreativeTabMT.MT_TAB);
-    }
-
-//    @Override
-//    public String getUnlocalizedName() {
-//        return String.format("tiles.%s%s", Reference.RESOURCE_PREFIX, getUnwrappedUnlocalizedName(super.getUnlocalizedName()));
-//    }
-
-    protected String getUnwrappedUnlocalizedName(String unlocalizedName) {
-        return unlocalizedName.substring(unlocalizedName.indexOf(".") + 1);
     }
 
     @Nullable

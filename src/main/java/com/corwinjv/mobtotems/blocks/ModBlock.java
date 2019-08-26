@@ -14,18 +14,7 @@ public class ModBlock extends Block {
         this.init();
     }
 
-    // TODO: Port creative tab to 1.14
     public void init() {
-//        this.setCreativeTab(CreativeTabMT.MT_TAB);
-    }
 
-    // TODO: REmove
-//    @Override
-//    public String getUnlocalizedName() {
-//        return String.format("tiles.%s%s", Reference.RESOURCE_PREFIX, getUnwrappedUnlocalizedName(super.getUnlocalizedName()));
-//    }
-//
-//    protected String getUnwrappedUnlocalizedName(String unlocalizedName) {
-//        return unlocalizedName.substring(unlocalizedName.indexOf(".") + 1);
-//    }
+    }
 }
