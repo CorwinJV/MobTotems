@@ -5,12 +5,12 @@ import com.corwinjv.mobtotems.blocks.TotemType;
 import com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class CreeperLogic extends TotemLogic {
     @Override
     public List<ItemStack> getCost() {
         List<ItemStack> cost = new ArrayList<>();
-        cost.add(new ItemStack(Items.GUNPOWDER, 2, 0));
+        cost.add(new ItemStack(Items.GUNPOWDER, 2, null));
         return cost;
     }
 
@@ -60,7 +60,7 @@ public class CreeperLogic extends TotemLogic {
         }
 
         private boolean canSpawnMobHere(BlockPos pos, Entity mob, int radius) {
-            double dist = mob.getPosition().getDistance(pos.getX(), pos.getY(), pos.getZ());
+            double dist = mob.getPosition().distanceSq(pos);
             return !(mob instanceof IMob && dist < radius);
         }
     }

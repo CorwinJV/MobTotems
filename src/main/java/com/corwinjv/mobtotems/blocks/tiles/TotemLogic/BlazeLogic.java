@@ -2,8 +2,8 @@ package com.corwinjv.mobtotems.blocks.tiles.TotemLogic;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -25,7 +25,7 @@ public class BlazeLogic extends TotemLogic {
     @Override
     public List<ItemStack> getCost() {
         List<ItemStack> cost = new ArrayList<>();
-        cost.add(new ItemStack(Items.COAL, 2, 0));
+        cost.add(new ItemStack(Items.COAL, 2, null));
         return cost;
     }
 
@@ -43,7 +43,7 @@ public class BlazeLogic extends TotemLogic {
 
         for (Entity entity : teList) {
             if (entity instanceof IMob) {
-                if (entity.getPosition().getDistance(pos.getX(), pos.getY(), pos.getZ()) <= radius) {
+                if (entity.getPosition().withinDistance(pos, radius)) {
                     if (!entity.isImmuneToFire()) {
                         entity.setFire(FIRE_DURATION);
                         entity.attackEntityFrom(DamageSource.ON_FIRE, LlamaLogic.DAMAGE_MODIFIER * modifiers.damage);

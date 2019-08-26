@@ -1,11 +1,11 @@
 package com.corwinjv.mobtotems.blocks.tiles.TotemLogic;
 
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.monster.IMob;
-import net.minecraft.init.Items;
-import net.minecraft.init.MobEffects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.potion.PotionEffect;
+import net.minecraft.item.Items;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -42,12 +42,12 @@ public class SpiderLogic extends TotemLogic {
     public void performEffect(World world, BlockPos pos, Modifiers modifiers) {
         int radius = DEFAULT_RADIUS + (int) (RANGE_BOOST * modifiers.range);
         AxisAlignedBB aabb = new AxisAlignedBB(pos.getX() - radius, pos.getY() - radius, pos.getZ() - radius, pos.getX() + radius, pos.getY() + radius, pos.getZ() + radius);
-        List<EntityLivingBase> teList = world.getEntitiesWithinAABB(EntityLivingBase.class, aabb);
+        List<LivingEntity> teList = world.getEntitiesWithinAABB(LivingEntity.class, aabb);
 
-        for (EntityLivingBase entity : teList) {
+        for (LivingEntity entity : teList) {
             if (entity instanceof IMob) {
-                if (entity.getPosition().getDistance(pos.getX(), pos.getY(), pos.getZ()) <= radius) {
-                    PotionEffect potionEffect = new PotionEffect(MobEffects.POISON, POISON_DURATION, POTION_AMPLIFIER);
+                if (entity.getPosition().withinDistance(pos, radius)) {
+                    EffectInstance potionEffect = new EffectInstance(Effects.POISON, POISON_DURATION, POTION_AMPLIFIER);
                     if (entity.isPotionApplicable(potionEffect)) {
                         entity.attackEntityFrom(DamageSource.MAGIC, LlamaLogic.DAMAGE_MODIFIER * modifiers.damage);
                         entity.addPotionEffect(potionEffect);

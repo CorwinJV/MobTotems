@@ -3,15 +3,15 @@ package com.corwinjv.mobtotems.blocks.tiles.TotemLogic;
 import com.corwinjv.mobtotems.TotemHelper;
 import com.corwinjv.mobtotems.blocks.TotemType;
 import com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.monster.EntityEnderman;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class EnderLogic extends TotemLogic {
     @Override
     public List<ItemStack> getCost() {
         List<ItemStack> cost = new ArrayList<>();
-        cost.add(new ItemStack(Blocks.GRASS, 1, 0));
+        cost.add(new ItemStack(Blocks.GRASS, 1, null));
         return cost;
     }
 
@@ -69,8 +69,8 @@ public class EnderLogic extends TotemLogic {
         }
 
         private boolean isMobAffected(BlockPos pos, Entity mob, int radius) {
-            double dist = mob.getPosition().getDistance(pos.getX(), pos.getY(), pos.getZ());
-            return !(mob instanceof EntityEnderman && dist < radius);
+            double dist = mob.getPosition().distanceSq(pos);
+            return !(mob instanceof EndermanEntity && dist < radius);
         }
 
         private BlockPos getValidTeleportPosAround(World world, BlockPos pos) {

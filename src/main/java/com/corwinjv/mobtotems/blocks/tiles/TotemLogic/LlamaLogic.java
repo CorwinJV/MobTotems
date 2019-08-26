@@ -1,6 +1,6 @@
 package com.corwinjv.mobtotems.blocks.tiles.TotemLogic;
 
-import net.minecraft.init.Blocks;
+import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -16,7 +16,8 @@ public class LlamaLogic extends TotemLogic {
     @Override
     public List<ItemStack> getCost() {
         List<ItemStack> cost = new ArrayList<>();
-        cost.add(new ItemStack(Blocks.CARPET, 3, 0));
+        // TODO: After the 'flattening' how can I make the cost be a any of a set of items? Any carpet should do for this offering
+        cost.add(new ItemStack(Blocks.WHITE_CARPET, 3, null));
         return cost;
     }
 

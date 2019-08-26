@@ -23,6 +23,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.text.ITextComponent;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -360,6 +361,11 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
         return slaveTypes;
     }
 
+    @Override
+    public TotemType getMultiblockType() {
+        return TotemType.NONE;
+    }
+
     public List<TotemType> getSlaveTypesCopy() {
         return slaveTypesCopy;
     }
@@ -367,11 +373,6 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
     public void setSlaveTypesCopy(List<TotemType> slaveTypesCopy) {
         this.slaveTypesCopy = slaveTypesCopy;
         markDirty();
-    }
-
-    @Override
-    public TotemType getType() {
-        return TotemType.NONE;
     }
 
     @Override
@@ -419,6 +420,16 @@ public class OfferingBoxTileEntity extends ModMultiblockInventoryTileEntity<Tote
     @Override
     public String getName() {
         return "container." + ModBlocks.OFFERING_BOX_NAME;
+    }
+
+    @Override
+    protected ITextComponent getDefaultName() {
+        return null;
+    }
+
+    @Override
+    protected Container createMenu(int i, PlayerInventory playerInventory) {
+        return null;
     }
 
     @Override

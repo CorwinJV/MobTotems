@@ -1,7 +1,7 @@
 package com.corwinjv.mobtotems.blocks.tiles.TotemLogic;
 
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;

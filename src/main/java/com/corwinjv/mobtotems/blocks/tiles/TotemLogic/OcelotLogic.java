@@ -1,7 +1,7 @@
 package com.corwinjv.mobtotems.blocks.tiles.TotemLogic;
 
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -14,7 +14,8 @@ public class OcelotLogic extends TotemLogic {
     @Override
     public List<ItemStack> getCost() {
         List<ItemStack> cost = new ArrayList<>();
-        cost.add(new ItemStack(Items.FISH, 2, 0));
+        // TODO: This should be able to take all kinds of fish
+        cost.add(new ItemStack(Items.TROPICAL_FISH, 2, null));
         return cost;
     }
 

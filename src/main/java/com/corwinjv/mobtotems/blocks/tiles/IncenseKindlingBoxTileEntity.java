@@ -12,6 +12,7 @@ import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleType;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.List;
@@ -32,8 +33,8 @@ public class IncenseKindlingBoxTileEntity extends ModTileEntity implements ITick
 
     private long timeLived = 0;
 
-    public IncenseKindlingBoxTileEntity() {
-        super();
+    public IncenseKindlingBoxTileEntity(TileEntityType type) {
+        super(type);
     }
 
     @Override

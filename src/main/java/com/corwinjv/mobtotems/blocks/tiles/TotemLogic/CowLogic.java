@@ -3,14 +3,14 @@ package com.corwinjv.mobtotems.blocks.tiles.TotemLogic;
 import com.corwinjv.mobtotems.TotemHelper;
 import com.corwinjv.mobtotems.blocks.TotemType;
 import com.corwinjv.mobtotems.blocks.tiles.OfferingBoxTileEntity;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class CowLogic extends TotemLogic {
     @Override
     public List<ItemStack> getCost() {
         List<ItemStack> cost = new ArrayList<>();
-        cost.add(new ItemStack(Blocks.TALLGRASS, 4, 1));
+        cost.add(new ItemStack(Blocks.TALL_GRASS, 4, null));
         return cost;
     }
 
@@ -60,9 +60,9 @@ public class CowLogic extends TotemLogic {
         }
 
         private boolean canSpawnMobHere(BlockPos pos, Entity mob, int radius) {
-            double dist = mob.getPosition().getDistance(pos.getX(), pos.getY(), pos.getZ());
+            double dist = mob.getPosition().distanceSq(pos);
 
-            return !(mob instanceof EntityAnimal && dist < radius);
+            return !(mob instanceof AnimalEntity && dist < radius);
         }
     }
 }
